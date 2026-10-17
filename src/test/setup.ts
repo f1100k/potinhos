@@ -5,3 +5,6 @@ import { afterEach } from 'vitest';
 afterEach(() => {
   cleanup();
 });
+
+// jsdom não implementa scrollTo.
+window.scrollTo = () => {};

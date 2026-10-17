@@ -1,4 +1,4 @@
-import { type ComponentType, useReducer } from 'react';
+import type { ReactNode } from 'react';
 import { Add } from '../screens/Add';
 import { Cafe } from '../screens/Cafe';
 import { Conquistas } from '../screens/Conquistas';
@@ -15,62 +15,62 @@ import { Settings } from '../screens/Settings';
 import { Task } from '../screens/Task';
 import { Vazio } from '../screens/Vazio';
 import { Weekend } from '../screens/Weekend';
-import { initialNav, navReducer, SCREENS, type Screen } from './navigation';
+import { AppStoreProvider } from './AppStore';
+import { NavProvider, useNav } from './Nav';
+import type { Route } from './navigation';
 
-const SCREEN_COMPONENTS: Record<Screen, ComponentType> = {
-  landing: Landing,
-  home: Home,
-  draw: Draw,
-  task: Task,
-  done: Done,
-  notdone: NotDone,
-  return: Return,
-  vazio: Vazio,
-  weekend: Weekend,
-  novasemana: NovaSemana,
-  ach: Conquistas,
-  add: Add,
-  edit: Edit,
-  pending: Pending,
-  settings: Settings,
-  cafe: Cafe,
+function renderScreen(route: Route): ReactNode {
+  switch (route.screen) {
+    case 'landing':
+      return <Landing />;
+    case 'home':
+      return <Home />;
+    case 'draw':
+      return <Draw />;
+    case 'task':
+      return <Task />;
+    case 'done':
+      return <Done />;
+    case 'notdone':
+      return <NotDone />;
+    case 'return':
+      return <Return />;
+    case 'vazio':
+      return <Vazio />;
+    case 'weekend':
+      return <Weekend />;
+    case 'novasemana':
+      return <NovaSemana />;
+    case 'ach':
+      return <Conquistas />;
+    case 'add':
+      return <Add />;
+    case 'edit':
+      return <Edit />;
+    case 'pending':
+      return <Pending />;
+    case 'settings':
+      return <Settings />;
+    case 'cafe':
+      return <Cafe />;
+  }
+}
+
+function Screens() {
+  const { route } = useNav();
+  return <main>{renderScreen(route)}</main>;
+}
+
+type Props = {
+  initialRoute?: Route;
 };
 
-export function App() {
-  const [nav, dispatch] = useReducer(navReducer, initialNav);
-  const Current = SCREEN_COMPONENTS[nav.screen];
-
+export function App({ initialRoute }: Props) {
   return (
-    <>
-      {import.meta.env.DEV && (
-        <nav
-          aria-label="Telas (dev)"
-          style={{
-            display: 'flex',
-            gap: 6,
-            flexWrap: 'wrap',
-            padding: 8,
-            fontSize: 12,
-          }}
-        >
-          {SCREENS.map((screen) => (
-            <button
-              key={screen}
-              type="button"
-              onClick={() => dispatch({ type: 'go', screen })}
-              aria-current={nav.screen === screen ? 'page' : undefined}
-              style={{
-                textDecoration: nav.screen === screen ? 'underline' : 'none',
-              }}
-            >
-              {screen}
-            </button>
-          ))}
-        </nav>
-      )}
-      <main>
-        <Current />
-      </main>
-    </>
+    <AppStoreProvider>
+      <NavProvider {...(initialRoute ? { initial: initialRoute } : {})}>
+        <Screens />
+      </NavProvider>
+    </AppStoreProvider>
   );
 }

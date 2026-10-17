@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { App } from './App';
 
@@ -11,9 +10,8 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
-  it('troca de tela pela barra de dev', async () => {
-    render(<App />);
-    await userEvent.click(screen.getByRole('button', { name: 'settings' }));
+  it('abre na rota pedida', () => {
+    render(<App initialRoute={{ screen: 'settings' }} />);
     expect(
       screen.getByRole('heading', { name: 'Configurações' }),
     ).toBeInTheDocument();
