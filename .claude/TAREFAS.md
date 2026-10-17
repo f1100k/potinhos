@@ -80,13 +80,13 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 3 — Shell e navegação
 
-- [ ] Layout responsivo: até 900px, barra inferior fixa com blur e safe-area. A partir de 900px, menu lateral fixo de 224px.
-- [ ] Barra inferior: **Meus potes · Nova tarefa · Pendentes · Configurações**.
-- [ ] Menu lateral: **Meus potes · Nova tarefa · Ver e editar potes · Tarefas pendentes · Pote de conquistas · Configurações**, com o link "Me paga um café?" discreto no rodapé.
-- [ ] Item ativo destacado. "Meus potes" fica ativo durante todo o fluxo de sorteio.
-- [ ] A barra inferior fica oculta nas telas do fluxo (sorteio, tarefa, concluí, etc.).
-- [ ] Componente **Toast** (pílula branca acima da nav, cerca de 2,6s).
-- [ ] Largura de conteúdo: 520px no celular, 760px na web.
+- [x] Layout responsivo: até 900px, barra inferior fixa com blur e safe-area. A partir de 900px, menu lateral fixo de 224px.
+- [x] Barra inferior: **Meus potes · Nova tarefa · Pendentes · Configurações**.
+- [x] Menu lateral: **Meus potes · Nova tarefa · Ver e editar potes · Tarefas pendentes · Pote de conquistas · Configurações**, com o link "Me paga um café?" discreto no rodapé.
+- [x] Item ativo destacado. "Meus potes" fica ativo durante todo o fluxo de sorteio.
+- [x] A barra inferior fica oculta nas telas do fluxo (sorteio, tarefa, concluí, etc.).
+- [x] Componente **Toast** (pílula branca acima da nav, cerca de 2,6s).
+- [x] Largura de conteúdo: 520px no celular, 760px na web.
 
 ## Fase 4 — Componentes visuais
 
