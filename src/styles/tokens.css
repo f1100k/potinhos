@@ -1,0 +1,91 @@
+/* Design tokens do Potinhos, tirados do protótipo no Claude Design.
+   Nomes pelo papel, não pela cor. */
+:root {
+  /* Fundo e superfícies */
+  --color-bg: #f2f6ee;
+  --color-bg-blur: rgb(242 246 238 / 94%);
+  --color-surface: #ffffff;
+  --color-surface-soft: #fcfdfa;
+  --color-surface-muted: #e9f0e3;
+  --color-surface-muted-2: #f4f8f0;
+  --color-segment: #e3ebdc;
+
+  /* Bordas e divisórias */
+  --color-border: #cfdbc7;
+  --color-border-soft: #d6e0ce;
+  --color-divider: #dce5d5;
+
+  /* Texto */
+  --color-text: #2f3d2b;
+  --color-text-secondary: #6e7e68;
+  --color-text-tertiary: #9daa95;
+  --color-text-muted: #55654f;
+  --color-on-accent: #ffffff;
+
+  /* Acento */
+  --color-accent: #d4876a;
+  --color-link: #b86d52;
+  --color-link-hover: #9a5a41;
+
+  /* Tampas dos potes */
+  --color-lid-simples: #e8bfa4;
+  --color-lid-complexas: #c98d72;
+  --color-lid-semanal: #9db596;
+  --color-lid-conquistas: #e6bb63;
+
+  /* Chips por pote (fundo / texto) */
+  --color-chip-simples-bg: #f7dfd0;
+  --color-chip-simples-fg: #9a5a41;
+  --color-chip-complexas-bg: #ebd3c6;
+  --color-chip-complexas-fg: #7e4a36;
+  --color-chip-semanal-bg: #e6eee1;
+  --color-chip-semanal-fg: #587553;
+
+  /* Pote Semanal */
+  --color-semanal-bg: #eaf0e6;
+  --color-semanal-fg: #587553;
+  --color-semanal-border: #d3ddcd;
+  --color-semanal-jar-end: #f3f6f0;
+
+  /* Pote de conquistas */
+  --color-conquistas-bg: #fbf3e4;
+  --color-conquistas-border: #f0e2c6;
+  --color-conquistas-jar-border: #e9d7b2;
+  --color-conquistas-jar: #fff8ea;
+  --color-conquistas-jar-top: #fffbf2;
+  --color-conquistas-jar-end: #fbf0d8;
+  --color-conquistas-card-border: #eee2cf;
+  --color-conquistas-fg: #9a7430;
+  --color-conquistas-accent: #c9a95c;
+
+  /* Pote comum */
+  --color-jar-end: #eef3e9;
+  --color-jar-shine: rgb(255 255 255 / 90%);
+
+  /* Sombras */
+  --shadow-paper: 0 4px 14px rgb(75 63 55 / 8%);
+  --shadow-card: 0 10px 30px rgb(75 63 55 / 7%);
+  --shadow-toast: 0 8px 24px rgb(75 63 55 / 10%);
+
+  /* Tipografia */
+  --font-base: "Varela Round", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, monospace;
+  --line-height: 1.45;
+
+  /* Raios */
+  --radius-pill: 999px;
+  --radius-sm: 12px;
+  --radius-card: 14px;
+  --radius-card-md: 16px;
+  --radius-card-lg: 18px;
+  --radius-card-xl: 20px;
+
+  /* Alvos de toque */
+  --touch-min: 44px;
+
+  /* Layout */
+  --content-max-mobile: 520px;
+  --content-max-web: 760px;
+  --sidebar-width: 224px;
+  --breakpoint-wide: 900px;
+}
