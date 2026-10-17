@@ -1,4 +1,4 @@
-import type { Pote, Task } from './types';
+import type { Conquista, ISODate, Pote, Task } from './types';
 
 /** Quantas vezes uma tarefa ainda pode sair nesta semana. */
 export function restante(t: Task): number {
@@ -44,4 +44,28 @@ export function semanaCompleta(tasks: readonly Task[]): boolean {
     contagem(tasks, 'semanal') === 0 &&
     tasks.some((t) => t.pote === 'semanal' && t.status !== 'pendente')
   );
+}
+
+/**
+ * Conclui a tarefa sorteada. Simples e Complexas saem da lista; no Semanal,
+ * soma uma vez na semana. Pendentes sempre saem. Tudo vira conquista.
+ */
+export function concluir(
+  tasks: readonly Task[],
+  done: readonly Conquista[],
+  taskId: string,
+  conquista: { id: string; date: ISODate },
+): { tasks: Task[]; done: Conquista[] } {
+  const t = tasks.find((x) => x.id === taskId);
+  if (!t) return { tasks: [...tasks], done: [...done] };
+  const fica = t.pote === 'semanal' && t.status !== 'pendente';
+  const novas = fica
+    ? tasks.map((x) =>
+        x.id === taskId ? { ...x, doneWeek: (x.doneWeek ?? 0) + 1 } : x,
+      )
+    : tasks.filter((x) => x.id !== taskId);
+  return {
+    tasks: novas,
+    done: [{ ...conquista, text: t.text, pote: t.pote }, ...done],
+  };
 }
