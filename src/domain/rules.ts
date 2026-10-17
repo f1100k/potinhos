@@ -69,3 +69,51 @@ export function concluir(
     done: [{ ...conquista, text: t.text, pote: t.pote }, ...done],
   };
 }
+
+/**
+ * Coloca a tarefa em outro pote. Zera o progresso da semana e, ao entrar
+ * no Semanal, começa com 1 vez por semana. Fora do Semanal, os campos
+ * semanais somem. Mantém o status (pendente continua pendente).
+ */
+export function moverPote(t: Task, pote: Pote): Task {
+  const base: Task = { id: t.id, text: t.text, pote };
+  if (t.status) base.status = t.status;
+  if (pote !== 'semanal') return base;
+  return {
+    ...base,
+    freq: t.pote === 'semanal' ? (t.freq ?? 1) : 1,
+    doneWeek: 0,
+    extra: 0,
+    ...(t.paused ? { paused: true } : {}),
+  };
+}
+
+/** Tira a marca de pendente e põe a tarefa no pote (pode ser o mesmo). */
+export function voltarAoPote(t: Task, pote: Pote): Task {
+  const { status: _status, ...semStatus } = t;
+  return pote === t.pote ? semStatus : moverPote(semStatus, pote);
+}
+
+export type EscolhaNaoConsegui =
+  | { kind: 'devolver' }
+  | { kind: 'mover'; pote: Pote }
+  | { kind: 'pendente' };
+
+/** O que fazer com o papelzinho quando não deu hoje. */
+export function naoConsegui(
+  tasks: readonly Task[],
+  taskId: string,
+  escolha: EscolhaNaoConsegui,
+): Task[] {
+  const aplicar = (t: Task): Task => {
+    switch (escolha.kind) {
+      case 'devolver':
+        return voltarAoPote(t, t.pote);
+      case 'mover':
+        return voltarAoPote(t, escolha.pote);
+      case 'pendente':
+        return { ...t, status: 'pendente' };
+    }
+  };
+  return tasks.map((t) => (t.id === taskId ? aplicar(t) : t));
+}
