@@ -19,6 +19,7 @@ import { AppStoreProvider } from './AppStore';
 import { NavProvider, useNav } from './Nav';
 import type { Route } from './navigation';
 import { Shell } from './Shell';
+import { ToastProvider } from './Toast';
 
 function renderScreen(route: Route): ReactNode {
   switch (route.screen) {
@@ -71,7 +72,9 @@ export function App({ initialRoute }: Props) {
   return (
     <AppStoreProvider>
       <NavProvider {...(initialRoute ? { initial: initialRoute } : {})}>
-        <Screens />
+        <ToastProvider>
+          <Screens />
+        </ToastProvider>
       </NavProvider>
     </AppStoreProvider>
   );
