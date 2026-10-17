@@ -37,6 +37,16 @@
       "cssModules": false
     }
   },
+  "overrides": [
+    {
+      "includes": ["src/styles/animations.css"],
+      "linter": {
+        "rules": {
+          "complexity": { "noImportantStyles": "off" }
+        }
+      }
+    }
+  ],
   "assist": {
     "enabled": true,
     "actions": {
