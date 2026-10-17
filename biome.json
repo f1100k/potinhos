@@ -6,22 +6,35 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": ["**", "!**/dist", "!.claude"]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "auto",
     "lineWidth": 80
   },
   "linter": {
     "enabled": true,
     "rules": {
       "preset": "recommended"
+    },
+    "domains": {
+      "react": "recommended"
     }
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "double"
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
+      "semicolons": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": false
     }
   },
   "assist": {
