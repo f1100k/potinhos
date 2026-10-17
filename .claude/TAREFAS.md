@@ -22,7 +22,7 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 - [x] **Stack:** React + Vite + TypeScript, como PWA instalável. CSS puro ou CSS Modules para portar os keyframes do protótipo.
 - [x] **Virada da semana:** a semana fecha **domingo às 23:59, no fuso local** do aparelho. A semana vai de segunda 00:00 a domingo 23:59.
-  - [ ] A confirmar: quando o card "Fechar a semana" aparece na home. Sugestão: a partir de sexta à noite.
+  - [x] Quando o card "Fechar a semana" aparece na home: **a partir de sexta às 18h** (ajustável em `src/domain/week.ts`). Sem sobras no Semanal, a semana fecha sozinha na virada, já que não há nada para decidir.
 - [x] **Se a pessoa não fechar a semana:** nada é fechado automaticamente. A semana **fica pendente até a pessoa abrir o app**. Na próxima abertura depois da virada, ela vê a tela "Fim de semana" daquela semana, com "levar" como padrão em cada sobra. Se o app ficar várias semanas fechado, aparece um fechamento só, referente à última semana não fechada.
 - [x] **Página de apoio:** **Pix** (chave copiável + QR code) e **Buy Me a Coffee** (link externo).
   - [ ] Falta: a chave Pix real, o QR code e a URL do Buy Me a Coffee.
@@ -59,24 +59,24 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 2 — Modelo de dados e persistência
 
-- [ ] Tipos:
+- [x] Tipos:
   - `Task { id, text, pote: 'simples'|'complexas'|'semanal', status?: 'pendente', freq?: 1..7, doneWeek?, extra?, paused? }`
   - `Conquista { id, text, pote, date: 'YYYY-MM-DD' }`
   - `Settings { sounds: boolean }`
   - Meta: `{ visited, weekStart / lastWeekClosed, schemaVersion }`
-- [ ] Store central (Context + reducer, Zustand ou similar) com ações puras e testáveis.
-- [ ] Persistência em `localStorage`, com versão de schema e migração. Tratar JSON corrompido sem quebrar o app.
-- [ ] Regras do domínio, cada uma com teste unitário:
-  - [ ] `restante(t) = paused ? 0 : max(0, freq + extra − doneWeek)`
-  - [ ] Pool sorteável: tarefas do pote que não estão pendentes. No Semanal, só as que têm `restante > 0`.
-  - [ ] Contagem do pote: tamanho do pool (Simples e Complexas) ou soma dos restantes (Semanal).
-  - [ ] Sorteio aleatório uniforme no pool. Se o pool estiver vazio, vai para a tela de pote vazio.
-  - [ ] Concluir: Simples e Complexas saem da lista. No Semanal, `doneWeek + 1`. Em todos os casos, registrar a conquista com a data de hoje.
-  - [ ] Não consegui: devolver (mesmo pote), mover (outro pote) ou marcar como pendente (mantém o pote de origem).
-  - [ ] Mover de pote: zera `doneWeek` e `extra`. Ao entrar no Semanal, `freq` padrão 1.
-  - [ ] Fechar a semana: para cada semanal com restante, aplicar a decisão `levar` (padrão; `extra = restante`), `pendente` (cria uma cópia pendente) ou `deixar ir`. Depois, `doneWeek = 0` em todas.
-  - [ ] Detecção da virada da semana com base na data (ver decisões em aberto).
-- [ ] Primeiro uso: estado vazio ou tarefas de exemplo? (O protótipo usa exemplos como "Lavar a louça" e "Estudar matemática 2x".)
+- [x] Store central (Context + reducer, Zustand ou similar) com ações puras e testáveis.
+- [x] Persistência em `localStorage`, com versão de schema e migração. Tratar JSON corrompido sem quebrar o app.
+- [x] Regras do domínio, cada uma com teste unitário:
+  - [x] `restante(t) = paused ? 0 : max(0, freq + extra − doneWeek)`
+  - [x] Pool sorteável: tarefas do pote que não estão pendentes. No Semanal, só as que têm `restante > 0`.
+  - [x] Contagem do pote: tamanho do pool (Simples e Complexas) ou soma dos restantes (Semanal).
+  - [x] Sorteio aleatório uniforme no pool. Se o pool estiver vazio, vai para a tela de pote vazio.
+  - [x] Concluir: Simples e Complexas saem da lista. No Semanal, `doneWeek + 1`. Em todos os casos, registrar a conquista com a data de hoje.
+  - [x] Não consegui: devolver (mesmo pote), mover (outro pote) ou marcar como pendente (mantém o pote de origem).
+  - [x] Mover de pote: zera `doneWeek` e `extra`. Ao entrar no Semanal, `freq` padrão 1.
+  - [x] Fechar a semana: para cada semanal com restante, aplicar a decisão `levar` (padrão; `extra = restante`), `pendente` (cria uma cópia pendente) ou `deixar ir`. Depois, `doneWeek = 0` em todas.
+  - [x] Detecção da virada da semana com base na data (ver decisões em aberto).
+- [x] Primeiro uso: **estado vazio** (decidido na implementação). Os potes vazios já convidam a "Colocar uma tarefa".
 
 ## Fase 3 — Shell e navegação
 
