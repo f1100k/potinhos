@@ -18,6 +18,7 @@ import { Weekend } from '../screens/Weekend';
 import { AppStoreProvider } from './AppStore';
 import { NavProvider, useNav } from './Nav';
 import type { Route } from './navigation';
+import { Shell } from './Shell';
 
 function renderScreen(route: Route): ReactNode {
   switch (route.screen) {
@@ -58,7 +59,8 @@ function renderScreen(route: Route): ReactNode {
 
 function Screens() {
   const { route } = useNav();
-  return <main>{renderScreen(route)}</main>;
+  if (route.screen === 'landing') return renderScreen(route);
+  return <Shell>{renderScreen(route)}</Shell>;
 }
 
 type Props = {
