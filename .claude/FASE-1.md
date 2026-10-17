@@ -10,7 +10,7 @@ Ambiente conferido em 17/10/2026: Node 24.21, npm 11.19, Git 2.56, Windows (Powe
 
 ## Etapa 1 — Criar o projeto com Vite
 
-- [ ] Concluída
+- [x] Concluída
 
 Na pasta `C:\projects\potinhos` (que já tem o `TAREFAS.md`):
 
@@ -32,7 +32,7 @@ npm run dev
 
 ## Etapa 2 — Git e primeiro commit
 
-- [ ] Concluída
+- [x] Concluída
 
 ```powershell
 git init
@@ -48,7 +48,7 @@ O template já traz um `.gitignore` com `node_modules` e `dist`.
 
 ## Etapa 3 — TypeScript mais estrito
 
-- [ ] Concluída
+- [x] Concluída
 
 O template já vem com `"strict": true` no `tsconfig.app.json`. Vamos acrescentar algumas regras que pegam erros comuns:
 
@@ -71,7 +71,7 @@ E um script para checar tipos sem gerar build, no `package.json`:
 
 ## Etapa 4 — Biome (lint + formatação)
 
-- [ ] Concluída
+- [x] Concluída
 
 O Biome faz o trabalho do ESLint e do Prettier numa ferramenta só, mais rápida e com um arquivo de configuração só.
 
@@ -110,7 +110,7 @@ npx @biomejs/biome init
 
 ## Etapa 5 — Testes com Vitest
 
-- [ ] Concluída
+- [x] Concluída
 
 ```powershell
 npm install -D vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
@@ -126,7 +126,7 @@ Configurar o Vitest no `vite.config.ts`, criar um arquivo de setup e um teste de
 
 ## Etapa 6 — Limpar o template e organizar pastas
 
-- [ ] Concluída
+- [x] Concluída
 
 Remover o conteúdo de demonstração (logos, contador, CSS do template) e criar a estrutura:
 
@@ -146,7 +146,7 @@ src/
 
 ## Etapa 7 — Repositório no GitHub e deploy
 
-- [ ] Concluída
+- [ ] Concluída (falta só conectar: `vercel.json` e o CI já estão no repositório)
 
 **Recomendação: Vercel**, conectado ao GitHub. Ele detecta o Vite sozinho, publica cada push na `main` e gera uma prévia para cada branch. O Netlify funciona igual; o GitHub Pages exige configurar o `base` do Vite e um workflow, então dá mais trabalho.
 
@@ -159,7 +159,7 @@ src/
 
 ## Etapa 8 — Design tokens
 
-- [ ] Concluída
+- [x] Concluída
 
 Criar `src/styles/tokens.css` com variáveis CSS no `:root`, a partir das cores do TAREFAS.md: fundo, superfícies, bordas, textos, acento, tampas, chips, Semanal e Conquistas. Também os raios (pílula 999px, cards 14–20px) e o alvo de toque mínimo (44px).
 
@@ -171,7 +171,7 @@ Nomes pensados pelo papel, não pela cor. Exemplo: `--color-bg`, `--color-text-s
 
 ## Etapa 9 — Fonte Varela Round
 
-- [ ] Concluída
+- [x] Concluída
 
 Carregar pelo Google Fonts no `index.html` (com `preconnect`) e definir no tokens: `--font-base: "Varela Round", system-ui, sans-serif;`. Ajustar também `<html lang="pt-BR">` e o `<title>`.
 
@@ -181,7 +181,7 @@ Carregar pelo Google Fonts no `index.html` (com `preconnect`) e definir no token
 
 ## Etapa 10 — Estilos globais e keyframes
 
-- [ ] Concluída
+- [x] Concluída
 
 - `src/styles/global.css`: reset leve, `box-sizing`, fundo e cor de texto pelos tokens, fonte, foco visível, `-webkit-tap-highlight-color`, botões sem estilo padrão.
 - `src/styles/animations.css`: os 12 keyframes do protótipo — `wobble`, `riseUp`, `unfold`, `fadeUp`, `fadeIn`, `foldPaper`, `floatToJar`, `glow`, `fallIn`, `unfoldIn`, `markIn`, `sway`.
@@ -194,7 +194,7 @@ Os keyframes serão copiados do `Potinhos.dc.html` no Claude Design, para ficare
 
 ## Etapa 11 — Movimento reduzido
 
-- [ ] Concluída
+- [x] Concluída
 
 Com `@media (prefers-reduced-motion: reduce)`, toda animação vira um fade de 0,6s. Sem toggle nas Configurações.
 
@@ -204,7 +204,7 @@ Com `@media (prefers-reduced-motion: reduce)`, toda animação vira um fade de 0
 
 ## Etapa 12 — Máquina de telas
 
-- [ ] Concluída
+- [x] Concluída
 
 As 16 telas: `landing`, `home`, `draw`, `task`, `done`, `notdone`, `return`, `vazio`, `weekend`, `novasemana`, `ach`, `add`, `edit`, `pending`, `settings`, `cafe`.
 
@@ -219,4 +219,4 @@ Cada tela começa como um componente vazio com o próprio nome. Uma barra de nav
 ## Fim da Fase 1
 
 - [ ] Todas as etapas concluídas
-- [ ] Marcar a Fase 1 no `TAREFAS.md`
+- [x] Marcar a Fase 1 no `TAREFAS.md`

@@ -41,9 +41,10 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 1 — Fundação
 
-- [ ] Criar o projeto (stack definida acima), com Biome (lint + format), TypeScript estrito e scripts de dev, build e test.
+- [x] Criar o projeto (stack definida acima), com Biome (lint + format), TypeScript estrito e scripts de dev, build e test.
 - [ ] Configurar o deploy estático (Vercel, Netlify ou GitHub Pages).
-- [ ] **Design tokens** a partir do protótipo:
+  - Pronto no código: `vercel.json` e CI no GitHub Actions. Falta criar o repositório no GitHub e importar na Vercel.
+- [x] **Design tokens** a partir do protótipo:
   - Fundo `#F2F6EE`, superfície `#FFFFFF` / `#FCFDFA`, borda `#CFDBC7` / `#D6E0CE`, divisória `#DCE5D5`
   - Texto `#2F3D2B`, secundário `#6E7E68`, terciário `#9DAA95`, `#55654F`
   - Acento (botões) `#D4876A`, links `#B86D52`, hover `#9A5A41`
@@ -52,9 +53,9 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
   - Semanal: `#EAF0E6` / `#587553` / `#D3DDCD`. Conquistas: `#FBF3E4` / `#F0E2C6` / `#E9D7B2` / `#FFF8EA` / `#9A7430` / `#C9A95C`
   - Fonte **Varela Round** (Google Fonts), com fallback `system-ui`
   - Raios: pílula 999px, cards 14–20px. Alvos de toque com pelo menos 44px.
-- [ ] Estilos globais e todos os keyframes do protótipo: `wobble`, `riseUp`, `unfold`, `fadeUp`, `fadeIn`, `foldPaper`, `floatToJar`, `glow`, `fallIn`, `unfoldIn`, `markIn`, `sway`.
-- [ ] Suporte a **movimento reduzido**: com `prefers-reduced-motion`, as animações viram um fade de 0,6s (sem toggle nas Configurações).
-- [ ] Roteamento ou máquina de telas: `landing`, `home`, `draw`, `task`, `done`, `notdone`, `return`, `vazio`, `weekend`, `novasemana`, `ach`, `add`, `edit`, `pending`, `settings`, `cafe`.
+- [x] Estilos globais e todos os keyframes do protótipo: `wobble`, `riseUp`, `unfold`, `fadeUp`, `fadeIn`, `foldPaper`, `floatToJar`, `glow`, `fallIn`, `unfoldIn`, `markIn`, `sway`.
+- [x] Suporte a **movimento reduzido**: com `prefers-reduced-motion`, as animações viram um fade de 0,6s (sem toggle nas Configurações).
+- [x] Roteamento ou máquina de telas: `landing`, `home`, `draw`, `task`, `done`, `notdone`, `return`, `vazio`, `weekend`, `novasemana`, `ach`, `add`, `edit`, `pending`, `settings`, `cafe`.
 
 ## Fase 2 — Modelo de dados e persistência
 
