@@ -3,10 +3,20 @@ import {
   type Dispatch,
   type ReactNode,
   useContext,
+  useEffect,
   useReducer,
 } from 'react';
-import { type AppAction, appReducer, createInitialData } from '../domain/store';
+import { loadData, saveData } from '../domain/persistence';
+import { type AppAction, appReducer } from '../domain/store';
 import type { AppData } from '../domain/types';
+
+function browserStorage(): Storage | undefined {
+  try {
+    return window.localStorage;
+  } catch {
+    return undefined;
+  }
+}
 
 const DataContext = createContext<AppData | null>(null);
 const DispatchContext = createContext<Dispatch<AppAction> | null>(null);
@@ -17,7 +27,7 @@ export function newId(): string {
 
 type Props = {
   children: ReactNode;
-  /** Estado inicial (testes). */
+  /** Estado inicial (testes). Sem ele, carrega do `localStorage`. */
   initial?: AppData;
 };
 
@@ -25,8 +35,13 @@ export function AppStoreProvider({ children, initial }: Props) {
   const [data, dispatch] = useReducer(
     appReducer,
     initial,
-    (i) => i ?? createInitialData(new Date()),
+    (i) => i ?? loadData(browserStorage(), new Date()),
   );
+
+  useEffect(() => {
+    saveData(browserStorage(), data);
+  }, [data]);
+
   return (
     <DataContext.Provider value={data}>
       <DispatchContext.Provider value={dispatch}>
