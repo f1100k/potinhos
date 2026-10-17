@@ -69,17 +69,42 @@ E um script para checar tipos sem gerar build, no `package.json`:
 
 ---
 
-## Etapa 4 — Prettier (formatação)
+## Etapa 4 — Biome (lint + formatação)
 
 - [ ] Concluída
 
+O Biome faz o trabalho do ESLint e do Prettier numa ferramenta só, mais rápida e com um arquivo de configuração só.
+
+1. Remover o ESLint que vem no template:
+
 ```powershell
-npm install -D prettier eslint-config-prettier
+npm uninstall eslint @eslint/js eslint-plugin-react-hooks eslint-plugin-react-refresh globals typescript-eslint
+Remove-Item eslint.config.js
 ```
 
-Criar `.prettierrc.json` e `.prettierignore`, ligar o `eslint-config-prettier` no `eslint.config.js` e adicionar os scripts `format` e `format:check`. (Detalhes quando chegarmos aqui.)
+(Se o `npm uninstall` reclamar de algum pacote que não existe, tudo bem: confira os nomes em `devDependencies` no `package.json`.)
 
-**Pronto quando:** `npm run format` formata tudo e `npm run lint` passa sem conflito entre ESLint e Prettier.
+2. Instalar o Biome com versão fixa e criar a configuração:
+
+```powershell
+npm install -D -E @biomejs/biome
+npx @biomejs/biome init
+```
+
+3. Ajustar o `biome.json`: indentação de 2 espaços, aspas simples, ignorar `dist`, e ligar o domínio de regras do React. (Detalhes quando chegarmos aqui.)
+
+4. Scripts no `package.json` (trocar o `lint` do template):
+
+```jsonc
+"lint": "biome lint .",
+"format": "biome format --write .",
+"check": "biome check .",
+"check:fix": "biome check --write ."
+```
+
+5. Opcional: instalar a extensão **Biome** no VS Code e definir como formatador padrão, com "format on save".
+
+**Pronto quando:** não existe mais `eslint.config.js` nem pacotes de ESLint, `npm run check:fix` formata tudo e `npm run check` passa sem erros.
 
 ---
 
@@ -95,7 +120,7 @@ Configurar o Vitest no `vite.config.ts`, criar um arquivo de setup e um teste de
 
 **Pronto quando:** `npm test` roda e o teste de exemplo passa.
 
-**Scripts esperados no fim desta etapa:** `dev`, `build`, `preview`, `typecheck`, `lint`, `format`, `format:check`, `test`, `test:watch`.
+**Scripts esperados no fim desta etapa:** `dev`, `build`, `preview`, `typecheck`, `lint`, `format`, `check`, `check:fix`, `test`, `test:watch`.
 
 ---
 
@@ -115,7 +140,7 @@ src/
   main.tsx
 ```
 
-**Pronto quando:** a página mostra só um texto simples ("Potinhos"), e `typecheck`, `lint` e `test` passam. Fazer commit.
+**Pronto quando:** a página mostra só um texto simples ("Potinhos"), e `typecheck`, `check` e `test` passam. Fazer commit.
 
 ---
 

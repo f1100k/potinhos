@@ -41,7 +41,7 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 1 — Fundação
 
-- [ ] Criar o projeto (stack definida acima), com lint, format, TypeScript estrito e scripts de dev, build e test.
+- [ ] Criar o projeto (stack definida acima), com Biome (lint + format), TypeScript estrito e scripts de dev, build e test.
 - [ ] Configurar o deploy estático (Vercel, Netlify ou GitHub Pages).
 - [ ] **Design tokens** a partir do protótipo:
   - Fundo `#F2F6EE`, superfície `#FFFFFF` / `#FCFDFA`, borda `#CFDBC7` / `#D6E0CE`, divisória `#DCE5D5`
