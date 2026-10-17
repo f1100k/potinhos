@@ -117,3 +117,41 @@ export function naoConsegui(
   };
   return tasks.map((t) => (t.id === taskId ? aplicar(t) : t));
 }
+
+export type DecisaoSemana = 'levar' | 'pendente' | 'deixar';
+
+/** Tarefas do Semanal que sobraram na semana. */
+export function sobras(tasks: readonly Task[]): Task[] {
+  return tasks.filter(
+    (t) => t.pote === 'semanal' && t.status !== 'pendente' && restante(t) > 0,
+  );
+}
+
+/**
+ * Fecha a semana do pote Semanal. Para cada sobra, aplica a decisão
+ * (`levar` é o padrão): levar guarda o que faltou em `extra`, pendente
+ * cria uma cópia pendente e deixar ir não carrega nada. Depois, todas
+ * recomeçam com `doneWeek = 0`.
+ */
+export function fecharSemana(
+  tasks: readonly Task[],
+  decisoes: Readonly<Record<string, DecisaoSemana>>,
+  newId: () => string,
+): Task[] {
+  const copias: Task[] = [];
+  const fechadas = tasks.map((t) => {
+    if (t.pote !== 'semanal' || t.status === 'pendente') return t;
+    const r = restante(t);
+    const d = decisoes[t.id] ?? 'levar';
+    if (r > 0 && d === 'pendente') {
+      copias.push({
+        id: newId(),
+        text: t.text,
+        pote: 'semanal',
+        status: 'pendente',
+      });
+    }
+    return { ...t, doneWeek: 0, extra: r > 0 && d === 'levar' ? r : 0 };
+  });
+  return [...fechadas, ...copias];
+}
