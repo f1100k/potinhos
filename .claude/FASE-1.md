@@ -132,11 +132,11 @@ Remover o conteúdo de demonstração (logos, contador, CSS do template) e criar
 
 ```
 src/
-  app/          # App, máquina de telas
-  screens/      # uma pasta/arquivo por tela
-  components/   # componentes visuais (Fase 4)
-  domain/       # regras e tipos (Fase 2)
-  styles/       # tokens.css, global.css, animations.css
+  app/          # App, router, layout, regra do fluxo, estado (Zustand) e app.css
+  routes/       # uma rota por URL, com a tela junto (gera routeTree.gen.ts)
+  components/   # componentes visuais reutilizáveis (Toast, Fase 4)
+  domain/       # regras e tipos, sem React (Fase 2)
+  test/         # setup e helpers dos testes
   main.tsx
 ```
 
