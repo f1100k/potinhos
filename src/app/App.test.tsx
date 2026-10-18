@@ -10,10 +10,16 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
-  it('opens on the requested URL', async () => {
-    await renderApp('/settings');
-    expect(
-      screen.getByRole('heading', { name: 'Configurações' }),
-    ).toBeInTheDocument();
+  it.each([
+    ['/jars', 'Meus potes'],
+    ['/new-task', 'Nova tarefa'],
+    ['/edit', 'Ver e editar potes'],
+    ['/pending', 'Pendentes'],
+    ['/achievements', 'Pote de conquistas'],
+    ['/settings', 'Configurações'],
+    ['/coffee', 'Me paga um café?'],
+  ])('opens %s', async (path, heading) => {
+    await renderApp(path);
+    expect(screen.getByRole('heading', { name: heading })).toBeInTheDocument();
   });
 });

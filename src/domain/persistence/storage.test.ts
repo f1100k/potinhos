@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { appReducer, createInitialData } from '../store';
+import { appReducer, createInitialData } from '../reducer';
 import {
   CORRUPT_KEY,
   clearData,
@@ -13,8 +13,8 @@ const now = new Date(2026, 9, 14, 10);
 describe('storage', () => {
   beforeEach(() => localStorage.clear());
 
-  it('starts from scratch when nothing is saved', () => {
-    expect(loadData(localStorage, now)).toEqual(createInitialData(now));
+  it('returns null when nothing is saved', () => {
+    expect(loadData(localStorage, now)).toBeNull();
   });
 
   it('saves and loads the same state', () => {
@@ -29,15 +29,15 @@ describe('storage', () => {
     expect(loadData(localStorage, now)).toEqual(data);
   });
 
-  it('corrupted JSON does not break and keeps a copy', () => {
+  it('corrupted JSON returns null and keeps a copy', () => {
     localStorage.setItem(STORAGE_KEY, '{"tasks": [');
-    expect(loadData(localStorage, now)).toEqual(createInitialData(now));
+    expect(loadData(localStorage, now)).toBeNull();
     expect(localStorage.getItem(CORRUPT_KEY)).toBe('{"tasks": [');
   });
 
-  it('an unexpected shape also starts from scratch', () => {
+  it('an unexpected shape also returns null', () => {
     localStorage.setItem(STORAGE_KEY, '"oi"');
-    expect(loadData(localStorage, now).tasks).toEqual([]);
+    expect(loadData(localStorage, now)).toBeNull();
   });
 
   it('clears the data and the corrupted copy', () => {
@@ -56,7 +56,7 @@ describe('storage', () => {
         throw new Error('quota');
       },
     } as unknown as Storage;
-    expect(loadData(broken, now)).toEqual(createInitialData(now));
+    expect(loadData(broken, now)).toBeNull();
     expect(() => saveData(broken, createInitialData(now))).not.toThrow();
   });
 });

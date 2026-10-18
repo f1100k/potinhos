@@ -1,4 +1,3 @@
-import { createInitialData } from '../store';
 import type { AppData } from '../types';
 import { parseData, serialize } from './schema';
 
@@ -15,13 +14,21 @@ const attempt = <T>(fn: () => T): T | undefined => {
   }
 };
 
-export function loadData(storage: Storage | undefined, now: Date): AppData {
+export function browserStorage(): Storage | undefined {
+  return attempt(() => window.localStorage);
+}
+
+/** Unreadable data is kept aside under `CORRUPT_KEY`, and `null` returned. */
+export function loadData(
+  storage: Storage | undefined,
+  now: Date,
+): AppData | null {
   const raw = attempt(() => storage?.getItem(STORAGE_KEY));
-  if (raw == null) return createInitialData(now);
+  if (raw == null) return null;
   const data = attempt(() => parseData(JSON.parse(raw), now));
   if (data) return data;
   attempt(() => storage?.setItem(CORRUPT_KEY, raw));
-  return createInitialData(now);
+  return null;
 }
 
 export function saveData(storage: Storage | undefined, data: AppData): void {

@@ -27,7 +27,7 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 - [x] **Página de apoio:** **Pix** (chave copiável + QR code) e **Buy Me a Coffee** (link externo).
   - [ ] Falta: a chave Pix real, o QR code e a URL do Buy Me a Coffee.
 - [x] **Arquivos de som:** escolher em bibliotecas gratuitas (ex.: freesound.org com licença CC0, Pixabay Sound Effects). Registrar a fonte e a licença de cada arquivo num `CREDITS.md`.
-- [x] **Formato do arquivo de exportação:** JSON versionado, `{ version, exportedAt, tasks, done, settings, meta }`. Nome do arquivo: `potinhos-AAAA-MM-DD.json`.
+- [x] **Formato do arquivo de exportação:** JSON versionado, `{ version, exportedAt, tasks, achievements, settings, meta, drawn }`. Nome do arquivo: `potinhos-AAAA-MM-DD.json`.
 - [x] **"Apagar tudo":** texto da confirmação (sugestão):
   - Título: "Apagar tudo mesmo?"
   - Texto: "Seus potes, pendentes e conquistas vão sumir deste aparelho, e não dá para desfazer. Se quiser guardar uma cópia, baixe seus dados antes."
@@ -60,10 +60,10 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 ## Fase 2 — Modelo de dados e persistência
 
 - [x] Tipos:
-  - `Task { id, text, jar: 'simple'|'complex'|'weekly', status?: 'pending', freq?: 1..7, doneWeek?, extra?, paused? }`
-  - `Achievement { id, text, jar, date: 'YYYY-MM-DD' }` (até a versão 1 do schema era em português; `parseData` migra)
+  - `Task { id, text, jar: 'simple'|'complex'|'weekly', status?: 'pending', freq?: 1..7, doneWeek?, carriedOver?, paused? }`
+  - `Achievement { id, text, jar, date: 'YYYY-MM-DD' }` (até a versão 1 do schema era em português e até a 2 usava `done`, `current` e `extra`; `parseData` migra)
   - `Settings { sounds: boolean }`
-  - Meta: `{ visited, weekStart / lastWeekClosed, schemaVersion }`
+  - Meta: `{ visited, weekStart / lastWeekClosed }` (a versão do schema fica só no `version` do arquivo)
 - [x] Store central (Context + reducer, Zustand ou similar) com ações puras e testáveis.
 - [x] Persistência em `localStorage`, com versão de schema e migração. Tratar JSON corrompido sem quebrar o app.
 - [x] Regras do domínio, cada uma com teste unitário:

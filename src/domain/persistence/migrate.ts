@@ -1,6 +1,6 @@
 import type { Jar } from '../types';
 
-export type RawFile = Record<string, unknown>;
+type RawFile = Record<string, unknown>;
 
 export const isRecord = (v: unknown): v is RawFile =>
   typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -52,18 +52,41 @@ function fromPortuguese(raw: RawFile): RawFile {
   };
 }
 
+const withCarriedOver = (task: unknown) => {
+  if (!isRecord(task) || !('extra' in task)) return task;
+  const { extra, ...rest } = task;
+  return { ...rest, carriedOver: extra };
+};
+
+function fromShortNames(raw: RawFile): RawFile {
+  const { done, current, ...rest } = raw;
+  return {
+    ...rest,
+    tasks: mapList(raw.tasks, withCarriedOver),
+    achievements: done,
+    drawn: current,
+  };
+}
+
 /** `MIGRATIONS[n]` turns a version `n` file into version `n + 1`. */
-export const MIGRATIONS: readonly ((raw: RawFile) => RawFile)[] = [
+const MIGRATIONS: readonly ((raw: RawFile) => RawFile)[] = [
   fromPrototype,
   fromPortuguese,
+  fromShortNames,
 ];
 
+export const SCHEMA_VERSION = MIGRATIONS.length;
+
 export function versionOf(raw: RawFile): number {
-  const v =
+  const version =
     raw.version ?? (isRecord(raw.meta) ? raw.meta.schemaVersion : undefined);
-  return typeof v === 'number' && Number.isInteger(v) && v >= 0 ? v : 0;
+  return typeof version === 'number' &&
+    Number.isInteger(version) &&
+    version >= 0
+    ? version
+    : 0;
 }
 
 export function migrate(raw: RawFile, version: number): RawFile {
-  return MIGRATIONS.slice(version).reduce((r, step) => step(r), raw);
+  return MIGRATIONS.slice(version).reduce((file, step) => step(file), raw);
 }

@@ -43,7 +43,56 @@
       "includes": ["src/app/app.css"],
       "linter": {
         "rules": {
-          "complexity": { "noImportantStyles": "off" }
+          "complexity": {
+            "noImportantStyles": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/domain/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**/app/**",
+                      "**/components/**",
+                      "**/routes/**",
+                      "react",
+                      "react-dom",
+                      "@tanstack/*"
+                    ],
+                    "message": "The domain stays independent from React and the app."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/components/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["**/app/**", "**/routes/**"],
+                    "message": "Components do not depend on the app layer."
+                  }
+                ]
+              }
+            }
+          }
         }
       }
     }

@@ -6,7 +6,8 @@ import {
 } from '@tanstack/react-router';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { TOAST_MS, Toaster, toast } from './Toast';
+import { TOAST_MS, toast } from '../components/Toast';
+import { Toaster } from './Toaster';
 
 async function renderToaster() {
   const router = createRouter({

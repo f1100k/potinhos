@@ -132,10 +132,10 @@ Remover o conteúdo de demonstração (logos, contador, CSS do template) e criar
 
 ```
 src/
-  app/          # App, router, layout, regra do fluxo, estado (Zustand) e app.css
+  app/          # App, router, layout, Toaster, regra do fluxo, estado (Zustand) e app.css
   routes/       # uma rota por URL, com a tela junto (gera routeTree.gen.ts)
-  components/   # componentes visuais reutilizáveis (Toast, Fase 4)
-  domain/       # regras e tipos, sem React (Fase 2)
+  components/   # componentes visuais reutilizáveis, sem depender de app/ (Toast, Fase 4)
+  domain/       # regras e tipos, sem React (Fase 2); persistence/ cuida do localStorage
   test/         # setup e helpers dos testes
   main.tsx
 ```

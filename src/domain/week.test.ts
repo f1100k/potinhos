@@ -1,15 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import type { Meta } from './types';
+import type { Meta, Task } from './types';
 import {
+  closeWeek,
   closeWeekMeta,
+  isWeekComplete,
   isWeekEnding,
   isWeekOverdue,
+  leftovers,
   mondayOf,
   sundayOf,
 } from './week';
 
 const meta = (weekStart: string): Meta => ({
-  schemaVersion: 2,
   visited: true,
   weekStart,
   lastWeekClosed: null,
@@ -76,5 +78,84 @@ describe('isWeekEnding', () => {
     expect(closed.lastWeekClosed).toBe('2026-10-12');
     expect(isWeekEnding(closed, at(18))).toBe(false);
     expect(isWeekOverdue(closed, at(19, 9))).toBe(false);
+  });
+});
+
+const weekly = (id: string, fields: Partial<Task> = {}): Task => ({
+  id,
+  text: id,
+  jar: 'weekly',
+  freq: 3,
+  doneWeek: 1,
+  carriedOver: 0,
+  ...fields,
+});
+
+const sequentialIds = () => {
+  let n = 0;
+  return () => `new-${++n}`;
+};
+
+describe('isWeekComplete', () => {
+  it('is true when everything in Weekly is done', () => {
+    expect(isWeekComplete([weekly('a', { doneWeek: 3 })])).toBe(true);
+  });
+
+  it('is false when something is still left', () => {
+    expect(isWeekComplete([weekly('a')])).toBe(false);
+  });
+
+  it('is false without weekly tasks', () => {
+    expect(isWeekComplete([{ id: 's', text: 's', jar: 'simple' }])).toBe(false);
+  });
+});
+
+describe('leftovers', () => {
+  it('lists only active weekly tasks with remaining times', () => {
+    const tasks: Task[] = [
+      weekly('a'),
+      weekly('b', { doneWeek: 3 }),
+      weekly('c', { status: 'pending' }),
+      weekly('d', { paused: true }),
+      { id: 'e', text: 'e', jar: 'simple' },
+    ];
+    expect(leftovers(tasks).map((t) => t.id)).toEqual(['a']);
+  });
+});
+
+describe('closeWeek', () => {
+  it('carry is the default and keeps what was missing in carriedOver', () => {
+    const [a] = closeWeek([weekly('a')], {}, sequentialIds());
+    expect(a).toMatchObject({ doneWeek: 0, carriedOver: 2 });
+  });
+
+  it('pending creates a pending copy and carries nothing over', () => {
+    const result = closeWeek([weekly('a')], { a: 'pending' }, sequentialIds());
+    expect(result).toEqual([
+      { ...weekly('a'), doneWeek: 0, carriedOver: 0 },
+      { id: 'new-1', text: 'a', jar: 'weekly', status: 'pending' },
+    ]);
+  });
+
+  it('drop just restarts the week', () => {
+    const [a] = closeWeek(
+      [weekly('a', { carriedOver: 2 })],
+      { a: 'drop' },
+      sequentialIds(),
+    );
+    expect(a).toMatchObject({ doneWeek: 0, carriedOver: 0 });
+  });
+
+  it('resets doneWeek for tasks that completed the week', () => {
+    const [a] = closeWeek([weekly('a', { doneWeek: 3 })], {}, sequentialIds());
+    expect(a).toMatchObject({ doneWeek: 0, carriedOver: 0 });
+  });
+
+  it('leaves other jars and pending tasks alone', () => {
+    const others: Task[] = [
+      { id: 's', text: 's', jar: 'simple' },
+      weekly('p', { status: 'pending' }),
+    ];
+    expect(closeWeek(others, {}, sequentialIds())).toEqual(others);
   });
 });

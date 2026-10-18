@@ -1,71 +1,75 @@
 import { z } from 'zod';
-import { clampFreq } from '../rules';
-import { SCHEMA_VERSION } from '../store';
+import { clampFreq } from '../tasks';
 import { type AppData, isoDateSchema, jarSchema, type Task } from '../types';
 import { mondayOf } from '../week';
-import { isRecord, migrate, versionOf } from './migrate';
+import { isRecord, migrate, SCHEMA_VERSION, versionOf } from './migrate';
 
-const listOf = <T extends z.ZodType>(item: T) =>
+const lenientListOf = <T extends z.ZodType>(itemSchema: T) =>
   z.array(z.unknown()).transform((items) =>
-    items.flatMap((v) => {
-      const r = item.safeParse(v);
-      return r.success ? [r.data] : [];
+    items.flatMap((item) => {
+      const result = itemSchema.safeParse(item);
+      return result.success ? [result.data] : [];
     }),
   );
 
-const id = z.string().min(1);
-const text = z.string().trim().min(1);
-const count = z.number().nonnegative().transform(Math.floor).catch(0);
+const idSchema = z.string().min(1);
+const textSchema = z.string().trim().min(1);
+const timesSchema = z.number().nonnegative().transform(Math.floor).catch(0);
 
-const task = z
+const taskSchema = z
   .object({
-    id,
-    text,
+    id: idSchema,
+    text: textSchema,
     jar: jarSchema,
     status: z.literal('pending').optional().catch(undefined),
-    freq: count,
-    doneWeek: count,
-    extra: count,
+    freq: timesSchema,
+    doneWeek: timesSchema,
+    carriedOver: timesSchema,
     paused: z.boolean().catch(false),
   })
-  .transform(({ id, text, jar, status, freq, doneWeek, extra, paused }) => {
-    const t: Task = { id, text, jar };
-    if (status) t.status = status;
-    if (jar === 'weekly' && !status) {
-      t.freq = clampFreq(freq || 1);
-      t.doneWeek = doneWeek;
-      t.extra = extra;
-      if (paused) t.paused = true;
-    }
-    return t;
-  });
+  .transform(
+    ({ id, text, jar, status, freq, doneWeek, carriedOver, paused }) => {
+      const task: Task = { id, text, jar };
+      if (status) task.status = status;
+      if (jar === 'weekly' && !status) {
+        task.freq = clampFreq(freq || 1);
+        task.doneWeek = doneWeek;
+        task.carriedOver = carriedOver;
+        if (paused) task.paused = true;
+      }
+      return task;
+    },
+  );
 
-const achievement = z.object({
-  id: id.optional().catch(undefined),
-  text,
+const achievementSchema = z.object({
+  id: idSchema.optional().catch(undefined),
+  text: textSchema,
   jar: jarSchema,
   date: isoDateSchema,
 });
 
-const meta = z.object({
+const metaSchema = z.object({
   visited: z.boolean().catch(false),
   weekStart: isoDateSchema.optional().catch(undefined),
   lastWeekClosed: isoDateSchema.nullable().catch(null),
 });
 
-const file = z.object({
-  tasks: listOf(task),
-  done: listOf(achievement).catch([]),
+const fileSchema = z.object({
+  tasks: lenientListOf(taskSchema),
+  achievements: lenientListOf(achievementSchema).catch([]),
   settings: z
     .object({ sounds: z.boolean().catch(true) })
     .catch({ sounds: true }),
-  meta: meta.optional().catch(undefined),
-  current: z.object({ taskId: id, date: isoDateSchema }).nullable().catch(null),
+  meta: metaSchema.optional().catch(undefined),
+  drawn: z
+    .object({ taskId: idSchema, date: isoDateSchema })
+    .nullable()
+    .catch(null),
 });
 
 function dedupe<T extends { id: string }>(items: T[]): T[] {
   const seen = new Set<string>();
-  return items.filter((x) => !seen.has(x.id) && seen.add(x.id));
+  return items.filter((item) => !seen.has(item.id) && seen.add(item.id));
 }
 
 export class InvalidDataError extends Error {}
@@ -76,26 +80,23 @@ export function parseData(input: unknown, now: Date): AppData {
   if (version > SCHEMA_VERSION) {
     throw new InvalidDataError('File is from a newer version of the app');
   }
-  const r = file.safeParse(migrate(input, version));
-  if (!r.success) throw new InvalidDataError('Unrecognized format');
-  const { tasks, done, settings, meta, current } = r.data;
+  const result = fileSchema.safeParse(migrate(input, version));
+  if (!result.success) throw new InvalidDataError('Unrecognized format');
+  const { tasks, achievements, settings, meta, drawn } = result.data;
   const uniqueTasks = dedupe(tasks);
   return {
     tasks: uniqueTasks,
-    done: dedupe(
-      done.map((a, i) => ({ ...a, id: a.id ?? `a-${a.date}-${i}` })),
+    achievements: dedupe(
+      achievements.map((a, i) => ({ ...a, id: a.id ?? `a-${a.date}-${i}` })),
     ),
     settings,
     meta: {
-      schemaVersion: SCHEMA_VERSION,
       visited: meta?.visited ?? false,
       weekStart: meta?.weekStart ?? mondayOf(now),
       lastWeekClosed: meta?.lastWeekClosed ?? null,
     },
-    current:
-      current && uniqueTasks.some((t) => t.id === current.taskId)
-        ? current
-        : null,
+    drawn:
+      drawn && uniqueTasks.some((t) => t.id === drawn.taskId) ? drawn : null,
   };
 }
 

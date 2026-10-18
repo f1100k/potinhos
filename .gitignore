@@ -26,3 +26,6 @@ dist-ssr
 # Claude Code
 .claude/worktrees
 .claude/settings.local.json
+
+# TanStack Router
+.tanstack

@@ -7,8 +7,7 @@ import {
 } from '@tanstack/react-router';
 import { useCallback } from 'react';
 
-export const FLOW_ROUTE_ID: RouteIds<RegisteredRouter['routeTree']> =
-  '/_app/_flow';
+const FLOW_ROUTE_ID: RouteIds<RegisteredRouter['routeTree']> = '/_app/_flow';
 
 // The draw flow only opens through an action inside the app. Reloading the
 // page or going back to a flow screen with the browser leads to the jars.
@@ -30,7 +29,10 @@ export function useInFlow(): boolean {
   });
 }
 
-/** Inside the flow, replaces the history entry so "back" doesn't redo steps. */
+/**
+ * Inside the flow, replaces the history entry so "back" doesn't redo steps.
+ * @public
+ */
 export function useFlowNavigate() {
   const navigate = useNavigate();
   const inFlow = useInFlow();

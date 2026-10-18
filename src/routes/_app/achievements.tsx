@@ -1,15 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
-import { optional } from '../../app/search';
+import { optionalParam } from '../../app/searchParams';
 import { isoDateSchema } from '../../domain/types';
 
-export const ACHIEVEMENT_TABS = ['week', 'month'] as const;
-export type AchievementTab = (typeof ACHIEVEMENT_TABS)[number];
+const ACHIEVEMENT_TABS = ['week', 'month'] as const;
 
 export const Route = createFileRoute('/_app/achievements')({
   validateSearch: z.object({
     tab: z.enum(ACHIEVEMENT_TABS).catch('week'),
-    week: optional(isoDateSchema),
+    week: optionalParam(isoDateSchema),
   }),
   component: Achievements,
 });

@@ -1,12 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { SCHEMA_VERSION } from '../store';
-import { MIGRATIONS, migrate, versionOf } from './migrate';
+import { migrate, SCHEMA_VERSION, versionOf } from './migrate';
 
 describe('migrate', () => {
-  it('has one step for each version before the current one', () => {
-    expect(MIGRATIONS).toHaveLength(SCHEMA_VERSION);
-  });
-
   it('leaves a current file unchanged', () => {
     const raw = {
       version: SCHEMA_VERSION,

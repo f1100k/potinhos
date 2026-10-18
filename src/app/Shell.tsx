@@ -9,34 +9,35 @@ const BOTTOM_ITEM_CLASS = `min-h-12 max-w-30 flex-1 rounded-card px-1.5 py-2.5 t
 
 const SIDEBAR_ITEM_CLASS = `min-h-touch rounded-card px-3.5 py-3 text-left text-[15px] text-text-secondary not-aria-[current=page]:hover:text-text ${ACTIVE_CLASS}`;
 
-// "Meus potes" stays active during the whole draw flow, because the flow
-// screens live under /jars/... and the link matches by prefix.
-const HOME = linkOptions({ to: '/jars' });
-const ADD = linkOptions({ to: '/new-task' });
-const PENDING = linkOptions({ to: '/pending' });
-const SETTINGS = linkOptions({ to: '/settings' });
+const NAV = {
+  // Stays active during the whole draw flow, because the flow screens live
+  // under /jars/... and the link matches by prefix.
+  jars: linkOptions({ to: '/jars' }),
+  newTask: linkOptions({ to: '/new-task' }),
+  edit: linkOptions({ to: '/edit' }),
+  pending: linkOptions({ to: '/pending' }),
+  achievements: linkOptions({
+    to: '/achievements',
+    search: { tab: 'week' },
+    activeOptions: { includeSearch: false },
+  }),
+  settings: linkOptions({ to: '/settings' }),
+};
 
 const SIDEBAR_ITEMS = [
-  { label: 'Meus potes', link: HOME },
-  { label: 'Nova tarefa', link: ADD },
-  { label: 'Ver e editar potes', link: linkOptions({ to: '/edit' }) },
-  { label: 'Tarefas pendentes', link: PENDING },
-  {
-    label: 'Pote de conquistas',
-    link: linkOptions({
-      to: '/achievements',
-      search: { tab: 'week' },
-      activeOptions: { includeSearch: false },
-    }),
-  },
-  { label: 'Configurações', link: SETTINGS },
+  { label: 'Meus potes', link: NAV.jars },
+  { label: 'Nova tarefa', link: NAV.newTask },
+  { label: 'Ver e editar potes', link: NAV.edit },
+  { label: 'Tarefas pendentes', link: NAV.pending },
+  { label: 'Pote de conquistas', link: NAV.achievements },
+  { label: 'Configurações', link: NAV.settings },
 ];
 
 const BOTTOM_ITEMS = [
-  { label: 'Meus potes', link: HOME },
-  { label: 'Nova tarefa', link: ADD },
-  { label: 'Pendentes', link: PENDING },
-  { label: 'Configurações', link: SETTINGS },
+  { label: 'Meus potes', link: NAV.jars },
+  { label: 'Nova tarefa', link: NAV.newTask },
+  { label: 'Pendentes', link: NAV.pending },
+  { label: 'Configurações', link: NAV.settings },
 ];
 
 type Props = {

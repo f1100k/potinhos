@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { byJar } from '../../app/search';
+import { jarSearch } from '../../app/searchParams';
 
 export const Route = createFileRoute('/_app/new-task')({
-  validateSearch: byJar,
+  validateSearch: jarSearch,
   component: NewTask,
 });
 
