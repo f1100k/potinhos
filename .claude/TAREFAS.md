@@ -25,7 +25,7 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
   - [x] Quando o card "Fechar a semana" aparece na home: **a partir de sexta às 18h** (ajustável em `src/domain/week.ts`). Sem sobras no Semanal, a semana fecha sozinha na virada, já que não há nada para decidir.
 - [x] **Se a pessoa não fechar a semana:** nada é fechado automaticamente. A semana **fica pendente até a pessoa abrir o app**. Na próxima abertura depois da virada, ela vê a tela "Fim de semana" daquela semana, com "levar" como padrão em cada sobra. Se o app ficar várias semanas fechado, aparece um fechamento só, referente à última semana não fechada.
 - [x] **Página de apoio:** **Pix** (chave copiável + QR code) e **Buy Me a Coffee** (link externo).
-  - [ ] Falta: a chave Pix real, o QR code e a URL do Buy Me a Coffee.
+  - [ ] Falta: a URL do Buy Me a Coffee. Chave Pix e QR prontos.
 - [x] **Arquivos de som:** escolher em bibliotecas gratuitas (ex.: freesound.org com licença CC0, Pixabay Sound Effects). Registrar a fonte e a licença de cada arquivo num `CREDITS.md`.
 - [x] **Formato do arquivo de exportação:** JSON versionado, `{ version, exportedAt, tasks, achievements, settings, meta, drawn }`. Nome do arquivo: `potinhos-AAAA-MM-DD.json`.
 - [x] **"Apagar tudo":** texto da confirmação (sugestão):
@@ -173,9 +173,9 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 12 — Me paga um café?
 
-- [ ] Tela com a ilustração da xícara (fumaça com `sway`), o texto sobre gratuidade, o QR code do Pix, a chave Pix copiável (Clipboard API + toast "Chave Pix copiada. Obrigada!"), o botão "Apoiar no Buy Me a Coffee" (link externo) e a nota "Sem valor sugerido, sem meta."
-- [ ] "‹ Voltar" quando a tela é aberta pela landing.
-- [ ] Trocar os placeholders pelos dados reais.
+- [x] Tela com a ilustração da xícara (fumaça com `sway`), o texto sobre gratuidade, o QR code do Pix, a chave Pix copiável (Clipboard API + toast "Chave Pix copiada. Obrigada!"), o botão "Apoiar no Buy Me a Coffee" (link externo) e a nota "Sem valor sugerido, sem meta."
+- [x] "‹ Voltar" quando a tela é aberta pela landing.
+- [ ] Trocar os placeholders pelos dados reais. Chave Pix e QR (BR Code gerado no app, nome POTINHOS, cidade BRASIL) prontos. Falta a URL do Buy Me a Coffee em `src/app/support.ts`; sem ela o botão fica escondido.
 
 ## Fase 13 — Sons
 
