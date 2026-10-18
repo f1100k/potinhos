@@ -1,3 +1,4 @@
+import { useLocation } from '@tanstack/react-router';
 import {
   createContext,
   type ReactNode,
@@ -7,8 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useNav } from './Nav';
-import { FLOW_SCREENS } from './navigation';
+import { useNoFluxo } from './fluxo';
 
 export const TOAST_MS = 2600;
 
@@ -24,9 +24,9 @@ type Toast = { id: number; text: string };
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<Toast | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const { route } = useNav();
-  const semBarra =
-    route.screen === 'landing' || FLOW_SCREENS.includes(route.screen);
+  const noFluxo = useNoFluxo();
+  const naLanding = useLocation({ select: (l) => l.pathname === '/' });
+  const semBarra = naLanding || noFluxo;
 
   const show = useCallback((text: string) => {
     clearTimeout(timer.current);

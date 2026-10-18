@@ -210,6 +210,8 @@ As 16 telas: `landing`, `home`, `draw`, `task`, `done`, `notdone`, `return`, `va
 
 **Recomendação:** uma máquina de telas tipada (um `type Screen = ...` com `useReducer`), igual ao protótipo, em vez de rotas por URL. O fluxo de sorteio não pode ser revisitado nem "voltado" pelo navegador, e o app não precisa de links profundos. O botão voltar do Android pode ser tratado depois com a History API, se quisermos.
 
+**Revisto em 17/10/2026:** trocamos a máquina de telas pelo **TanStack Router** (`src/app/router.tsx`), com rotas por URL em português. Assim o voltar do navegador e do celular funciona, e recarregar mantém a tela. O fluxo do sorteio continua protegido: as telas dele moram em `/potes/...`, dentro da rota sem caminho `fluxo`, e só abrem por `useIrNoFluxo()` (`src/app/fluxo.ts`). Recarregar ou voltar até uma delas leva para `/potes`, e dentro do fluxo a navegação troca a entrada do histórico em vez de empilhar. A Vercel reescreve todo caminho para `index.html`.
+
 Cada tela começa como um componente vazio com o próprio nome. Uma barra de navegação temporária, só em desenvolvimento, permite pular entre elas.
 
 **Pronto quando:** dá para navegar pelas 16 telas, o TypeScript reclama de nome de tela inválido, e existe um teste da transição de telas. Fazer commit e conferir o deploy.

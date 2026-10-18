@@ -1,62 +1,43 @@
+import { Link, linkOptions } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
-import { useNav } from './Nav';
-import { FLOW_SCREENS, type Route, type Screen } from './navigation';
-
-type NavItem = { label: string; route: Route };
+import { useNoFluxo } from './fluxo';
 
 const ACTIVE_CLASS =
   'aria-[current=page]:bg-segment aria-[current=page]:text-link';
 
-const BOTTOM_ITEM_CLASS = `min-h-12 max-w-30 flex-1 rounded-card px-1.5 py-2.5 text-[13px] text-text-secondary ${ACTIVE_CLASS}`;
+const BOTTOM_ITEM_CLASS = `min-h-12 max-w-30 flex-1 rounded-card px-1.5 py-2.5 text-center text-[13px] text-text-secondary ${ACTIVE_CLASS}`;
 
 const SIDEBAR_ITEM_CLASS = `min-h-touch rounded-card px-3.5 py-3 text-left text-[15px] text-text-secondary not-aria-[current=page]:hover:text-text ${ACTIVE_CLASS}`;
 
-const SIDEBAR_ITEMS: readonly NavItem[] = [
-  { label: 'Meus potes', route: { screen: 'home' } },
-  { label: 'Nova tarefa', route: { screen: 'add' } },
-  { label: 'Ver e editar potes', route: { screen: 'edit' } },
-  { label: 'Tarefas pendentes', route: { screen: 'pending' } },
-  { label: 'Pote de conquistas', route: { screen: 'ach', tab: 'semana' } },
-  { label: 'Configurações', route: { screen: 'settings' } },
+// "Meus potes" (/potes) fica ativo durante todo o fluxo do sorteio, porque as
+// telas do fluxo moram em /potes/... e o link casa pelo prefixo.
+const HOME = linkOptions({ to: '/potes' });
+const ADD = linkOptions({ to: '/nova-tarefa' });
+const PENDING = linkOptions({ to: '/pendentes' });
+const SETTINGS = linkOptions({ to: '/configuracoes' });
+
+const SIDEBAR_ITEMS = [
+  { label: 'Meus potes', link: HOME },
+  { label: 'Nova tarefa', link: ADD },
+  { label: 'Ver e editar potes', link: linkOptions({ to: '/editar' }) },
+  { label: 'Tarefas pendentes', link: PENDING },
+  {
+    label: 'Pote de conquistas',
+    link: linkOptions({
+      to: '/conquistas',
+      search: { tab: 'semana' },
+      activeOptions: { includeSearch: false },
+    }),
+  },
+  { label: 'Configurações', link: SETTINGS },
 ];
 
-const BOTTOM_ITEMS: readonly NavItem[] = [
-  { label: 'Meus potes', route: { screen: 'home' } },
-  { label: 'Nova tarefa', route: { screen: 'add' } },
-  { label: 'Pendentes', route: { screen: 'pending' } },
-  { label: 'Configurações', route: { screen: 'settings' } },
+const BOTTOM_ITEMS = [
+  { label: 'Meus potes', link: HOME },
+  { label: 'Nova tarefa', link: ADD },
+  { label: 'Pendentes', link: PENDING },
+  { label: 'Configurações', link: SETTINGS },
 ];
-
-/** "Meus potes" fica ativo durante todo o fluxo do sorteio. */
-export function isActive(item: Screen, current: Screen): boolean {
-  return (
-    item === current || (item === 'home' && FLOW_SCREENS.includes(current))
-  );
-}
-
-function NavButtons({
-  items,
-  className,
-}: {
-  items: readonly NavItem[];
-  className: string;
-}) {
-  const { route, go } = useNav();
-  return items.map((item) => {
-    const active = isActive(item.route.screen, route.screen);
-    return (
-      <button
-        key={item.label}
-        type="button"
-        className={className}
-        aria-current={active ? 'page' : undefined}
-        onClick={() => go(item.route)}
-      >
-        {item.label}
-      </button>
-    );
-  });
-}
 
 type Props = {
   children: ReactNode;
@@ -64,8 +45,7 @@ type Props = {
 
 /** Moldura das telas do app: menu lateral (web) ou barra inferior (celular). */
 export function Shell({ children }: Props) {
-  const { route, go } = useNav();
-  const flow = FLOW_SCREENS.includes(route.screen);
+  const flow = useNoFluxo();
 
   return (
     <div className="flex min-h-dvh">
@@ -74,14 +54,18 @@ export function Shell({ children }: Props) {
         aria-label="Menu"
       >
         <div className="px-3.5 pb-6.5 text-[22px] text-link">Potinhos</div>
-        <NavButtons items={SIDEBAR_ITEMS} className={SIDEBAR_ITEM_CLASS} />
-        <button
-          type="button"
+        {SIDEBAR_ITEMS.map((item) => (
+          <Link key={item.label} {...item.link} className={SIDEBAR_ITEM_CLASS}>
+            {item.label}
+          </Link>
+        ))}
+        <Link
+          to="/cafe"
+          search={{ from: 'app' }}
           className="mt-auto min-h-10 px-3.5 py-2 text-left text-[13px] text-text-tertiary hover:text-link"
-          onClick={() => go({ screen: 'cafe', from: 'app' })}
         >
           Me paga um café?
-        </button>
+        </Link>
       </nav>
       <div className="flex min-w-0 flex-1 flex-col items-center">
         <main
@@ -95,7 +79,11 @@ export function Shell({ children }: Props) {
           className="fixed inset-x-0 bottom-0 z-5 flex justify-around border-t border-divider bg-bg-blur px-2 pt-2 pb-[calc(10px+env(safe-area-inset-bottom))] backdrop-blur-[10px] wide:hidden"
           aria-label="Navegação"
         >
-          <NavButtons items={BOTTOM_ITEMS} className={BOTTOM_ITEM_CLASS} />
+          {BOTTOM_ITEMS.map((item) => (
+            <Link key={item.label} {...item.link} className={BOTTOM_ITEM_CLASS}>
+              {item.label}
+            </Link>
+          ))}
         </nav>
       )}
     </div>

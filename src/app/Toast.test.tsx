@@ -1,6 +1,11 @@
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 import { act, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { NavProvider } from './Nav';
 import { TOAST_MS, ToastProvider, useToast } from './Toast';
 
 function Botao() {
@@ -13,18 +18,23 @@ function Botao() {
 }
 
 describe('Toast', () => {
-  beforeEach(() => vi.useFakeTimers());
+  beforeEach(() => vi.useFakeTimers({ shouldAdvanceTime: true }));
   afterEach(() => vi.useRealTimers());
 
-  it('aparece numa região aria-live e some depois de ~2,6s', () => {
-    render(
-      <NavProvider initial={{ screen: 'home' }}>
-        <ToastProvider>
-          <Botao />
-        </ToastProvider>
-      </NavProvider>,
-    );
-    act(() => screen.getByRole('button').click());
+  it('aparece numa região aria-live e some depois de ~2,6s', async () => {
+    const router = createRouter({
+      routeTree: createRootRoute({
+        component: () => (
+          <ToastProvider>
+            <Botao />
+          </ToastProvider>
+        ),
+      }),
+      history: createMemoryHistory(),
+    });
+    render(<RouterProvider router={router} />);
+    const botao = await screen.findByRole('button');
+    act(() => botao.click());
     expect(screen.getByRole('status')).toHaveTextContent(
       'Guardado. Sem pressa.',
     );
