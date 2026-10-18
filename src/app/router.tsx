@@ -7,6 +7,7 @@ import {
   type RouterHistory,
   redirect,
 } from '@tanstack/react-router';
+import { Toaster } from '../components/Toast';
 import { type ISODate, POTES, type Pote } from '../domain/types';
 import { Add } from '../screens/Add';
 import { Cafe } from '../screens/Cafe';
@@ -26,7 +27,6 @@ import { Vazio } from '../screens/Vazio';
 import { Weekend } from '../screens/Weekend';
 import { consumirFluxo } from './fluxo';
 import { Shell } from './Shell';
-import { ToastProvider } from './Toast';
 
 export const ACH_TABS = ['semana', 'mes'] as const;
 export type AchTab = (typeof ACH_TABS)[number];
@@ -54,9 +54,10 @@ function required<T>(value: T | undefined, name: string): T {
 
 const rootRoute = createRootRoute({
   component: () => (
-    <ToastProvider>
+    <>
       <Outlet />
-    </ToastProvider>
+      <Toaster />
+    </>
   ),
 });
 
