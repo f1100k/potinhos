@@ -29,3 +29,6 @@ dist-ssr
 
 # TanStack Router
 .tanstack
+
+# Claude Design prototype, kept locally as a reference
+.claude/Potinhos.dc.html
