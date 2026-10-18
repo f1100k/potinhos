@@ -37,7 +37,7 @@ src/
   types/        tipos do modelo
   config/       constantes do produto
   lib/          wrappers de API do navegador
-  testing/      setup e helpers dos testes
+  testing/      setup e helpers dos testes (os testes ficam em __tests__/ ao lado de cada módulo)
 ```
 
 Os imports fluem numa direção só: compartilhado → `features/` → `app/`. O Biome garante: uma feature não importa outra feature nem `app/`; `components/`, `stores/`, `utils/`, `types/`, `config/` e `lib/` não importam `features/` nem `app/`; e tudo que não é componente fica sem React.
