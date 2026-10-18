@@ -88,6 +88,10 @@ describe('NewWeek', () => {
       .mocked(playSound)
       .mock.calls.map(([, , delayMs]) => delayMs);
     expect(delays).toEqual([900, 1120, 1340]);
-    expect(vi.mocked(playSound).mock.calls[0]?.[0]).toBe(SOUNDS.slipDrop1.url);
+    expect(vi.mocked(playSound).mock.calls.map(([url]) => url)).toEqual([
+      SOUNDS.slipDrop2.url,
+      SOUNDS.slipDrop3.url,
+      SOUNDS.slipDrop2.url,
+    ]);
   });
 });

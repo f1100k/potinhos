@@ -24,13 +24,13 @@ const NEW_WEEK_TIMELINE = [
   ['invite', 3200],
 ] as const;
 
-const DROPS = ['slipDrop1', 'slipDrop2', 'slipDrop3'] as const;
+const DROPS = ['slipDrop2', 'slipDrop3'] as const;
 // Each slip looks settled about this long after its fallIn starts.
 const SLIP_LANDS_MS = 900;
 
 function dropSounds(slips: number): SoundCue[] {
   return slipPositions(slips, 1).map((position, index) => ({
-    sound: DROPS[index % DROPS.length] ?? 'slipDrop1',
+    sound: DROPS[index % DROPS.length] ?? 'slipDrop2',
     delayMs: position.delayS * 1000 + SLIP_LANDS_MS,
   }));
 }

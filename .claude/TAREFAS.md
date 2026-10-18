@@ -180,12 +180,12 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 ## Fase 13 — Sons
 
 - [x] Selecionar e otimizar os áudios (curtos, baixos, em MP3). Gravados e editados por nós; originais em `sounds-src/`, créditos em `CREDITS.md`.
-  - Sorteio: farfalhar (`draw-rustle`) + papel desdobrando (`draw-unfold`).
+  - Sorteio: farfalhar (`draw-rustle`, gerado de `sounds-src/rustle.ogg` só com a equalização) + papel desdobrando (`draw-unfold`).
   - Conclusão: papel dobrando (`done-fold`) + "toc" ao cair no pote (`done-tap`).
-  - Não consegui: só um farfalhar leve (`return-rustle`), nenhum som de erro.
-  - Nova semana: papeizinhos caindo, bem baixinho (`slip-drop-1..3`, um por papelzinho).
+  - Não consegui: só uma queda leve (`slip-drop-2`) quando o papelzinho chega ao pote, nenhum som de erro. O `return-rustle` ficou só em `sounds-src/`.
+  - Nova semana: papeizinhos caindo, bem baixinho (`slip-drop-2` e `slip-drop-3` alternados, um por papelzinho; o `slip-drop-1` ficou só em `sounds-src/`).
 - [x] Serviço de áudio com Web Audio (`src/lib/audio.ts`): baixa os arquivos na abertura (se os sons estão ligados), só toca depois de um toque por causa do autoplay e respeita o toggle. Os MP3 entram no precache do service worker.
-  - O volume de cada som fica em `src/config/sounds.ts`.
+  - Os arquivos têm o chiado reduzido (passa-altas em 90 Hz + `afftdn`, nr=24) e estão equalizados (trecho mais alto de 50 ms em −30 dBFS, picos abaixo de −6 dBFS). O volume de cada som no app fica em `src/config/sounds.ts`; as quedas da nova semana tocam a 0,5.
 - [x] Sincronizar com as fases das animações (`useSounds` em cada tela do fluxo). Pular a animação silencia o que falta.
 - [x] Modo silencioso: a Web Audio no iOS respeita a chave do silencioso, e `navigator.audioSession.type = "ambient"` (Safari 16.4+) deixa isso explícito e não interrompe a música que estiver tocando.
   - [ ] Conferir num iPhone de verdade, depois do deploy.

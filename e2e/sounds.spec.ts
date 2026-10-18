@@ -5,8 +5,6 @@ const FILES = [
   'draw-unfold',
   'done-fold',
   'done-tap',
-  'return-rustle',
-  'slip-drop-1',
   'slip-drop-2',
   'slip-drop-3',
 ];

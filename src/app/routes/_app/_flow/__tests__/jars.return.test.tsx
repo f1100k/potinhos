@@ -71,13 +71,11 @@ describe('Return', () => {
     await waitMs(TAP_GUARD_MS);
   });
 
-  it('plays only a light rustle', async () => {
+  it('plays only a soft drop as the slip reaches the jar', async () => {
     vi.mocked(playSound).mockClear();
     await chooseNotDone(/Devolver ao pote/);
-    expect(playedUrls()).toEqual([SOUNDS.returnRustle.url]);
+    expect(vi.mocked(playSound).mock.calls).toEqual([
+      [SOUNDS.slipDrop2.url, SOUNDS.slipDrop2.volume, 1700],
+    ]);
   });
-
-  function playedUrls() {
-    return vi.mocked(playSound).mock.calls.map(([url]) => url);
-  }
 });

@@ -21,7 +21,8 @@ export const Route = createFileRoute('/_app/_flow/jars/return')({
 });
 
 const RETURN_MS = 2300;
-const RETURN_SOUNDS: SoundCue[] = [{ sound: 'returnRustle' }];
+// Plays as the slip reaches the jar, near the end of the 1.9s floatToJar.
+const RETURN_SOUNDS: SoundCue[] = [{ sound: 'slipDrop2', delayMs: 1700 }];
 
 function choiceFor(destination: Jar | 'pending', from: Jar): NotDoneChoice {
   if (destination === 'pending') return { kind: 'pending' };

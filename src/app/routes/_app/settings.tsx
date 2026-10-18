@@ -33,7 +33,7 @@ const SOUND_MOMENTS = [
   ],
   [
     'Não consegui hoje',
-    'só o farfalhar leve de volta ao pote. Nenhum som de erro.',
+    'só um papelzinho caindo de leve de volta no pote. Nenhum som de erro.',
   ],
   ['Nova semana', 'papeizinhos caindo no pote, um a um, bem baixinho.'],
 ] as const;
