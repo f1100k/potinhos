@@ -6,5 +6,5 @@ afterEach(() => {
   cleanup();
 });
 
-// jsdom não implementa scrollTo.
+// jsdom does not implement scrollTo.
 window.scrollTo = () => {};

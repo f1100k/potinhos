@@ -11,22 +11,22 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/_app'
-import { Route as AppFluxoRouteImport } from './routes/_app/_fluxo'
-import { Route as AppCafeRouteImport } from './routes/_app/cafe'
-import { Route as AppConfiguracoesRouteImport } from './routes/_app/configuracoes'
-import { Route as AppConquistasRouteImport } from './routes/_app/conquistas'
-import { Route as AppEditarRouteImport } from './routes/_app/editar'
-import { Route as AppNovaTarefaRouteImport } from './routes/_app/nova-tarefa'
-import { Route as AppPendentesRouteImport } from './routes/_app/pendentes'
-import { Route as AppPotesRouteImport } from './routes/_app/potes'
-import { Route as AppFluxoPotesDevolverRouteImport } from './routes/_app/_fluxo/potes.devolver'
-import { Route as AppFluxoPotesFeitoRouteImport } from './routes/_app/_fluxo/potes.feito'
-import { Route as AppFluxoPotesFimDeSemanaRouteImport } from './routes/_app/_fluxo/potes.fim-de-semana'
-import { Route as AppFluxoPotesNaoConseguiRouteImport } from './routes/_app/_fluxo/potes.nao-consegui'
-import { Route as AppFluxoPotesNovaSemanaRouteImport } from './routes/_app/_fluxo/potes.nova-semana'
-import { Route as AppFluxoPotesSorteioRouteImport } from './routes/_app/_fluxo/potes.sorteio'
-import { Route as AppFluxoPotesTarefaRouteImport } from './routes/_app/_fluxo/potes.tarefa'
-import { Route as AppFluxoPotesVazioRouteImport } from './routes/_app/_fluxo/potes.vazio'
+import { Route as AppFlowRouteImport } from './routes/_app/_flow'
+import { Route as AppAchievementsRouteImport } from './routes/_app/achievements'
+import { Route as AppCoffeeRouteImport } from './routes/_app/coffee'
+import { Route as AppEditRouteImport } from './routes/_app/edit'
+import { Route as AppJarsRouteImport } from './routes/_app/jars'
+import { Route as AppNewTaskRouteImport } from './routes/_app/new-task'
+import { Route as AppPendingRouteImport } from './routes/_app/pending'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppFlowJarsDoneRouteImport } from './routes/_app/_flow/jars.done'
+import { Route as AppFlowJarsDrawRouteImport } from './routes/_app/_flow/jars.draw'
+import { Route as AppFlowJarsEmptyRouteImport } from './routes/_app/_flow/jars.empty'
+import { Route as AppFlowJarsNewWeekRouteImport } from './routes/_app/_flow/jars.new-week'
+import { Route as AppFlowJarsNotDoneRouteImport } from './routes/_app/_flow/jars.not-done'
+import { Route as AppFlowJarsReturnRouteImport } from './routes/_app/_flow/jars.return'
+import { Route as AppFlowJarsTaskRouteImport } from './routes/_app/_flow/jars.task'
+import { Route as AppFlowJarsWeekendRouteImport } from './routes/_app/_flow/jars.weekend'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -37,202 +37,200 @@ const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppFluxoRoute = AppFluxoRouteImport.update({
-  id: '/_fluxo',
+const AppFlowRoute = AppFlowRouteImport.update({
+  id: '/_flow',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCafeRoute = AppCafeRouteImport.update({
-  id: '/cafe',
-  path: '/cafe',
+const AppAchievementsRoute = AppAchievementsRouteImport.update({
+  id: '/achievements',
+  path: '/achievements',
   getParentRoute: () => AppRoute,
 } as any)
-const AppConfiguracoesRoute = AppConfiguracoesRouteImport.update({
-  id: '/configuracoes',
-  path: '/configuracoes',
+const AppCoffeeRoute = AppCoffeeRouteImport.update({
+  id: '/coffee',
+  path: '/coffee',
   getParentRoute: () => AppRoute,
 } as any)
-const AppConquistasRoute = AppConquistasRouteImport.update({
-  id: '/conquistas',
-  path: '/conquistas',
+const AppEditRoute = AppEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
   getParentRoute: () => AppRoute,
 } as any)
-const AppEditarRoute = AppEditarRouteImport.update({
-  id: '/editar',
-  path: '/editar',
+const AppJarsRoute = AppJarsRouteImport.update({
+  id: '/jars',
+  path: '/jars',
   getParentRoute: () => AppRoute,
 } as any)
-const AppNovaTarefaRoute = AppNovaTarefaRouteImport.update({
-  id: '/nova-tarefa',
-  path: '/nova-tarefa',
+const AppNewTaskRoute = AppNewTaskRouteImport.update({
+  id: '/new-task',
+  path: '/new-task',
   getParentRoute: () => AppRoute,
 } as any)
-const AppPendentesRoute = AppPendentesRouteImport.update({
-  id: '/pendentes',
-  path: '/pendentes',
+const AppPendingRoute = AppPendingRouteImport.update({
+  id: '/pending',
+  path: '/pending',
   getParentRoute: () => AppRoute,
 } as any)
-const AppPotesRoute = AppPotesRouteImport.update({
-  id: '/potes',
-  path: '/potes',
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
-const AppFluxoPotesDevolverRoute = AppFluxoPotesDevolverRouteImport.update({
-  id: '/potes/devolver',
-  path: '/potes/devolver',
-  getParentRoute: () => AppFluxoRoute,
+const AppFlowJarsDoneRoute = AppFlowJarsDoneRouteImport.update({
+  id: '/jars/done',
+  path: '/jars/done',
+  getParentRoute: () => AppFlowRoute,
 } as any)
-const AppFluxoPotesFeitoRoute = AppFluxoPotesFeitoRouteImport.update({
-  id: '/potes/feito',
-  path: '/potes/feito',
-  getParentRoute: () => AppFluxoRoute,
+const AppFlowJarsDrawRoute = AppFlowJarsDrawRouteImport.update({
+  id: '/jars/draw',
+  path: '/jars/draw',
+  getParentRoute: () => AppFlowRoute,
 } as any)
-const AppFluxoPotesFimDeSemanaRoute =
-  AppFluxoPotesFimDeSemanaRouteImport.update({
-    id: '/potes/fim-de-semana',
-    path: '/potes/fim-de-semana',
-    getParentRoute: () => AppFluxoRoute,
-  } as any)
-const AppFluxoPotesNaoConseguiRoute =
-  AppFluxoPotesNaoConseguiRouteImport.update({
-    id: '/potes/nao-consegui',
-    path: '/potes/nao-consegui',
-    getParentRoute: () => AppFluxoRoute,
-  } as any)
-const AppFluxoPotesNovaSemanaRoute = AppFluxoPotesNovaSemanaRouteImport.update({
-  id: '/potes/nova-semana',
-  path: '/potes/nova-semana',
-  getParentRoute: () => AppFluxoRoute,
+const AppFlowJarsEmptyRoute = AppFlowJarsEmptyRouteImport.update({
+  id: '/jars/empty',
+  path: '/jars/empty',
+  getParentRoute: () => AppFlowRoute,
 } as any)
-const AppFluxoPotesSorteioRoute = AppFluxoPotesSorteioRouteImport.update({
-  id: '/potes/sorteio',
-  path: '/potes/sorteio',
-  getParentRoute: () => AppFluxoRoute,
+const AppFlowJarsNewWeekRoute = AppFlowJarsNewWeekRouteImport.update({
+  id: '/jars/new-week',
+  path: '/jars/new-week',
+  getParentRoute: () => AppFlowRoute,
 } as any)
-const AppFluxoPotesTarefaRoute = AppFluxoPotesTarefaRouteImport.update({
-  id: '/potes/tarefa',
-  path: '/potes/tarefa',
-  getParentRoute: () => AppFluxoRoute,
+const AppFlowJarsNotDoneRoute = AppFlowJarsNotDoneRouteImport.update({
+  id: '/jars/not-done',
+  path: '/jars/not-done',
+  getParentRoute: () => AppFlowRoute,
 } as any)
-const AppFluxoPotesVazioRoute = AppFluxoPotesVazioRouteImport.update({
-  id: '/potes/vazio',
-  path: '/potes/vazio',
-  getParentRoute: () => AppFluxoRoute,
+const AppFlowJarsReturnRoute = AppFlowJarsReturnRouteImport.update({
+  id: '/jars/return',
+  path: '/jars/return',
+  getParentRoute: () => AppFlowRoute,
+} as any)
+const AppFlowJarsTaskRoute = AppFlowJarsTaskRouteImport.update({
+  id: '/jars/task',
+  path: '/jars/task',
+  getParentRoute: () => AppFlowRoute,
+} as any)
+const AppFlowJarsWeekendRoute = AppFlowJarsWeekendRouteImport.update({
+  id: '/jars/weekend',
+  path: '/jars/weekend',
+  getParentRoute: () => AppFlowRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/cafe': typeof AppCafeRoute
-  '/configuracoes': typeof AppConfiguracoesRoute
-  '/conquistas': typeof AppConquistasRoute
-  '/editar': typeof AppEditarRoute
-  '/nova-tarefa': typeof AppNovaTarefaRoute
-  '/pendentes': typeof AppPendentesRoute
-  '/potes': typeof AppPotesRoute
-  '/potes/devolver': typeof AppFluxoPotesDevolverRoute
-  '/potes/feito': typeof AppFluxoPotesFeitoRoute
-  '/potes/fim-de-semana': typeof AppFluxoPotesFimDeSemanaRoute
-  '/potes/nao-consegui': typeof AppFluxoPotesNaoConseguiRoute
-  '/potes/nova-semana': typeof AppFluxoPotesNovaSemanaRoute
-  '/potes/sorteio': typeof AppFluxoPotesSorteioRoute
-  '/potes/tarefa': typeof AppFluxoPotesTarefaRoute
-  '/potes/vazio': typeof AppFluxoPotesVazioRoute
+  '/achievements': typeof AppAchievementsRoute
+  '/coffee': typeof AppCoffeeRoute
+  '/edit': typeof AppEditRoute
+  '/jars': typeof AppJarsRoute
+  '/new-task': typeof AppNewTaskRoute
+  '/pending': typeof AppPendingRoute
+  '/settings': typeof AppSettingsRoute
+  '/jars/done': typeof AppFlowJarsDoneRoute
+  '/jars/draw': typeof AppFlowJarsDrawRoute
+  '/jars/empty': typeof AppFlowJarsEmptyRoute
+  '/jars/new-week': typeof AppFlowJarsNewWeekRoute
+  '/jars/not-done': typeof AppFlowJarsNotDoneRoute
+  '/jars/return': typeof AppFlowJarsReturnRoute
+  '/jars/task': typeof AppFlowJarsTaskRoute
+  '/jars/weekend': typeof AppFlowJarsWeekendRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/cafe': typeof AppCafeRoute
-  '/configuracoes': typeof AppConfiguracoesRoute
-  '/conquistas': typeof AppConquistasRoute
-  '/editar': typeof AppEditarRoute
-  '/nova-tarefa': typeof AppNovaTarefaRoute
-  '/pendentes': typeof AppPendentesRoute
-  '/potes': typeof AppPotesRoute
-  '/potes/devolver': typeof AppFluxoPotesDevolverRoute
-  '/potes/feito': typeof AppFluxoPotesFeitoRoute
-  '/potes/fim-de-semana': typeof AppFluxoPotesFimDeSemanaRoute
-  '/potes/nao-consegui': typeof AppFluxoPotesNaoConseguiRoute
-  '/potes/nova-semana': typeof AppFluxoPotesNovaSemanaRoute
-  '/potes/sorteio': typeof AppFluxoPotesSorteioRoute
-  '/potes/tarefa': typeof AppFluxoPotesTarefaRoute
-  '/potes/vazio': typeof AppFluxoPotesVazioRoute
+  '/achievements': typeof AppAchievementsRoute
+  '/coffee': typeof AppCoffeeRoute
+  '/edit': typeof AppEditRoute
+  '/jars': typeof AppJarsRoute
+  '/new-task': typeof AppNewTaskRoute
+  '/pending': typeof AppPendingRoute
+  '/settings': typeof AppSettingsRoute
+  '/jars/done': typeof AppFlowJarsDoneRoute
+  '/jars/draw': typeof AppFlowJarsDrawRoute
+  '/jars/empty': typeof AppFlowJarsEmptyRoute
+  '/jars/new-week': typeof AppFlowJarsNewWeekRoute
+  '/jars/not-done': typeof AppFlowJarsNotDoneRoute
+  '/jars/return': typeof AppFlowJarsReturnRoute
+  '/jars/task': typeof AppFlowJarsTaskRoute
+  '/jars/weekend': typeof AppFlowJarsWeekendRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
-  '/_app/_fluxo': typeof AppFluxoRouteWithChildren
-  '/_app/cafe': typeof AppCafeRoute
-  '/_app/configuracoes': typeof AppConfiguracoesRoute
-  '/_app/conquistas': typeof AppConquistasRoute
-  '/_app/editar': typeof AppEditarRoute
-  '/_app/nova-tarefa': typeof AppNovaTarefaRoute
-  '/_app/pendentes': typeof AppPendentesRoute
-  '/_app/potes': typeof AppPotesRoute
-  '/_app/_fluxo/potes/devolver': typeof AppFluxoPotesDevolverRoute
-  '/_app/_fluxo/potes/feito': typeof AppFluxoPotesFeitoRoute
-  '/_app/_fluxo/potes/fim-de-semana': typeof AppFluxoPotesFimDeSemanaRoute
-  '/_app/_fluxo/potes/nao-consegui': typeof AppFluxoPotesNaoConseguiRoute
-  '/_app/_fluxo/potes/nova-semana': typeof AppFluxoPotesNovaSemanaRoute
-  '/_app/_fluxo/potes/sorteio': typeof AppFluxoPotesSorteioRoute
-  '/_app/_fluxo/potes/tarefa': typeof AppFluxoPotesTarefaRoute
-  '/_app/_fluxo/potes/vazio': typeof AppFluxoPotesVazioRoute
+  '/_app/_flow': typeof AppFlowRouteWithChildren
+  '/_app/achievements': typeof AppAchievementsRoute
+  '/_app/coffee': typeof AppCoffeeRoute
+  '/_app/edit': typeof AppEditRoute
+  '/_app/jars': typeof AppJarsRoute
+  '/_app/new-task': typeof AppNewTaskRoute
+  '/_app/pending': typeof AppPendingRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/_flow/jars/done': typeof AppFlowJarsDoneRoute
+  '/_app/_flow/jars/draw': typeof AppFlowJarsDrawRoute
+  '/_app/_flow/jars/empty': typeof AppFlowJarsEmptyRoute
+  '/_app/_flow/jars/new-week': typeof AppFlowJarsNewWeekRoute
+  '/_app/_flow/jars/not-done': typeof AppFlowJarsNotDoneRoute
+  '/_app/_flow/jars/return': typeof AppFlowJarsReturnRoute
+  '/_app/_flow/jars/task': typeof AppFlowJarsTaskRoute
+  '/_app/_flow/jars/weekend': typeof AppFlowJarsWeekendRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/cafe'
-    | '/configuracoes'
-    | '/conquistas'
-    | '/editar'
-    | '/nova-tarefa'
-    | '/pendentes'
-    | '/potes'
-    | '/potes/devolver'
-    | '/potes/feito'
-    | '/potes/fim-de-semana'
-    | '/potes/nao-consegui'
-    | '/potes/nova-semana'
-    | '/potes/sorteio'
-    | '/potes/tarefa'
-    | '/potes/vazio'
+    | '/achievements'
+    | '/coffee'
+    | '/edit'
+    | '/jars'
+    | '/new-task'
+    | '/pending'
+    | '/settings'
+    | '/jars/done'
+    | '/jars/draw'
+    | '/jars/empty'
+    | '/jars/new-week'
+    | '/jars/not-done'
+    | '/jars/return'
+    | '/jars/task'
+    | '/jars/weekend'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/cafe'
-    | '/configuracoes'
-    | '/conquistas'
-    | '/editar'
-    | '/nova-tarefa'
-    | '/pendentes'
-    | '/potes'
-    | '/potes/devolver'
-    | '/potes/feito'
-    | '/potes/fim-de-semana'
-    | '/potes/nao-consegui'
-    | '/potes/nova-semana'
-    | '/potes/sorteio'
-    | '/potes/tarefa'
-    | '/potes/vazio'
+    | '/achievements'
+    | '/coffee'
+    | '/edit'
+    | '/jars'
+    | '/new-task'
+    | '/pending'
+    | '/settings'
+    | '/jars/done'
+    | '/jars/draw'
+    | '/jars/empty'
+    | '/jars/new-week'
+    | '/jars/not-done'
+    | '/jars/return'
+    | '/jars/task'
+    | '/jars/weekend'
   id:
     | '__root__'
     | '/'
     | '/_app'
-    | '/_app/_fluxo'
-    | '/_app/cafe'
-    | '/_app/configuracoes'
-    | '/_app/conquistas'
-    | '/_app/editar'
-    | '/_app/nova-tarefa'
-    | '/_app/pendentes'
-    | '/_app/potes'
-    | '/_app/_fluxo/potes/devolver'
-    | '/_app/_fluxo/potes/feito'
-    | '/_app/_fluxo/potes/fim-de-semana'
-    | '/_app/_fluxo/potes/nao-consegui'
-    | '/_app/_fluxo/potes/nova-semana'
-    | '/_app/_fluxo/potes/sorteio'
-    | '/_app/_fluxo/potes/tarefa'
-    | '/_app/_fluxo/potes/vazio'
+    | '/_app/_flow'
+    | '/_app/achievements'
+    | '/_app/coffee'
+    | '/_app/edit'
+    | '/_app/jars'
+    | '/_app/new-task'
+    | '/_app/pending'
+    | '/_app/settings'
+    | '/_app/_flow/jars/done'
+    | '/_app/_flow/jars/draw'
+    | '/_app/_flow/jars/empty'
+    | '/_app/_flow/jars/new-week'
+    | '/_app/_flow/jars/not-done'
+    | '/_app/_flow/jars/return'
+    | '/_app/_flow/jars/task'
+    | '/_app/_flow/jars/weekend'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -256,167 +254,166 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/_fluxo': {
-      id: '/_app/_fluxo'
+    '/_app/_flow': {
+      id: '/_app/_flow'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof AppFluxoRouteImport
+      preLoaderRoute: typeof AppFlowRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/cafe': {
-      id: '/_app/cafe'
-      path: '/cafe'
-      fullPath: '/cafe'
-      preLoaderRoute: typeof AppCafeRouteImport
+    '/_app/achievements': {
+      id: '/_app/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
+      preLoaderRoute: typeof AppAchievementsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/configuracoes': {
-      id: '/_app/configuracoes'
-      path: '/configuracoes'
-      fullPath: '/configuracoes'
-      preLoaderRoute: typeof AppConfiguracoesRouteImport
+    '/_app/coffee': {
+      id: '/_app/coffee'
+      path: '/coffee'
+      fullPath: '/coffee'
+      preLoaderRoute: typeof AppCoffeeRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/conquistas': {
-      id: '/_app/conquistas'
-      path: '/conquistas'
-      fullPath: '/conquistas'
-      preLoaderRoute: typeof AppConquistasRouteImport
+    '/_app/edit': {
+      id: '/_app/edit'
+      path: '/edit'
+      fullPath: '/edit'
+      preLoaderRoute: typeof AppEditRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/editar': {
-      id: '/_app/editar'
-      path: '/editar'
-      fullPath: '/editar'
-      preLoaderRoute: typeof AppEditarRouteImport
+    '/_app/jars': {
+      id: '/_app/jars'
+      path: '/jars'
+      fullPath: '/jars'
+      preLoaderRoute: typeof AppJarsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/nova-tarefa': {
-      id: '/_app/nova-tarefa'
-      path: '/nova-tarefa'
-      fullPath: '/nova-tarefa'
-      preLoaderRoute: typeof AppNovaTarefaRouteImport
+    '/_app/new-task': {
+      id: '/_app/new-task'
+      path: '/new-task'
+      fullPath: '/new-task'
+      preLoaderRoute: typeof AppNewTaskRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/pendentes': {
-      id: '/_app/pendentes'
-      path: '/pendentes'
-      fullPath: '/pendentes'
-      preLoaderRoute: typeof AppPendentesRouteImport
+    '/_app/pending': {
+      id: '/_app/pending'
+      path: '/pending'
+      fullPath: '/pending'
+      preLoaderRoute: typeof AppPendingRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/potes': {
-      id: '/_app/potes'
-      path: '/potes'
-      fullPath: '/potes'
-      preLoaderRoute: typeof AppPotesRouteImport
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/_fluxo/potes/devolver': {
-      id: '/_app/_fluxo/potes/devolver'
-      path: '/potes/devolver'
-      fullPath: '/potes/devolver'
-      preLoaderRoute: typeof AppFluxoPotesDevolverRouteImport
-      parentRoute: typeof AppFluxoRoute
+    '/_app/_flow/jars/done': {
+      id: '/_app/_flow/jars/done'
+      path: '/jars/done'
+      fullPath: '/jars/done'
+      preLoaderRoute: typeof AppFlowJarsDoneRouteImport
+      parentRoute: typeof AppFlowRoute
     }
-    '/_app/_fluxo/potes/feito': {
-      id: '/_app/_fluxo/potes/feito'
-      path: '/potes/feito'
-      fullPath: '/potes/feito'
-      preLoaderRoute: typeof AppFluxoPotesFeitoRouteImport
-      parentRoute: typeof AppFluxoRoute
+    '/_app/_flow/jars/draw': {
+      id: '/_app/_flow/jars/draw'
+      path: '/jars/draw'
+      fullPath: '/jars/draw'
+      preLoaderRoute: typeof AppFlowJarsDrawRouteImport
+      parentRoute: typeof AppFlowRoute
     }
-    '/_app/_fluxo/potes/fim-de-semana': {
-      id: '/_app/_fluxo/potes/fim-de-semana'
-      path: '/potes/fim-de-semana'
-      fullPath: '/potes/fim-de-semana'
-      preLoaderRoute: typeof AppFluxoPotesFimDeSemanaRouteImport
-      parentRoute: typeof AppFluxoRoute
+    '/_app/_flow/jars/empty': {
+      id: '/_app/_flow/jars/empty'
+      path: '/jars/empty'
+      fullPath: '/jars/empty'
+      preLoaderRoute: typeof AppFlowJarsEmptyRouteImport
+      parentRoute: typeof AppFlowRoute
     }
-    '/_app/_fluxo/potes/nao-consegui': {
-      id: '/_app/_fluxo/potes/nao-consegui'
-      path: '/potes/nao-consegui'
-      fullPath: '/potes/nao-consegui'
-      preLoaderRoute: typeof AppFluxoPotesNaoConseguiRouteImport
-      parentRoute: typeof AppFluxoRoute
+    '/_app/_flow/jars/new-week': {
+      id: '/_app/_flow/jars/new-week'
+      path: '/jars/new-week'
+      fullPath: '/jars/new-week'
+      preLoaderRoute: typeof AppFlowJarsNewWeekRouteImport
+      parentRoute: typeof AppFlowRoute
     }
-    '/_app/_fluxo/potes/nova-semana': {
-      id: '/_app/_fluxo/potes/nova-semana'
-      path: '/potes/nova-semana'
-      fullPath: '/potes/nova-semana'
-      preLoaderRoute: typeof AppFluxoPotesNovaSemanaRouteImport
-      parentRoute: typeof AppFluxoRoute
+    '/_app/_flow/jars/not-done': {
+      id: '/_app/_flow/jars/not-done'
+      path: '/jars/not-done'
+      fullPath: '/jars/not-done'
+      preLoaderRoute: typeof AppFlowJarsNotDoneRouteImport
+      parentRoute: typeof AppFlowRoute
     }
-    '/_app/_fluxo/potes/sorteio': {
-      id: '/_app/_fluxo/potes/sorteio'
-      path: '/potes/sorteio'
-      fullPath: '/potes/sorteio'
-      preLoaderRoute: typeof AppFluxoPotesSorteioRouteImport
-      parentRoute: typeof AppFluxoRoute
+    '/_app/_flow/jars/return': {
+      id: '/_app/_flow/jars/return'
+      path: '/jars/return'
+      fullPath: '/jars/return'
+      preLoaderRoute: typeof AppFlowJarsReturnRouteImport
+      parentRoute: typeof AppFlowRoute
     }
-    '/_app/_fluxo/potes/tarefa': {
-      id: '/_app/_fluxo/potes/tarefa'
-      path: '/potes/tarefa'
-      fullPath: '/potes/tarefa'
-      preLoaderRoute: typeof AppFluxoPotesTarefaRouteImport
-      parentRoute: typeof AppFluxoRoute
+    '/_app/_flow/jars/task': {
+      id: '/_app/_flow/jars/task'
+      path: '/jars/task'
+      fullPath: '/jars/task'
+      preLoaderRoute: typeof AppFlowJarsTaskRouteImport
+      parentRoute: typeof AppFlowRoute
     }
-    '/_app/_fluxo/potes/vazio': {
-      id: '/_app/_fluxo/potes/vazio'
-      path: '/potes/vazio'
-      fullPath: '/potes/vazio'
-      preLoaderRoute: typeof AppFluxoPotesVazioRouteImport
-      parentRoute: typeof AppFluxoRoute
+    '/_app/_flow/jars/weekend': {
+      id: '/_app/_flow/jars/weekend'
+      path: '/jars/weekend'
+      fullPath: '/jars/weekend'
+      preLoaderRoute: typeof AppFlowJarsWeekendRouteImport
+      parentRoute: typeof AppFlowRoute
     }
   }
 }
 
-interface AppFluxoRouteChildren {
-  AppFluxoPotesDevolverRoute: typeof AppFluxoPotesDevolverRoute
-  AppFluxoPotesFeitoRoute: typeof AppFluxoPotesFeitoRoute
-  AppFluxoPotesFimDeSemanaRoute: typeof AppFluxoPotesFimDeSemanaRoute
-  AppFluxoPotesNaoConseguiRoute: typeof AppFluxoPotesNaoConseguiRoute
-  AppFluxoPotesNovaSemanaRoute: typeof AppFluxoPotesNovaSemanaRoute
-  AppFluxoPotesSorteioRoute: typeof AppFluxoPotesSorteioRoute
-  AppFluxoPotesTarefaRoute: typeof AppFluxoPotesTarefaRoute
-  AppFluxoPotesVazioRoute: typeof AppFluxoPotesVazioRoute
+interface AppFlowRouteChildren {
+  AppFlowJarsDoneRoute: typeof AppFlowJarsDoneRoute
+  AppFlowJarsDrawRoute: typeof AppFlowJarsDrawRoute
+  AppFlowJarsEmptyRoute: typeof AppFlowJarsEmptyRoute
+  AppFlowJarsNewWeekRoute: typeof AppFlowJarsNewWeekRoute
+  AppFlowJarsNotDoneRoute: typeof AppFlowJarsNotDoneRoute
+  AppFlowJarsReturnRoute: typeof AppFlowJarsReturnRoute
+  AppFlowJarsTaskRoute: typeof AppFlowJarsTaskRoute
+  AppFlowJarsWeekendRoute: typeof AppFlowJarsWeekendRoute
 }
 
-const AppFluxoRouteChildren: AppFluxoRouteChildren = {
-  AppFluxoPotesDevolverRoute: AppFluxoPotesDevolverRoute,
-  AppFluxoPotesFeitoRoute: AppFluxoPotesFeitoRoute,
-  AppFluxoPotesFimDeSemanaRoute: AppFluxoPotesFimDeSemanaRoute,
-  AppFluxoPotesNaoConseguiRoute: AppFluxoPotesNaoConseguiRoute,
-  AppFluxoPotesNovaSemanaRoute: AppFluxoPotesNovaSemanaRoute,
-  AppFluxoPotesSorteioRoute: AppFluxoPotesSorteioRoute,
-  AppFluxoPotesTarefaRoute: AppFluxoPotesTarefaRoute,
-  AppFluxoPotesVazioRoute: AppFluxoPotesVazioRoute,
+const AppFlowRouteChildren: AppFlowRouteChildren = {
+  AppFlowJarsDoneRoute: AppFlowJarsDoneRoute,
+  AppFlowJarsDrawRoute: AppFlowJarsDrawRoute,
+  AppFlowJarsEmptyRoute: AppFlowJarsEmptyRoute,
+  AppFlowJarsNewWeekRoute: AppFlowJarsNewWeekRoute,
+  AppFlowJarsNotDoneRoute: AppFlowJarsNotDoneRoute,
+  AppFlowJarsReturnRoute: AppFlowJarsReturnRoute,
+  AppFlowJarsTaskRoute: AppFlowJarsTaskRoute,
+  AppFlowJarsWeekendRoute: AppFlowJarsWeekendRoute,
 }
 
-const AppFluxoRouteWithChildren = AppFluxoRoute._addFileChildren(
-  AppFluxoRouteChildren,
-)
+const AppFlowRouteWithChildren =
+  AppFlowRoute._addFileChildren(AppFlowRouteChildren)
 
 interface AppRouteChildren {
-  AppFluxoRoute: typeof AppFluxoRouteWithChildren
-  AppCafeRoute: typeof AppCafeRoute
-  AppConfiguracoesRoute: typeof AppConfiguracoesRoute
-  AppConquistasRoute: typeof AppConquistasRoute
-  AppEditarRoute: typeof AppEditarRoute
-  AppNovaTarefaRoute: typeof AppNovaTarefaRoute
-  AppPendentesRoute: typeof AppPendentesRoute
-  AppPotesRoute: typeof AppPotesRoute
+  AppFlowRoute: typeof AppFlowRouteWithChildren
+  AppAchievementsRoute: typeof AppAchievementsRoute
+  AppCoffeeRoute: typeof AppCoffeeRoute
+  AppEditRoute: typeof AppEditRoute
+  AppJarsRoute: typeof AppJarsRoute
+  AppNewTaskRoute: typeof AppNewTaskRoute
+  AppPendingRoute: typeof AppPendingRoute
+  AppSettingsRoute: typeof AppSettingsRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppFluxoRoute: AppFluxoRouteWithChildren,
-  AppCafeRoute: AppCafeRoute,
-  AppConfiguracoesRoute: AppConfiguracoesRoute,
-  AppConquistasRoute: AppConquistasRoute,
-  AppEditarRoute: AppEditarRoute,
-  AppNovaTarefaRoute: AppNovaTarefaRoute,
-  AppPendentesRoute: AppPendentesRoute,
-  AppPotesRoute: AppPotesRoute,
+  AppFlowRoute: AppFlowRouteWithChildren,
+  AppAchievementsRoute: AppAchievementsRoute,
+  AppCoffeeRoute: AppCoffeeRoute,
+  AppEditRoute: AppEditRoute,
+  AppJarsRoute: AppJarsRoute,
+  AppNewTaskRoute: AppNewTaskRoute,
+  AppPendingRoute: AppPendingRoute,
+  AppSettingsRoute: AppSettingsRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

@@ -11,39 +11,39 @@ import { appReducer, createInitialData } from './store';
 
 const now = new Date(2026, 9, 14, 10);
 
-describe('persistência', () => {
+describe('persistence', () => {
   beforeEach(() => localStorage.clear());
 
-  it('sem nada salvo, começa do zero', () => {
+  it('starts from scratch when nothing is saved', () => {
     expect(loadData(localStorage, now)).toEqual(createInitialData(now));
   });
 
-  it('salva e carrega o mesmo estado', () => {
+  it('saves and loads the same state', () => {
     const data = appReducer(createInitialData(now), {
       type: 'addTask',
       id: 'a',
       text: 'Regar as plantas',
-      pote: 'semanal',
+      jar: 'weekly',
       freq: 2,
     });
     saveData(localStorage, data);
     expect(loadData(localStorage, now)).toEqual(data);
   });
 
-  it('JSON corrompido não quebra e guarda uma cópia', () => {
+  it('corrupted JSON does not break and keeps a copy', () => {
     localStorage.setItem(STORAGE_KEY, '{"tasks": [');
     expect(loadData(localStorage, now)).toEqual(createInitialData(now));
     expect(localStorage.getItem(CORRUPT_KEY)).toBe('{"tasks": [');
   });
 
-  it('formato estranho também volta ao zero', () => {
+  it('an unexpected shape also starts from scratch', () => {
     localStorage.setItem(STORAGE_KEY, '"oi"');
     expect(loadData(localStorage, now).tasks).toEqual([]);
   });
 });
 
 describe('parseData', () => {
-  it('migra o formato do protótipo (versão 0)', () => {
+  it('migrates the prototype format (version 0)', () => {
     const d = parseData(
       {
         tasks: [
@@ -56,40 +56,71 @@ describe('parseData', () => {
       now,
     );
     expect(d.tasks).toEqual([
-      { id: '1', text: 'Lavar a louça', pote: 'simples' },
+      { id: '1', text: 'Lavar a louça', jar: 'simple' },
       {
         id: '9',
         text: 'Estudar',
-        pote: 'semanal',
+        jar: 'weekly',
         freq: 2,
         doneWeek: 1,
         extra: 0,
       },
-      { id: '12', text: 'Ligar', pote: 'complexas', status: 'pendente' },
+      { id: '12', text: 'Ligar', jar: 'complex', status: 'pending' },
     ]);
     expect(d.done[0]).toMatchObject({
       text: 'Pagar a luz',
+      jar: 'simple',
       date: '2026-10-02',
     });
     expect(d.meta).toMatchObject({
-      schemaVersion: 1,
+      schemaVersion: 2,
       visited: true,
       weekStart: '2026-10-12',
     });
   });
 
-  it('descarta itens inválidos e ids repetidos', () => {
+  it('migrates the Portuguese format (version 1)', () => {
     const d = parseData(
       {
         version: 1,
         tasks: [
-          { id: 'a', text: 'ok', pote: 'simples' },
-          { id: 'a', text: 'repetida', pote: 'simples' },
-          { id: 'b', text: '', pote: 'simples' },
-          { id: 'c', text: 'x', pote: 'gaveta' },
+          { id: 'a', text: 'Ler', pote: 'semanal', freq: 3, doneWeek: 1 },
+          { id: 'b', text: 'Ligar', pote: 'simples', status: 'pendente' },
+        ],
+        done: [
+          { id: 'k', text: 'Pagar', pote: 'complexas', date: '2026-10-02' },
+        ],
+        meta: {
+          schemaVersion: 1,
+          visited: true,
+          weekStart: '2026-10-12',
+          lastWeekClosed: null,
+        },
+      },
+      now,
+    );
+    expect(d.tasks).toEqual([
+      { id: 'a', text: 'Ler', jar: 'weekly', freq: 3, doneWeek: 1, extra: 0 },
+      { id: 'b', text: 'Ligar', jar: 'simple', status: 'pending' },
+    ]);
+    expect(d.done).toEqual([
+      { id: 'k', text: 'Pagar', jar: 'complex', date: '2026-10-02' },
+    ]);
+    expect(d.meta.schemaVersion).toBe(2);
+  });
+
+  it('drops invalid items and repeated ids', () => {
+    const d = parseData(
+      {
+        version: 2,
+        tasks: [
+          { id: 'a', text: 'ok', jar: 'simple' },
+          { id: 'a', text: 'repetida', jar: 'simple' },
+          { id: 'b', text: '', jar: 'simple' },
+          { id: 'c', text: 'x', jar: 'drawer' },
           null,
         ],
-        done: [{ text: 'sem data', pote: 'simples' }],
+        done: [{ text: 'sem data', jar: 'simple' }],
       },
       now,
     );
@@ -97,12 +128,12 @@ describe('parseData', () => {
     expect(d.done).toEqual([]);
   });
 
-  it('limita freq e ignora sorteada que não existe', () => {
+  it('clamps freq and ignores a drawn task that no longer exists', () => {
     const d = parseData(
       {
-        version: 1,
-        tasks: [{ id: 'w', text: 'w', pote: 'semanal', freq: 40 }],
-        current: { taskId: 'sumiu', date: '2026-10-14' },
+        version: 2,
+        tasks: [{ id: 'w', text: 'w', jar: 'weekly', freq: 40 }],
+        current: { taskId: 'gone', date: '2026-10-14' },
       },
       now,
     );
@@ -110,7 +141,7 @@ describe('parseData', () => {
     expect(d.current).toBeNull();
   });
 
-  it('recusa arquivo sem tarefas ou de versão mais nova', () => {
+  it('rejects a file without tasks or from a newer version', () => {
     expect(() => parseData({ foo: 1 }, now)).toThrow(InvalidDataError);
     expect(() => parseData({ version: 99, tasks: [] }, now)).toThrow(
       InvalidDataError,

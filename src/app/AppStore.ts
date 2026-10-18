@@ -11,15 +11,10 @@ function browserStorage(): Storage | undefined {
   }
 }
 
-/**
- * Os dados do app. Leia só o que a tela usa, para ela só redesenhar quando
- * isso mudar: `useAppData((d) => d.tasks)`.
- */
 export const useAppData = create<AppData>()(() =>
   loadData(browserStorage(), new Date()),
 );
 
-/** Toda mudança nos dados passa por aqui, e já fica salva. */
 export function dispatch(action: AppAction): void {
   useAppData.setState((data) => appReducer(data, action), true);
 }

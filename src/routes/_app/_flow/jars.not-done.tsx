@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_app/_fluxo/potes/nao-consegui')({
+export const Route = createFileRoute('/_app/_flow/jars/not-done')({
   component: NotDone,
 });
 

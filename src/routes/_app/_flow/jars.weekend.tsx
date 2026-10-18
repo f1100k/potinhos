@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_app/_fluxo/potes/fim-de-semana')({
+export const Route = createFileRoute('/_app/_flow/jars/weekend')({
   component: Weekend,
 });
 

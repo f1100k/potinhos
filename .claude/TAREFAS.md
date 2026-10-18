@@ -60,8 +60,8 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 ## Fase 2 — Modelo de dados e persistência
 
 - [x] Tipos:
-  - `Task { id, text, pote: 'simples'|'complexas'|'semanal', status?: 'pendente', freq?: 1..7, doneWeek?, extra?, paused? }`
-  - `Conquista { id, text, pote, date: 'YYYY-MM-DD' }`
+  - `Task { id, text, jar: 'simple'|'complex'|'weekly', status?: 'pending', freq?: 1..7, doneWeek?, extra?, paused? }`
+  - `Achievement { id, text, jar, date: 'YYYY-MM-DD' }` (até a versão 1 do schema era em português; `parseData` migra)
   - `Settings { sounds: boolean }`
   - Meta: `{ visited, weekStart / lastWeekClosed, schemaVersion }`
 - [x] Store central (Context + reducer, Zustand ou similar) com ações puras e testáveis.

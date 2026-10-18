@@ -21,17 +21,17 @@ describe('Toast', () => {
   beforeEach(() => vi.useFakeTimers({ shouldAdvanceTime: true }));
   afterEach(() => vi.useRealTimers());
 
-  it('aparece numa região aria-live e some depois de ~2,6s', async () => {
+  it('shows up in an aria-live region and goes away after ~2.6s', async () => {
     await renderToaster();
     act(() => toast('Guardado. Sem pressa.'));
-    const regiao = screen.getByRole('region', { name: /Avisos/ });
-    expect(regiao).toHaveAttribute('aria-live', 'polite');
+    const region = screen.getByRole('region', { name: /Avisos/ });
+    expect(region).toHaveAttribute('aria-live', 'polite');
     expect(await screen.findByText('Guardado. Sem pressa.')).toBeVisible();
     await act(() => vi.advanceTimersByTimeAsync(TOAST_MS + 1000));
     expect(screen.queryByText('Guardado. Sem pressa.')).toBeNull();
   });
 
-  it('uma mensagem nova substitui a anterior', async () => {
+  it('a new message replaces the previous one', async () => {
     await renderToaster();
     act(() => toast('Primeira'));
     act(() => toast('Segunda'));
@@ -39,15 +39,15 @@ describe('Toast', () => {
     await waitFor(() => expect(screen.queryByText('Primeira')).toBeNull());
   });
 
-  it('a ação vira um botão que roda e fecha o toast', async () => {
+  it('the action becomes a button that runs and closes the toast', async () => {
     await renderToaster();
-    const desfazer = vi.fn();
+    const undo = vi.fn();
     act(() =>
-      toast('Papelzinho excluído.', { label: 'Desfazer', onClick: desfazer }),
+      toast('Papelzinho excluído.', { label: 'Desfazer', onClick: undo }),
     );
-    const botao = await screen.findByRole('button', { name: 'Desfazer' });
-    act(() => botao.click());
-    expect(desfazer).toHaveBeenCalledOnce();
+    const button = await screen.findByRole('button', { name: 'Desfazer' });
+    act(() => button.click());
+    expect(undo).toHaveBeenCalledOnce();
     await waitFor(() =>
       expect(screen.queryByText('Papelzinho excluído.')).toBeNull(),
     );

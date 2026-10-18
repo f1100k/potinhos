@@ -1,51 +1,51 @@
 import { act, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { renderApp } from '../test/renderApp';
-import { liberarFluxo } from './fluxo';
+import { unlockFlow } from './flow';
 
 describe('router', () => {
-  it('URL desconhecida volta para a landing', async () => {
-    const router = await renderApp('/nao-existe');
+  it('an unknown URL goes back to the landing page', async () => {
+    const router = await renderApp('/does-not-exist');
     expect(router.state.location.pathname).toBe('/');
   });
 
-  it('parâmetro inválido vira o padrão', async () => {
-    const router = await renderApp('/conquistas?tab=xyz');
-    expect(router.state.location.search).toEqual({ tab: 'semana' });
+  it('an invalid param falls back to the default', async () => {
+    const router = await renderApp('/achievements?tab=xyz');
+    expect(router.state.location.search).toEqual({ tab: 'week' });
   });
 
-  it('abrir uma tela do fluxo direto pela URL leva para os potes', async () => {
-    const router = await renderApp('/potes/sorteio?pote=simples');
-    expect(router.state.location.pathname).toBe('/potes');
+  it('opening a flow screen directly by URL leads to the jars', async () => {
+    const router = await renderApp('/jars/draw?jar=simple');
+    expect(router.state.location.pathname).toBe('/jars');
   });
 
-  it('o fluxo abre por uma ação dentro do app', async () => {
-    const router = await renderApp('/potes');
+  it('the flow opens through an action inside the app', async () => {
+    const router = await renderApp('/jars');
     await act(async () => {
-      liberarFluxo();
+      unlockFlow();
       await router.navigate({
-        to: '/potes/sorteio',
-        search: { pote: 'semanal' },
+        to: '/jars/draw',
+        search: { jar: 'weekly' },
       });
     });
-    expect(router.state.location.pathname).toBe('/potes/sorteio');
-    expect(router.state.location.search).toEqual({ pote: 'semanal' });
+    expect(router.state.location.pathname).toBe('/jars/draw');
+    expect(router.state.location.search).toEqual({ jar: 'weekly' });
     expect(
       screen.getByRole('heading', { name: 'Sorteio' }),
     ).toBeInTheDocument();
   });
 
-  it('voltar pelo navegador até o fluxo leva para os potes', async () => {
-    const router = await renderApp('/potes');
+  it('going back to the flow with the browser leads to the jars', async () => {
+    const router = await renderApp('/jars');
     await act(async () => {
-      liberarFluxo();
-      await router.navigate({ to: '/potes/tarefa' });
+      unlockFlow();
+      await router.navigate({ to: '/jars/task' });
     });
-    await act(() => router.navigate({ to: '/pendentes' }));
+    await act(() => router.navigate({ to: '/pending' }));
     await act(async () => {
       router.history.back();
       await router.load();
     });
-    expect(router.state.location.pathname).toBe('/potes');
+    expect(router.state.location.pathname).toBe('/jars');
   });
 });

@@ -1,25 +1,24 @@
 import {
-  concluir,
-  type DecisaoSemana,
-  type EscolhaNaoConsegui,
-  fecharSemana,
-  moverPote,
-  naoConsegui,
-  voltarAoPote,
+  closeWeek,
+  complete,
+  moveToJar,
+  type NotDoneChoice,
+  notDone,
+  returnToJar,
+  type WeekDecision,
 } from './rules';
 import {
   type AppData,
   type ISODate,
+  type Jar,
   MAX_FREQ,
   MIN_FREQ,
-  type Pote,
   type Task,
 } from './types';
-import { metaFechada, mondayOf } from './week';
+import { closeWeekMeta, mondayOf } from './week';
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
-/** Primeiro uso: potes vazios, sem tarefas de exemplo. */
 export function createInitialData(now: Date): AppData {
   return {
     tasks: [],
@@ -37,21 +36,21 @@ export function createInitialData(now: Date): AppData {
 
 export type AppAction =
   | { type: 'visit' }
-  | { type: 'addTask'; id: string; text: string; pote: Pote; freq?: number }
+  | { type: 'addTask'; id: string; text: string; jar: Jar; freq?: number }
   | { type: 'editTask'; id: string; text: string }
-  | { type: 'moveTask'; id: string; pote: Pote }
+  | { type: 'moveTask'; id: string; jar: Jar }
   | { type: 'deleteTask'; id: string }
   | { type: 'restoreTask'; task: Task; index: number }
   | { type: 'setFreq'; id: string; freq: number }
   | { type: 'togglePause'; id: string }
   | { type: 'draw'; taskId: string; date: ISODate }
   | { type: 'clearCurrent' }
-  | { type: 'conclude'; conquistaId: string; date: ISODate }
-  | { type: 'notDone'; escolha: EscolhaNaoConsegui }
-  | { type: 'pendingToPote'; id: string; pote: Pote }
+  | { type: 'complete'; achievementId: string; date: ISODate }
+  | { type: 'notDone'; choice: NotDoneChoice }
+  | { type: 'pendingToJar'; id: string; jar: Jar }
   | {
       type: 'closeWeek';
-      decisoes: Readonly<Record<string, DecisaoSemana>>;
+      decisions: Readonly<Record<string, WeekDecision>>;
       now: Date;
       ids: readonly string[];
     }
@@ -81,16 +80,16 @@ export function appReducer(data: AppData, action: AppAction): AppData {
       const text = action.text.trim();
       if (!text) return data;
       const task: Task =
-        action.pote === 'semanal'
+        action.jar === 'weekly'
           ? {
               id: action.id,
               text,
-              pote: 'semanal',
+              jar: 'weekly',
               freq: clampFreq(action.freq ?? 2),
               doneWeek: 0,
               extra: 0,
             }
-          : { id: action.id, text, pote: action.pote };
+          : { id: action.id, text, jar: action.jar };
       return { ...data, tasks: [...data.tasks, task] };
     }
 
@@ -102,7 +101,7 @@ export function appReducer(data: AppData, action: AppAction): AppData {
 
     case 'moveTask':
       return updateTask(data, action.id, (t) =>
-        t.pote === action.pote ? t : moverPote(t, action.pote),
+        t.jar === action.jar ? t : moveToJar(t, action.jar),
       );
 
     case 'deleteTask':
@@ -136,10 +135,10 @@ export function appReducer(data: AppData, action: AppAction): AppData {
     case 'clearCurrent':
       return data.current ? { ...data, current: null } : data;
 
-    case 'conclude': {
+    case 'complete': {
       if (!data.current) return data;
-      const r = concluir(data.tasks, data.done, data.current.taskId, {
-        id: action.conquistaId,
+      const r = complete(data.tasks, data.done, data.current.taskId, {
+        id: action.achievementId,
         date: action.date,
       });
       return { ...data, ...r, current: null };
@@ -149,22 +148,22 @@ export function appReducer(data: AppData, action: AppAction): AppData {
       if (!data.current) return data;
       return {
         ...data,
-        tasks: naoConsegui(data.tasks, data.current.taskId, action.escolha),
+        tasks: notDone(data.tasks, data.current.taskId, action.choice),
         current: null,
       };
     }
 
-    case 'pendingToPote':
-      return updateTask(data, action.id, (t) => voltarAoPote(t, action.pote));
+    case 'pendingToJar':
+      return updateTask(data, action.id, (t) => returnToJar(t, action.jar));
 
     case 'closeWeek': {
       let i = 0;
       const newId = () =>
-        action.ids[i++] ?? `semana-${action.now.getTime()}-${i}`;
+        action.ids[i++] ?? `week-${action.now.getTime()}-${i}`;
       return {
         ...data,
-        tasks: fecharSemana(data.tasks, action.decisoes, newId),
-        meta: metaFechada(data.meta, action.now),
+        tasks: closeWeek(data.tasks, action.decisions, newId),
+        meta: closeWeekMeta(data.meta, action.now),
       };
     }
 
@@ -179,9 +178,8 @@ export function appReducer(data: AppData, action: AppAction): AppData {
   }
 }
 
-/** A tarefa sorteada hoje, se ainda existir. Vale até o fim do dia. */
-export function tarefaAtual(data: AppData, hoje: ISODate): Task | null {
+export function currentTask(data: AppData, today: ISODate): Task | null {
   const c = data.current;
-  if (!c || c.date !== hoje) return null;
+  if (!c || c.date !== today) return null;
   return data.tasks.find((t) => t.id === c.taskId) ?? null;
 }

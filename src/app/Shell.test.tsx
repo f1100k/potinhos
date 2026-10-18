@@ -2,22 +2,22 @@ import { act, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { renderApp } from '../test/renderApp';
-import { liberarFluxo } from './fluxo';
+import { unlockFlow } from './flow';
 
-function textos(links: HTMLElement[]) {
+function texts(links: HTMLElement[]) {
   return links.map((l) => l.textContent);
 }
 
 function menu() {
-  // No celular o menu lateral fica oculto; aqui só conferimos o conteúdo.
+  // The sidebar is hidden on mobile; here we only check its content.
   return screen.getByRole('navigation', { name: 'Menu', hidden: true });
 }
 
 describe('Shell', () => {
-  it('a barra inferior tem os 4 itens', async () => {
-    await renderApp('/potes');
+  it('the bottom bar has 4 items', async () => {
+    await renderApp('/jars');
     const bar = screen.getByRole('navigation', { name: 'Navegação' });
-    expect(textos(within(bar).getAllByRole('link'))).toEqual([
+    expect(texts(within(bar).getAllByRole('link'))).toEqual([
       'Meus potes',
       'Nova tarefa',
       'Pendentes',
@@ -25,10 +25,10 @@ describe('Shell', () => {
     ]);
   });
 
-  it('o menu lateral tem os 6 itens e o link do café', async () => {
-    await renderApp('/potes');
+  it('the sidebar has 6 items and the coffee link', async () => {
+    await renderApp('/jars');
     expect(
-      textos(within(menu()).getAllByRole('link', { hidden: true })),
+      texts(within(menu()).getAllByRole('link', { hidden: true })),
     ).toEqual([
       'Meus potes',
       'Nova tarefa',
@@ -40,11 +40,11 @@ describe('Shell', () => {
     ]);
   });
 
-  it('marca o item ativo e navega', async () => {
-    const router = await renderApp('/potes');
+  it('marks the active item and navigates', async () => {
+    const router = await renderApp('/jars');
     const bar = screen.getByRole('navigation', { name: 'Navegação' });
     await userEvent.click(within(bar).getByRole('link', { name: 'Pendentes' }));
-    expect(router.state.location.pathname).toBe('/pendentes');
+    expect(router.state.location.pathname).toBe('/pending');
     expect(
       within(screen.getByRole('navigation', { name: 'Navegação' })).getByRole(
         'link',
@@ -53,8 +53,8 @@ describe('Shell', () => {
     ).toHaveAttribute('aria-current', 'page');
   });
 
-  it('Pote de conquistas fica ativo em qualquer aba', async () => {
-    await renderApp('/conquistas?tab=mes');
+  it('Pote de conquistas stays active on any tab', async () => {
+    await renderApp('/achievements?tab=month');
     expect(
       within(menu()).getByRole('link', {
         name: 'Pote de conquistas',
@@ -63,11 +63,11 @@ describe('Shell', () => {
     ).toHaveAttribute('aria-current', 'page');
   });
 
-  it('no fluxo esconde a barra inferior e deixa Meus potes ativo', async () => {
-    const router = await renderApp('/potes');
+  it('in the flow, hides the bottom bar and keeps Meus potes active', async () => {
+    const router = await renderApp('/jars');
     await act(async () => {
-      liberarFluxo();
-      await router.navigate({ to: '/potes/tarefa' });
+      unlockFlow();
+      await router.navigate({ to: '/jars/task' });
     });
     expect(
       screen.queryByRole('navigation', { name: 'Navegação' }),
