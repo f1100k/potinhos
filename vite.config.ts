@@ -6,7 +6,11 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
-    tanstackRouter({ target: 'react', autoCodeSplitting: true }),
+    tanstackRouter({
+      target: 'react',
+      autoCodeSplitting: true,
+      routeFileIgnorePattern: '\\.test\\.',
+    }),
     react(),
     tailwindcss(),
   ],

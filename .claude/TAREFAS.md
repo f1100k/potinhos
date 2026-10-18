@@ -110,11 +110,11 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 6 — Tela inicial (Meus potes)
 
-- [ ] Data por extenso (pt-BR), "Como está sua energia hoje?" e "Escolha um pote do jeito que você está. Sem pressa."
-- [ ] Três potes clicáveis com a quantidade visual de papeizinhos e a legenda "vazio / 1 papelzinho / N papeizinhos". O Semanal mostra "semana completa" quando tudo foi feito.
-- [ ] Link "Ver e editar os potes".
-- [ ] Atalho discreto "Suas conquistas" com "N papeizinhos guardados" ou "ainda vazio".
-- [ ] Card de fim de semana (só quando houver sobras no Semanal e a semana não estiver fechada): "A semana está acabando…" → "Fechar a semana".
+- [x] Data por extenso (pt-BR), "Como está sua energia hoje?" e "Escolha um pote do jeito que você está. Sem pressa."
+- [x] Três potes clicáveis com a quantidade visual de papeizinhos e a legenda "vazio / 1 papelzinho / N papeizinhos". O Semanal mostra "semana completa" quando tudo foi feito.
+- [x] Link "Ver e editar os potes".
+- [x] Atalho discreto "Suas conquistas" com "N papeizinhos guardados" ou "ainda vazio".
+- [x] Card de fim de semana (só quando houver sobras no Semanal e a semana não estiver fechada): "A semana está acabando…" → "Fechar a semana".
 
 ## Fase 7 — Fluxo do sorteio
 

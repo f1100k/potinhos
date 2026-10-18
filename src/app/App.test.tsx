@@ -11,7 +11,7 @@ describe('App', () => {
   });
 
   it.each([
-    ['/jars', 'Meus potes'],
+    ['/jars', 'Como está sua energia hoje?'],
     ['/new-task', 'Nova tarefa'],
     ['/edit', 'Ver e editar potes'],
     ['/pending', 'Pendentes'],
