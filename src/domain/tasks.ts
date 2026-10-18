@@ -1,8 +1,8 @@
 import type { Achievement, ISODate, Jar, NotDoneChoice, Task } from './types';
 
-const MIN_FREQ = 1;
-const MAX_FREQ = 7;
-const NEW_TASK_FREQ = 2;
+export const MIN_FREQ = 1;
+export const MAX_FREQ = 7;
+export const NEW_TASK_FREQ = 2;
 const MOVED_TASK_FREQ = 1;
 
 export function clampFreq(freq: number): number {

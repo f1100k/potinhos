@@ -150,16 +150,16 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 10 — Gerenciar tarefas
 
-- [ ] **Nova tarefa:** "O que você quer guardar?", campo de texto, "Em qual pote?" (3 opções). Para o Semanal, "Quantas vezes por semana?" com −/+ entre 1 e 7 (padrão 2). Botão "Colocar no pote".
+- [x] **Nova tarefa:** "O que você quer guardar?", campo de texto, "Em qual pote?" (3 opções). Para o Semanal, "Quantas vezes por semana?" com −/+ entre 1 e 7 (padrão 2). Botão "Colocar no pote".
   - Texto vazio: toast "Escreva a tarefa primeiro, sem pressa."
   - Sucesso: toast "Papelzinho guardado no pote X." e volta para a home.
   - Enter envia. Foco automático no campo.
-- [ ] **Ver e editar potes:** título "Seus potes" e abas Simples/Complexas/Semanal.
+- [x] **Ver e editar potes:** título "Seus potes" e abas Simples/Complexas/Semanal.
   - Por item: Editar (inline + Salvar), Mover de pote (→ outros potes, com toast), Excluir.
   - No Semanal: frequência −/+ e Pausar/Retomar, sem mostrar "X de Y esta semana". Tarefa pausada fica com opacidade 0,55 e meta "pausada".
   - Estado vazio: "Esse pote está vazio por enquanto. Quando quiser, coloque algo nele."
-  - [ ] Excluir com desfazer (toast) ou confirmação gentil.
-- [ ] **Pendentes:** "Coisas que ficaram esperando. Elas não têm pressa." Cards tracejados com "Retomar agora" (vai direto para a tarefa) e "→ Simples / Complexas / Semanal". Vazio: "Nada pendente por aqui."
+  - [x] Excluir com desfazer (toast "Papelzinho excluído." + Desfazer).
+- [x] **Pendentes:** "Coisas que ficaram esperando. Elas não têm pressa." Cards tracejados com "Retomar agora" (vai direto para a tarefa) e "→ Simples / Complexas / Semanal". Vazio: "Nada pendente por aqui."
 
 ## Fase 11 — Configurações
 
