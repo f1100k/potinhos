@@ -7,8 +7,9 @@ import {
   type RouterHistory,
   redirect,
 } from '@tanstack/react-router';
+import { z } from 'zod';
 import { Toaster } from '../components/Toast';
-import { type ISODate, POTES, type Pote } from '../domain/types';
+import { isoDateSchema, POTES, poteSchema } from '../domain/types';
 import { Add } from '../screens/Add';
 import { Cafe } from '../screens/Cafe';
 import { Conquistas } from '../screens/Conquistas';
@@ -31,26 +32,12 @@ import { Shell } from './Shell';
 export const ACH_TABS = ['semana', 'mes'] as const;
 export type AchTab = (typeof ACH_TABS)[number];
 
-type Search = Record<string, unknown>;
+// Parâmetro opcional: um valor inválido na URL é ignorado. Os obrigatórios,
+// do fluxo, só faltam se a URL foi editada à mão, e aí a validação falha.
+const opcional = <T extends z.ZodType>(schema: T) =>
+  schema.optional().catch(undefined);
 
-function oneOf<T extends string>(
-  value: unknown,
-  list: readonly T[],
-): T | undefined {
-  return list.includes(value as T) ? (value as T) : undefined;
-}
-
-function isoDate(value: unknown): ISODate | undefined {
-  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
-    ? value
-    : undefined;
-}
-
-/** Parâmetro obrigatório do fluxo. Só falta se a URL foi editada à mão. */
-function required<T>(value: T | undefined, name: string): T {
-  if (value === undefined) throw new Error(`Parâmetro inválido: ${name}`);
-  return value;
-}
+const porPote = z.object({ pote: opcional(poteSchema) });
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -87,18 +74,14 @@ const homeRoute = createRoute({
 const addRoute = createRoute({
   getParentRoute: () => appRoute,
   path: '/nova-tarefa',
-  validateSearch: (s: Search): { pote?: Pote | undefined } => ({
-    pote: oneOf(s.pote, POTES),
-  }),
+  validateSearch: porPote,
   component: Add,
 });
 
 const editRoute = createRoute({
   getParentRoute: () => appRoute,
   path: '/editar',
-  validateSearch: (s: Search): { pote?: Pote | undefined } => ({
-    pote: oneOf(s.pote, POTES),
-  }),
+  validateSearch: porPote,
   component: Edit,
 });
 
@@ -111,11 +94,9 @@ const pendingRoute = createRoute({
 const achRoute = createRoute({
   getParentRoute: () => appRoute,
   path: '/conquistas',
-  validateSearch: (
-    s: Search,
-  ): { tab: AchTab; semana?: ISODate | undefined } => ({
-    tab: oneOf(s.tab, ACH_TABS) ?? 'semana',
-    semana: isoDate(s.semana),
+  validateSearch: z.object({
+    tab: z.enum(ACH_TABS).catch('semana'),
+    semana: opcional(isoDateSchema),
   }),
   component: Conquistas,
 });
@@ -129,8 +110,8 @@ const settingsRoute = createRoute({
 const cafeRoute = createRoute({
   getParentRoute: () => appRoute,
   path: '/cafe',
-  validateSearch: (s: Search): { from: 'landing' | 'app' } => ({
-    from: oneOf(s.from, ['landing', 'app'] as const) ?? 'app',
+  validateSearch: z.object({
+    from: z.enum(['landing', 'app']).catch('app'),
   }),
   component: Cafe,
 });
@@ -149,9 +130,7 @@ const fluxoRoute = createRoute({
 const drawRoute = createRoute({
   getParentRoute: () => fluxoRoute,
   path: '/potes/sorteio',
-  validateSearch: (s: Search): { pote: Pote } => ({
-    pote: required(oneOf(s.pote, POTES), 'pote'),
-  }),
+  validateSearch: z.object({ pote: poteSchema }),
   component: Draw,
 });
 
@@ -176,21 +155,14 @@ const notDoneRoute = createRoute({
 const returnRoute = createRoute({
   getParentRoute: () => fluxoRoute,
   path: '/potes/devolver',
-  validateSearch: (s: Search): { destino: Pote | 'pendentes' } => ({
-    destino: required(
-      oneOf(s.destino, [...POTES, 'pendentes'] as const),
-      'destino',
-    ),
-  }),
+  validateSearch: z.object({ destino: z.enum([...POTES, 'pendentes']) }),
   component: Return,
 });
 
 const vazioRoute = createRoute({
   getParentRoute: () => fluxoRoute,
   path: '/potes/vazio',
-  validateSearch: (s: Search): { pote: Pote } => ({
-    pote: required(oneOf(s.pote, POTES), 'pote'),
-  }),
+  validateSearch: z.object({ pote: poteSchema }),
   component: Vazio,
 });
 
@@ -203,9 +175,7 @@ const weekendRoute = createRoute({
 const novaSemanaRoute = createRoute({
   getParentRoute: () => fluxoRoute,
   path: '/potes/nova-semana',
-  validateSearch: (s: Search): { semana: ISODate } => ({
-    semana: required(isoDate(s.semana), 'semana'),
-  }),
+  validateSearch: z.object({ semana: isoDateSchema }),
   component: NovaSemana,
 });
 

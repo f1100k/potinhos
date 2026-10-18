@@ -1,3 +1,4 @@
+import { isWeekend, startOfWeek } from 'date-fns';
 import { addDays, toISODate } from './dates';
 import type { ISODate, Meta } from './types';
 
@@ -6,10 +7,7 @@ import type { ISODate, Meta } from './types';
  * Devolve a segunda-feira da semana de `now`.
  */
 export function mondayOf(now: Date): ISODate {
-  const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12);
-  const diasDesdeSegunda = (d.getDay() + 6) % 7;
-  d.setDate(d.getDate() - diasDesdeSegunda);
-  return toISODate(d);
+  return toISODate(startOfWeek(now, { weekStartsOn: 1 }));
 }
 
 /** Domingo da semana que começa em `weekStart`. */
@@ -32,9 +30,8 @@ export const CARD_HORA = 18;
 
 export function fimDeSemanaChegando(meta: Meta, now: Date): boolean {
   if (meta.weekStart !== mondayOf(now)) return false;
-  const dia = now.getDay();
-  if (dia === 0 || dia === 6) return true;
-  return dia === CARD_DIA && now.getHours() >= CARD_HORA;
+  if (isWeekend(now)) return true;
+  return now.getDay() === CARD_DIA && now.getHours() >= CARD_HORA;
 }
 
 /**

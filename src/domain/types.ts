@@ -1,4 +1,7 @@
+import { z } from 'zod';
+
 export const POTES = ['simples', 'complexas', 'semanal'] as const;
+export const poteSchema = z.enum(POTES);
 
 export type Pote = (typeof POTES)[number];
 
@@ -10,6 +13,7 @@ export const POTE_LABEL: Record<Pote, string> = {
 
 /** Data local no formato `YYYY-MM-DD`. */
 export type ISODate = string;
+export const isoDateSchema = z.iso.date();
 
 export type Task = {
   id: string;

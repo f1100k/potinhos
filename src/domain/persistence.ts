@@ -1,14 +1,11 @@
+import { z } from 'zod';
 import { createInitialData, SCHEMA_VERSION } from './store';
 import {
   type AppData,
-  type Conquista,
-  type ISODate,
+  isoDateSchema,
   MAX_FREQ,
-  type Meta,
   MIN_FREQ,
-  POTES,
-  type Pote,
-  type Sorteada,
+  poteSchema,
   type Task,
 } from './types';
 import { mondayOf } from './week';
@@ -16,92 +13,72 @@ import { mondayOf } from './week';
 export const STORAGE_KEY = 'potinhos';
 export const CORRUPT_KEY = 'potinhos:corrompido';
 
-type Raw = Record<string, unknown>;
+/** Lista em que um item inválido é descartado, sem invalidar o resto. */
+const listaDe = <T extends z.ZodType>(item: T) =>
+  z.array(z.unknown()).transform((itens) =>
+    itens.flatMap((v) => {
+      const r = item.safeParse(v);
+      return r.success ? [r.data] : [];
+    }),
+  );
 
-const isObj = (v: unknown): v is Raw =>
-  typeof v === 'object' && v !== null && !Array.isArray(v);
-const isPote = (v: unknown): v is Pote =>
-  typeof v === 'string' && (POTES as readonly string[]).includes(v);
-const isDate = (v: unknown): v is ISODate =>
-  typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v);
-const asId = (v: unknown): string | null =>
-  typeof v === 'string' && v
-    ? v
-    : typeof v === 'number' && Number.isFinite(v)
-      ? String(v)
-      : null;
-const asCount = (v: unknown): number =>
-  typeof v === 'number' && Number.isFinite(v) && v > 0 ? Math.floor(v) : 0;
+// No protótipo os ids eram números.
+const id = z.union([z.string().min(1), z.number().transform(String)]);
+const texto = z.string().trim().min(1);
+const contagem = z.number().nonnegative().transform(Math.floor).catch(0);
 
-function parseTask(v: unknown): Task | null {
-  if (!isObj(v)) return null;
-  const id = asId(v.id);
-  const text = typeof v.text === 'string' ? v.text.trim() : '';
-  if (!id || !text || !isPote(v.pote)) return null;
-  const t: Task = { id, text, pote: v.pote };
-  if (v.status === 'pendente') t.status = 'pendente';
-  if (v.pote === 'semanal' && t.status !== 'pendente') {
-    const freq = asCount(v.freq);
-    t.freq = Math.min(MAX_FREQ, Math.max(MIN_FREQ, freq || 1));
-    t.doneWeek = asCount(v.doneWeek);
-    t.extra = asCount(v.extra);
-    if (v.paused === true) t.paused = true;
-  }
-  return t;
-}
+const task = z
+  .object({
+    id,
+    text: texto,
+    pote: poteSchema,
+    status: z.literal('pendente').optional().catch(undefined),
+    freq: contagem,
+    doneWeek: contagem,
+    extra: contagem,
+    paused: z.boolean().catch(false),
+  })
+  .transform(({ id, text, pote, status, freq, doneWeek, extra, paused }) => {
+    const t: Task = { id, text, pote };
+    if (status) t.status = status;
+    // Só a semanal ativa guarda as contagens da semana.
+    if (pote === 'semanal' && !status) {
+      t.freq = Math.min(MAX_FREQ, Math.max(MIN_FREQ, freq || 1));
+      t.doneWeek = doneWeek;
+      t.extra = extra;
+      if (paused) t.paused = true;
+    }
+    return t;
+  });
 
-function parseConquista(v: unknown, i: number): Conquista | null {
-  if (!isObj(v)) return null;
-  const text = typeof v.text === 'string' ? v.text.trim() : '';
-  if (!text || !isPote(v.pote) || !isDate(v.date)) return null;
-  return {
-    id: asId(v.id) ?? `c-${v.date}-${i}`,
-    text,
-    pote: v.pote,
-    date: v.date,
-  };
-}
+const conquista = z.object({
+  id: id.optional().catch(undefined),
+  text: texto,
+  pote: poteSchema,
+  date: isoDateSchema,
+});
 
-function parseMeta(v: unknown, now: Date): Meta {
-  const m = isObj(v) ? v : {};
-  return {
-    schemaVersion: SCHEMA_VERSION,
-    visited: m.visited === true,
-    weekStart: isDate(m.weekStart) ? m.weekStart : mondayOf(now),
-    lastWeekClosed: isDate(m.lastWeekClosed) ? m.lastWeekClosed : null,
-  };
-}
+const meta = z.object({
+  schemaVersion: z.number().optional().catch(undefined),
+  visited: z.boolean().catch(false),
+  weekStart: isoDateSchema.optional().catch(undefined),
+  lastWeekClosed: isoDateSchema.nullable().catch(null),
+});
 
-function parseCurrent(v: unknown, tasks: readonly Task[]): Sorteada | null {
-  if (!isObj(v)) return null;
-  const taskId = asId(v.taskId);
-  if (!taskId || !isDate(v.date)) return null;
-  if (!tasks.some((t) => t.id === taskId)) return null;
-  return { taskId, date: v.date };
-}
+const arquivo = z.object({
+  version: z.number().optional().catch(undefined),
+  tasks: listaDe(task),
+  done: listaDe(conquista).catch([]),
+  settings: z
+    .object({ sounds: z.boolean().catch(true) })
+    .catch({ sounds: true }),
+  meta: meta.optional().catch(undefined),
+  current: z.object({ taskId: id, date: isoDateSchema }).nullable().catch(null),
+});
 
 function dedupe<T extends { id: string }>(items: T[]): T[] {
   const seen = new Set<string>();
   return items.filter((x) => !seen.has(x.id) && seen.add(x.id));
-}
-
-/**
- * Migra versões antigas para a atual. A versão 0 é o formato do
- * protótipo: ids numéricos e sem `meta`. Os campos são normalizados em
- * `parseData`, então aqui só entra o que muda de forma.
- */
-function migrate(raw: Raw): Raw {
-  const version =
-    typeof raw.version === 'number'
-      ? raw.version
-      : isObj(raw.meta) && typeof raw.meta.schemaVersion === 'number'
-        ? raw.meta.schemaVersion
-        : 0;
-  let r = raw;
-  if (version < 1) {
-    r = { ...r, meta: isObj(r.meta) ? r.meta : { visited: true } };
-  }
-  return r;
 }
 
 export class InvalidDataError extends Error {}
@@ -109,31 +86,33 @@ export class InvalidDataError extends Error {}
 /**
  * Lê dados salvos ou importados, valida e migra. Itens inválidos são
  * descartados; um arquivo sem a forma esperada lança `InvalidDataError`.
+ *
+ * A versão 0 é o formato do protótipo: ids numéricos e sem `meta`. Quem
+ * tinha dados nele já tinha passado pela landing.
  */
 export function parseData(input: unknown, now: Date): AppData {
-  if (!isObj(input) || !Array.isArray(input.tasks)) {
-    throw new InvalidDataError('Formato não reconhecido');
-  }
-  const version = typeof input.version === 'number' ? input.version : 0;
+  const r = arquivo.safeParse(input);
+  if (!r.success) throw new InvalidDataError('Formato não reconhecido');
+  const { tasks, done, settings, meta, current } = r.data;
+  const version = r.data.version ?? meta?.schemaVersion ?? 0;
   if (version > SCHEMA_VERSION) {
     throw new InvalidDataError('Arquivo de uma versão mais nova do app');
   }
-  const raw = migrate(input);
-  const tasks = dedupe(
-    (raw.tasks as unknown[]).map(parseTask).filter((t) => t !== null),
-  );
-  const done = dedupe(
-    (Array.isArray(raw.done) ? raw.done : [])
-      .map(parseConquista)
-      .filter((c) => c !== null),
-  );
-  const settings = isObj(raw.settings) ? raw.settings : {};
+  const unicas = dedupe(tasks);
   return {
-    tasks,
-    done,
-    settings: { sounds: settings.sounds !== false },
-    meta: parseMeta(raw.meta, now),
-    current: parseCurrent(raw.current, tasks),
+    tasks: unicas,
+    done: dedupe(
+      done.map((c, i) => ({ ...c, id: c.id ?? `c-${c.date}-${i}` })),
+    ),
+    settings,
+    meta: {
+      schemaVersion: SCHEMA_VERSION,
+      visited: meta ? meta.visited : version < 1,
+      weekStart: meta?.weekStart ?? mondayOf(now),
+      lastWeekClosed: meta?.lastWeekClosed ?? null,
+    },
+    current:
+      current && unicas.some((t) => t.id === current.taskId) ? current : null,
   };
 }
 
