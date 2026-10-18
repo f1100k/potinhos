@@ -24,14 +24,16 @@ describe('router', () => {
     await act(async () => {
       unlockFlow();
       await router.navigate({
-        to: '/jars/draw',
+        to: '/jars/empty',
         search: { jar: 'weekly' },
       });
     });
-    expect(router.state.location.pathname).toBe('/jars/draw');
+    expect(router.state.location.pathname).toBe('/jars/empty');
     expect(router.state.location.search).toEqual({ jar: 'weekly' });
     expect(
-      screen.getByRole('heading', { name: 'Sorteio' }),
+      screen.getByRole('heading', {
+        name: 'Esse pote está vazio por enquanto.',
+      }),
     ).toBeInTheDocument();
   });
 

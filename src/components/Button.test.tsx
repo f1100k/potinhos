@@ -15,6 +15,7 @@ describe('Button', () => {
     ['secondary', 'border-border-soft'],
     ['link', 'text-link'],
     ['quiet', 'text-text-secondary'],
+    ['achievements', 'text-achievements-fg'],
   ] as const)('uses the %s look', (variant, expectedClass) => {
     render(<Button variant={variant}>Voltar aos potes</Button>);
     expect(screen.getByRole('button')).toHaveClass(expectedClass);

@@ -118,16 +118,16 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 7 — Fluxo do sorteio
 
-- [ ] **Sorteio:** o pote balança (0,9s), o papel sobe (até cerca de 2,4s) e se desdobra (até cerca de 4s), depois vai para a tela da tarefa.
+- [x] **Sorteio:** o pote balança (0,9s), o papel sobe (até cerca de 2,4s) e se desdobra (até cerca de 4s), depois vai para a tela da tarefa.
   - Legendas: "Deixa eu ver o que tem aqui…" → "Saiu um papelzinho." → "Olha só o que veio."
   - Nota: "Sorteado agora. Não dá para sortear de novo, e tudo bem."
-- [ ] **Tarefa em andamento:** "Sua tarefa de hoje", card com o texto e o chip do pote, "Tentar já conta. Um passinho de cada vez.", botões **Concluí** e **Não consegui hoje**.
-- [ ] Persistir a tarefa sorteada, para que um reload não permita sortear de novo. (Decidir até quando ela vale: o dia todo?)
-- [ ] **Concluí:** o papel se dobra, flutua até o pote de conquistas, e o pote brilha. Depois, "Olha só você!" / "Guardei esse no seu pote de conquistas." com [Voltar aos potes] [Ver conquistas].
-- [ ] **Não consegui hoje:** "Tudo bem, amanhã é outro dia. O que fazemos com esse papelzinho?"
+- [x] **Tarefa em andamento:** "Sua tarefa de hoje", card com o texto e o chip do pote, "Tentar já conta. Um passinho de cada vez.", botões **Concluí** e **Não consegui hoje**.
+- [x] Persistir a tarefa sorteada, para que um reload não permita sortear de novo. Vale até o fim do dia do sorteio.
+- [x] **Concluí:** o papel se dobra, flutua até o pote de conquistas, e o pote brilha. Depois, "Olha só você!" / "Guardei esse no seu pote de conquistas." com [Voltar aos potes] [Ver conquistas].
+- [x] **Não consegui hoje:** "Tudo bem, amanhã é outro dia. O que fazemos com esse papelzinho?"
   - Devolver ao pote X / Mudar para outro pote (submenu "Para qual pote?" + Voltar) / Deixar como pendente.
-- [ ] **Papelzinho voltando:** "Guardando com calma…", o papel dobra e cai no pote escolhido (ou em "Pendentes"). Depois volta para a home com o toast "Guardado. Sem pressa."
-- [ ] **Pote vazio:** "Esse pote está vazio por enquanto." com [Colocar uma tarefa] [Voltar aos potes].
+- [x] **Papelzinho voltando:** "Guardando com calma…", o papel dobra e cai no pote escolhido (ou em "Pendentes"). Depois volta para a home com o toast "Guardado. Sem pressa."
+- [x] **Pote vazio:** "Esse pote está vazio por enquanto." com [Colocar uma tarefa] [Voltar aos potes].
   - Variante para o Semanal completo: "Semana completa. Que semana, hein?", sem o botão de adicionar.
 
 ## Fase 8 — Pote Semanal: fechamento da semana

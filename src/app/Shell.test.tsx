@@ -67,7 +67,7 @@ describe('Shell', () => {
     const router = await renderApp('/jars');
     await act(async () => {
       unlockFlow();
-      await router.navigate({ to: '/jars/task' });
+      await router.navigate({ to: '/jars/empty', search: { jar: 'simple' } });
     });
     expect(
       screen.queryByRole('navigation', { name: 'Navegação' }),
