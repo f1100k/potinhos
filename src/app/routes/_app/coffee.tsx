@@ -1,5 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { z } from 'zod';
+import { createFileRoute } from '@tanstack/react-router';
 import { buttonClass } from '../../../components/ui/Button';
 import { QrCode } from '../../../components/ui/QrCode';
 import { toast } from '../../../components/ui/Toast';
@@ -14,9 +13,6 @@ import { pixCode } from '../../../features/coffee/utils/pixCode';
 const PIX_CODE = pixCode(PIX_RECIPIENT);
 
 export const Route = createFileRoute('/_app/coffee')({
-  validateSearch: z.object({
-    from: z.enum(['landing', 'app']).catch('app'),
-  }),
   component: Coffee,
 });
 
@@ -39,20 +35,8 @@ async function copy(text: string, thanks: string, fallback: string) {
 }
 
 function Coffee() {
-  const { from } = Route.useSearch();
-
   return (
     <div className="mx-auto max-w-110 animate-fade-in pt-9 text-center">
-      {from === 'landing' && (
-        <div className="mb-2.5 text-left">
-          <Link
-            to="/"
-            className="inline-flex min-h-touch items-center text-[14.5px] text-text-secondary hover:text-text"
-          >
-            ‹ Voltar
-          </Link>
-        </div>
-      )}
       <CoffeeCup />
       <h1 className="mt-7 mb-2.5 text-[26px] leading-[1.25]">
         Me paga um café?

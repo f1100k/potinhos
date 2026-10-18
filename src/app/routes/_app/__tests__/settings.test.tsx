@@ -145,15 +145,17 @@ describe('Settings', () => {
     ).toBeVisible();
   });
 
-  it('links to the landing page and to the coffee page', async () => {
+  it('links to the landing page and, on mobile only, to the coffee page', async () => {
     seedData(TODAY);
     await renderApp('/settings');
     expect(
       screen.getByRole('link', { name: /Sobre o Potinhos/ }),
     ).toHaveAttribute('href', '/');
-    expect(
-      screen.getByRole('link', { name: /Me paga um café\?.*sempre/ }),
-    ).toHaveAttribute('href', '/coffee?from=app');
+    const coffee = screen.getByRole('link', {
+      name: /Me paga um café\?.*sempre/,
+    });
+    expect(coffee).toHaveAttribute('href', '/coffee');
+    expect(coffee).toHaveClass('wide:hidden');
   });
 
   it('explains when each sound plays', async () => {

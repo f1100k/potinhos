@@ -31,9 +31,7 @@ describe('Landing', () => {
       screen.getByRole('heading', { name: 'Nada sai do seu aparelho.' }),
     ).toBeVisible();
     expect(screen.queryByRole('navigation')).toBeNull();
-    expect(
-      screen.getByRole('link', { name: 'Me paga um café?' }),
-    ).toHaveAttribute('href', '/coffee?from=landing');
+    expect(screen.queryByRole('link', { name: /café/ })).toBeNull();
   });
 
   it('the first Começar marks the visit and tells where the data stays', async () => {

@@ -175,8 +175,7 @@ function Settings() {
         </Link>
         <Link
           to="/coffee"
-          search={{ from: 'app' }}
-          className="flex min-h-13 items-center justify-between gap-3.5 rounded-card-md border border-achievements-border bg-achievements-bg px-4.5 py-3.5 text-text hover:text-text"
+          className="flex min-h-13 items-center justify-between gap-3.5 rounded-card-md border border-achievements-border wide:hidden bg-achievements-bg px-4.5 py-3.5 text-text hover:text-text"
         >
           <span>
             <span className="block text-[16px]">Me paga um café?</span>

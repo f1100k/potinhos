@@ -1,4 +1,4 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 import { JarIllustration } from '../../components/jars/JarIllustration';
 import { toast } from '../../components/ui/Toast';
@@ -157,12 +157,9 @@ function Landing() {
       </section>
 
       <footer
-        className={`${SECTION_CLASS} flex flex-wrap justify-between gap-3 border-t border-divider pt-5 pb-9 text-[13.5px] text-text-tertiary`}
+        className={`${SECTION_CLASS} border-t border-divider pt-5 pb-9 text-[13.5px] text-text-tertiary`}
       >
-        <span>Potinhos. Gratuito, sem anúncios, para sempre.</span>
-        <Link to="/coffee" search={{ from: 'landing' }} className="text-link">
-          Me paga um café?
-        </Link>
+        Potinhos. Gratuito, sem anúncios, para sempre.
       </footer>
     </div>
   );

@@ -19,7 +19,7 @@ describe('Coffee', () => {
   });
 
   it('shows the Pix QR code and key, with no suggested amount', async () => {
-    await renderApp('/coffee?from=app');
+    await renderApp('/coffee');
     expect(screen.getByRole('img', { name: 'QR code do Pix' })).toBeVisible();
     expect(
       screen.getByRole('button', { name: '444.780.078-02 · copiar' }),
@@ -34,7 +34,7 @@ describe('Coffee', () => {
   });
 
   it('copies the key and thanks', async () => {
-    await renderApp('/coffee?from=app');
+    await renderApp('/coffee');
     const user = userEvent.setup();
     const writeText = vi
       .spyOn(navigator.clipboard, 'writeText')
@@ -49,7 +49,7 @@ describe('Coffee', () => {
   });
 
   it('copies the Pix copia e cola code', async () => {
-    await renderApp('/coffee?from=app');
+    await renderApp('/coffee');
     const user = userEvent.setup();
     const writeText = vi
       .spyOn(navigator.clipboard, 'writeText')
@@ -61,7 +61,7 @@ describe('Coffee', () => {
   });
 
   it('shows the key when copying is not allowed', async () => {
-    await renderApp('/coffee?from=app');
+    await renderApp('/coffee');
     const user = userEvent.setup();
     vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(
       new Error('denied'),
@@ -72,11 +72,5 @@ describe('Coffee', () => {
     expect(
       await screen.findByText('Não consegui copiar. A chave é 444.780.078-02.'),
     ).toBeVisible();
-  });
-
-  it('opened from the landing page, offers a way back', async () => {
-    const router = await renderApp('/coffee?from=landing');
-    await userEvent.click(screen.getByRole('link', { name: '‹ Voltar' }));
-    expect(router.state.location.pathname).toBe('/');
   });
 });

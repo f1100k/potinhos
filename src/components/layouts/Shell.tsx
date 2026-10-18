@@ -59,7 +59,6 @@ export function Shell({ children, bottomNav }: Props) {
         ))}
         <Link
           to="/coffee"
-          search={{ from: 'app' }}
           className="mt-auto min-h-10 px-3.5 py-2 text-left text-[13px] text-text-tertiary hover:text-link"
         >
           Me paga um café?
