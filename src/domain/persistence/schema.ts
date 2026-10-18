@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { toISODate } from '../dates';
 import { clampFreq } from '../tasks';
 import { type AppData, isoDateSchema, jarSchema, type Task } from '../types';
 import { mondayOf } from '../week';
@@ -72,16 +73,29 @@ function dedupe<T extends { id: string }>(items: T[]): T[] {
   return items.filter((item) => !seen.has(item.id) && seen.add(item.id));
 }
 
-export class InvalidDataError extends Error {}
+type InvalidDataReason = 'format' | 'newerVersion';
+
+export class InvalidDataError extends Error {
+  readonly reason: InvalidDataReason;
+
+  constructor(reason: InvalidDataReason) {
+    super(
+      reason === 'newerVersion'
+        ? 'File is from a newer version of the app'
+        : 'Unrecognized format',
+    );
+    this.reason = reason;
+  }
+}
 
 export function parseData(input: unknown, now: Date): AppData {
-  if (!isRecord(input)) throw new InvalidDataError('Unrecognized format');
+  if (!isRecord(input)) throw new InvalidDataError('format');
   const version = versionOf(input);
   if (version > SCHEMA_VERSION) {
-    throw new InvalidDataError('File is from a newer version of the app');
+    throw new InvalidDataError('newerVersion');
   }
   const result = fileSchema.safeParse(migrate(input, version));
-  if (!result.success) throw new InvalidDataError('Unrecognized format');
+  if (!result.success) throw new InvalidDataError('format');
   const { tasks, achievements, settings, meta, drawn } = result.data;
   const uniqueTasks = dedupe(tasks);
   return {
@@ -102,4 +116,16 @@ export function parseData(input: unknown, now: Date): AppData {
 
 export function serialize(data: AppData): string {
   return JSON.stringify({ version: SCHEMA_VERSION, ...data });
+}
+
+export function exportFile(data: AppData, now: Date): string {
+  return JSON.stringify(
+    { version: SCHEMA_VERSION, exportedAt: now.toISOString(), ...data },
+    null,
+    2,
+  );
+}
+
+export function exportFileName(now: Date): string {
+  return `potinhos-${toISODate(now)}.json`;
 }

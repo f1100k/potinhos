@@ -1,0 +1,11 @@
+export function downloadText(fileName: string, text: string): void {
+  const url = URL.createObjectURL(
+    new Blob([text], { type: 'application/json' }),
+  );
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  link.click();
+  // Revoking right away cancels the download in some browsers.
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}

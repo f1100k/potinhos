@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { InvalidDataError, parseData } from './schema';
+import { createInitialData } from '../reducer';
+import { SCHEMA_VERSION } from './migrate';
+import {
+  exportFile,
+  exportFileName,
+  InvalidDataError,
+  parseData,
+} from './schema';
 
 const now = new Date(2026, 9, 14, 10);
 
@@ -157,5 +164,37 @@ describe('parseData', () => {
     expect(() => parseData({ version: 99, tasks: [] }, now)).toThrow(
       InvalidDataError,
     );
+  });
+
+  it('tells why the file was rejected', () => {
+    const reasonOf = (input: unknown) => {
+      try {
+        parseData(input, now);
+      } catch (error) {
+        return error instanceof InvalidDataError ? error.reason : error;
+      }
+    };
+    expect(reasonOf({ foo: 1 })).toBe('format');
+    expect(reasonOf({ version: 99, tasks: [] })).toBe('newerVersion');
+  });
+});
+
+describe('exportFile', () => {
+  it('saves the current version and the export time, and reads back', () => {
+    const data = {
+      ...createInitialData(now),
+      tasks: [{ id: 'a', text: 'Lavar a louça', jar: 'simple' as const }],
+    };
+    const file = JSON.parse(exportFile(data, now));
+    expect(file).toMatchObject({
+      version: SCHEMA_VERSION,
+      exportedAt: now.toISOString(),
+      tasks: data.tasks,
+    });
+    expect(parseData(file, now)).toEqual(data);
+  });
+
+  it('names the file with the local date', () => {
+    expect(exportFileName(now)).toBe('potinhos-2026-10-14.json');
   });
 });

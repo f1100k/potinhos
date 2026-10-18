@@ -163,13 +163,13 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 11 — Configurações
 
-- [ ] Toggle "Sons de papel" ("Respeitam o modo silencioso do celular"), persistido.
-- [ ] Seção "Seus papeizinhos": "Guardados só neste aparelho…"
-  - [ ] **Baixar meus dados:** gera o arquivo JSON para download.
-  - [ ] **Importar arquivo:** file picker, validação do schema, confirmação de substituir ou mesclar, mensagens gentis em caso de erro.
-  - [ ] **Apagar tudo:** confirmação (texto na seção 0), limpa o `localStorage` e volta ao estado inicial.
-- [ ] Links "Sobre o Potinhos" (→ landing) e "Me paga um café?" (card dourado discreto).
-- [ ] Legenda "Quando cada som toca" (4 itens).
+- [x] Toggle "Sons de papel" ("Respeitam o modo silencioso do celular"), persistido.
+- [x] Seção "Seus papeizinhos": "Guardados só neste aparelho…"
+  - [x] **Baixar meus dados:** gera o arquivo JSON para download.
+  - [x] **Importar arquivo:** file picker, validação do schema, confirmação de juntar (acrescenta o que falta, pelo id) ou trocar tudo, mensagens gentis em caso de erro. Com o aparelho vazio, importa direto.
+  - [x] **Apagar tudo:** confirmação (texto na seção 0), limpa o `localStorage` e volta ao estado inicial.
+- [x] Links "Sobre o Potinhos" (→ landing) e "Me paga um café?" (card dourado discreto).
+- [x] Legenda "Quando cada som toca" (4 itens).
 
 ## Fase 12 — Me paga um café?
 
