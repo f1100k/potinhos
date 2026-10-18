@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { deleteTaskWithUndo } from '../../../components/jars/deleteTaskWithUndo';
 import { JarTargets } from '../../../components/jars/JarTargets';
 import { JAR_NAMES } from '../../../components/jars/jarNames';
 import { toast } from '../../../components/ui/Toast';
@@ -53,6 +54,13 @@ function Pending() {
                     toast(`De volta ao pote ${JAR_NAMES[jar]}.`);
                   }}
                 />
+                <button
+                  type="button"
+                  onClick={() => deleteTaskWithUndo(task)}
+                  className="min-h-10 px-2.5 text-[13.5px] text-text-secondary"
+                >
+                  Excluir
+                </button>
               </div>
             </li>
           ))}

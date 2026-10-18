@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { type FormEvent, useState } from 'react';
+import { deleteTaskWithUndo } from '../../../components/jars/deleteTaskWithUndo';
 import { JarTargets } from '../../../components/jars/JarTargets';
 import { JAR_NAMES } from '../../../components/jars/jarNames';
 import { FreqStepper } from '../../../components/ui/FreqStepper';
@@ -68,17 +69,6 @@ function EditableTask({ task }: EditableTaskProps) {
     }
     dispatch({ type: 'editTask', id: task.id, text: draft });
     setDraft(null);
-  }
-
-  function remove() {
-    const index = useAppData
-      .getState()
-      .tasks.findIndex((t) => t.id === task.id);
-    dispatch({ type: 'deleteTask', id: task.id });
-    toast('Papelzinho excluído.', {
-      label: 'Desfazer',
-      onClick: () => dispatch({ type: 'restoreTask', task, index }),
-    });
   }
 
   return (
@@ -153,7 +143,7 @@ function EditableTask({ task }: EditableTaskProps) {
         </button>
         <button
           type="button"
-          onClick={remove}
+          onClick={() => deleteTaskWithUndo(task)}
           className={`${ACTION_CLASS} text-text-secondary`}
         >
           Excluir

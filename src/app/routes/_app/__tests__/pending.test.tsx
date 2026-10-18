@@ -56,4 +56,17 @@ describe('Pending', () => {
     expect(screen.getByText('Nada pendente por aqui.')).toBeVisible();
     expect(await screen.findByText('De volta ao pote Semanal.')).toBeVisible();
   });
+
+  it('deletes the slip with an undo that keeps it pending', async () => {
+    seedData(TODAY, { tasks: [AUNT] });
+    await renderApp('/pending');
+    await userEvent.click(screen.getByRole('button', { name: 'Excluir' }));
+    expect(useAppData.getState().tasks).toEqual([]);
+    expect(screen.getByText('Nada pendente por aqui.')).toBeVisible();
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Desfazer' }),
+    );
+    expect(useAppData.getState().tasks).toEqual([AUNT]);
+    expect(screen.getByText('Ligar para a tia')).toBeVisible();
+  });
 });
