@@ -8,7 +8,7 @@ import {
 import { useCallback } from 'react';
 
 /** Id da rota sem caminho que agrupa as telas do fluxo do sorteio. */
-export const FLUXO_ID: RouteIds<RegisteredRouter['routeTree']> = '/app/fluxo';
+export const FLUXO_ID: RouteIds<RegisteredRouter['routeTree']> = '/_app/_fluxo';
 
 // O fluxo do sorteio só abre por uma ação dentro do app. Recarregar a página
 // ou voltar pelo navegador até uma tela do fluxo leva de volta para os potes.
