@@ -141,12 +141,12 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 9 — Pote de conquistas
 
-- [ ] Cabeçalho "‹ Potes" e abas **Esta semana** (últimos 7 dias, ou semana corrente; alinhar com a regra da virada) / **Este mês** (mês do calendário).
-- [ ] Ilustração do pote dourado, título "Sua semana" / "Seu mês" e "Papeizinhos guardados, um a um."
-- [ ] Lista de papeizinhos desdobrando um a um (`unfoldIn`, 0,35s entre cada, leve inclinação), com o texto, o chip do pote e a data ("3 de out.").
-- [ ] Mensagem final: "Olha tudo que você fez essa semana/esse mês, mesmo nos dias difíceis."
-- [ ] Estado vazio: "Aqui vão morar as coisas que você fizer."
-- [ ] Listas longas: performance e animação limitadas aos primeiros itens.
+- [x] Cabeçalho "‹ Potes" e abas **Esta semana** (semana corrente, de segunda a domingo, como a virada; `?week=` abre uma semana específica) / **Este mês** (mês do calendário).
+- [x] Ilustração do pote dourado, título "Sua semana" / "Seu mês" e "Papeizinhos guardados, um a um."
+- [x] Lista de papeizinhos desdobrando um a um (`unfoldIn`, 0,35s entre cada, leve inclinação), com o texto, o chip do pote e a data ("3 de out.").
+- [x] Mensagem final: "Olha tudo que você fez essa semana/esse mês, mesmo nos dias difíceis."
+- [x] Estado vazio: "Aqui vão morar as coisas que você fizer."
+- [x] Listas longas: performance e animação limitadas aos primeiros itens.
 
 ## Fase 10 — Gerenciar tarefas
 
