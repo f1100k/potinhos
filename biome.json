@@ -40,7 +40,7 @@
   },
   "overrides": [
     {
-      "includes": ["src/styles/app.css"],
+      "includes": ["src/app/app.css"],
       "linter": {
         "rules": {
           "complexity": { "noImportantStyles": "off" }
