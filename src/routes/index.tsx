@@ -1,5 +1,6 @@
 import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
+import { requestPersistentStorage } from '../app/persistentStorage';
 import { dispatch, useAppData } from '../app/store';
 import { JarIllustration } from '../components/JarIllustration';
 import { toast } from '../components/Toast';
@@ -61,6 +62,7 @@ function Landing() {
     if (!visited) {
       dispatch({ type: 'visit' });
       toast('Seus papeizinhos ficam só neste aparelho.');
+      void requestPersistentStorage();
     }
     navigate({ to: '/jars' });
   }

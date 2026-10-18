@@ -190,8 +190,9 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 14 — PWA, acessibilidade e qualidade
 
-- [ ] PWA: manifest, ícones, service worker offline e instalável no celular.
-- [ ] Pedir `navigator.storage.persist()` para reduzir o risco de o navegador apagar os dados.
+- [x] PWA: manifest, ícones, service worker offline e instalável no celular (`vite-plugin-pwa`; a fonte Varela Round agora vem do `@fontsource`, sem Google Fonts).
+  - [ ] Testar a instalação e o modo offline num celular de verdade, depois do deploy.
+- [x] Pedir `navigator.storage.persist()` para reduzir o risco de o navegador apagar os dados (no primeiro "Começar" e em cada abertura de quem já visitou).
 - [ ] Acessibilidade:
   - Rótulos ARIA nos potes ("Pote Simples, 5 papeizinhos").
   - `aria-live` nos toasts e nas legendas do sorteio.
