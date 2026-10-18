@@ -5,6 +5,11 @@ import { JarIllustration } from '../../../../components/jars/JarIllustration';
 import { JAR_NAMES } from '../../../../components/jars/jarNames';
 import { Slip } from '../../../../components/jars/Slip';
 import { toast } from '../../../../components/ui/Toast';
+import { SkipAnimation } from '../../../../features/jars/components/SkipAnimation';
+import {
+  type SoundCue,
+  useSounds,
+} from '../../../../features/jars/hooks/useSounds';
 import { useAfter } from '../../../../features/jars/hooks/useTimeline';
 import { dispatch, useAppData } from '../../../../stores/appData';
 import { drawnToday } from '../../../../stores/appReducer';
@@ -16,6 +21,7 @@ export const Route = createFileRoute('/_app/_flow/jars/return')({
 });
 
 const RETURN_MS = 2300;
+const RETURN_SOUNDS: SoundCue[] = [{ sound: 'returnRustle' }];
 
 function choiceFor(destination: Jar | 'pending', from: Jar): NotDoneChoice {
   if (destination === 'pending') return { kind: 'pending' };
@@ -27,6 +33,7 @@ function Return() {
   const { destination } = Route.useSearch();
   const [task] = useState(() => drawnToday(useAppData.getState(), new Date()));
   const navigate = useNavigate();
+  useSounds(task ? RETURN_SOUNDS : undefined);
 
   useEffect(() => {
     if (task) {
@@ -38,10 +45,12 @@ function Return() {
     }
   }, [task, destination]);
 
-  useAfter(RETURN_MS, () => {
+  function goHome() {
     navigate({ to: '/jars', replace: true });
     toast('Guardado. Sem pressa.');
-  });
+  }
+
+  useAfter(RETURN_MS, goHome);
 
   if (!task) return <Navigate to="/jars" replace />;
 
@@ -50,6 +59,7 @@ function Return() {
   return (
     <div className="pt-10 text-center">
       <h1 className="sr-only">Papelzinho voltando</h1>
+      <SkipAnimation onSkip={goHome} />
       <p className="animate-fade-in text-[15px] text-text-secondary">
         Guardando com calma…
       </p>

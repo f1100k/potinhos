@@ -13,7 +13,7 @@ describe('usePhase', () => {
   afterEach(() => vi.useRealTimers());
 
   it('goes through the phases at the given times', () => {
-    const { result } = renderHook(() => usePhase(TIMELINE));
+    const { result } = renderHook(() => usePhase(TIMELINE)[0]);
     expect(result.current).toBe('wobble');
     act(() => vi.advanceTimersByTime(900));
     expect(result.current).toBe('rise');
@@ -21,6 +21,13 @@ describe('usePhase', () => {
     expect(result.current).toBe('rise');
     act(() => vi.advanceTimersByTime(1));
     expect(result.current).toBe('unfold');
+  });
+
+  it('jumps to the last phase and stops the timers when skipped', () => {
+    const { result } = renderHook(() => usePhase(TIMELINE));
+    act(() => result.current[1]());
+    expect(result.current[0]).toBe('unfold');
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it('stops the timers on unmount', () => {

@@ -32,3 +32,8 @@ dist-ssr
 
 # Claude Design prototype, kept locally as a reference
 .claude/Potinhos.dc.html
+
+# Playwright
+/test-results
+/playwright-report
+/blob-report

@@ -44,7 +44,7 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 - [x] Criar o projeto (stack definida acima), com Biome (lint + format), TypeScript estrito e scripts de dev, build e test.
 - [ ] Configurar o deploy estático (Vercel, Netlify ou GitHub Pages).
   - Pronto no código: `vercel.json` e CI no GitHub Actions. Falta criar o repositório no GitHub e importar na Vercel.
-- [x] **Design tokens** a partir do protótipo:
+- [x] **Design tokens** a partir do protótipo (alguns tons foram escurecidos na Fase 14 para o contraste AA):
   - Fundo `#F2F6EE`, superfície `#FFFFFF` / `#FCFDFA`, borda `#CFDBC7` / `#D6E0CE`, divisória `#DCE5D5`
   - Texto `#2F3D2B`, secundário `#6E7E68`, terciário `#9DAA95`, `#55654F`
   - Acento (botões) `#D4876A`, links `#B86D52`, hover `#9A5A41`
@@ -179,29 +179,34 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 13 — Sons
 
-- [ ] Selecionar e otimizar os áudios (curtos, baixos, em mp3 ou ogg):
-  - Sorteio: farfalhar + papel desdobrando.
-  - Conclusão: papel dobrando + "toc" ao cair no pote.
-  - Não consegui: só um farfalhar leve (nenhum som de erro).
-  - Nova semana: papeizinhos caindo, bem baixinho.
-- [ ] Serviço de áudio (Web Audio ou `HTMLAudioElement`) com pré-carregamento, volume baixo e respeito ao toggle. Só tocar depois de uma interação, por causa das políticas de autoplay.
-- [ ] Sincronizar com as fases das animações.
-- [ ] Checar o modo silencioso. No iOS a web não consegue detectar o silencioso diretamente, então documentar a limitação ou usar a Web Audio API, que respeita a chave.
+- [x] Selecionar e otimizar os áudios (curtos, baixos, em MP3). Gravados e editados por nós; originais em `sounds-src/`, créditos em `CREDITS.md`.
+  - Sorteio: farfalhar (`draw-rustle`) + papel desdobrando (`draw-unfold`).
+  - Conclusão: papel dobrando (`done-fold`) + "toc" ao cair no pote (`done-tap`).
+  - Não consegui: só um farfalhar leve (`return-rustle`), nenhum som de erro.
+  - Nova semana: papeizinhos caindo, bem baixinho (`slip-drop-1..3`, um por papelzinho).
+- [x] Serviço de áudio com Web Audio (`src/lib/audio.ts`): baixa os arquivos na abertura (se os sons estão ligados), só toca depois de um toque por causa do autoplay e respeita o toggle. Os MP3 entram no precache do service worker.
+  - O volume de cada som fica em `src/config/sounds.ts`.
+- [x] Sincronizar com as fases das animações (`useSounds` em cada tela do fluxo). Pular a animação silencia o que falta.
+- [x] Modo silencioso: a Web Audio no iOS respeita a chave do silencioso, e `navigator.audioSession.type = "ambient"` (Safari 16.4+) deixa isso explícito e não interrompe a música que estiver tocando.
+  - [ ] Conferir num iPhone de verdade, depois do deploy.
 
 ## Fase 14 — PWA, acessibilidade e qualidade
 
 - [x] PWA: manifest, ícones, service worker offline e instalável no celular (`vite-plugin-pwa`; a fonte Varela Round agora vem do `@fontsource`, sem Google Fonts).
   - [ ] Testar a instalação e o modo offline num celular de verdade, depois do deploy.
 - [x] Pedir `navigator.storage.persist()` para reduzir o risco de o navegador apagar os dados (no primeiro "Começar" e em cada abertura de quem já visitou).
-- [ ] Acessibilidade:
-  - Rótulos ARIA nos potes ("Pote Simples, 5 papeizinhos").
-  - `aria-live` nos toasts e nas legendas do sorteio.
-  - Foco visível, navegação por teclado e contraste AA (checar o `#9DAA95`).
-- [ ] Durante as animações, impedir toques duplos e permitir pular a animação com um toque.
-- [ ] Testes: unitários do domínio (Fase 2) e E2E (Playwright) dos fluxos sortear → concluir, sortear → não consegui → mover, fechar a semana, exportar → importar.
+- [x] Acessibilidade:
+  - [x] Rótulos ARIA nos potes ("Pote Simples, 5 papeizinhos").
+  - [x] `aria-live` nos toasts, nas legendas do sorteio e nas mensagens que aparecem no fim das animações.
+  - [x] Foco visível e navegação por teclado.
+  - [x] Contraste AA: os tons do protótipo foram escurecidos, com o mesmo matiz, até 4,5:1 (botão `#BB5B36`, secundário `#5E6C59`, terciário `#5F6D57`, link `#9A573F`/`#7E4A36`, dourado `#836329`, Semanal `#547050`, chip Simples `#93563E`). Valores atuais em `src/app/app.css`.
+- [x] Durante as animações, impedir toques duplos e permitir pular a animação com um toque (`SkipAnimation`: só aceita toque depois de 500 ms e, depois de pular, ignora cliques por 500 ms).
+- [x] Testes: unitários do domínio (Fase 2) e E2E (Playwright) dos fluxos sortear → concluir, sortear → não consegui → mover, fechar a semana, exportar → importar.
+  - `npm run test:e2e` (em `e2e/`), só Chromium com perfil de celular, sobre o build de produção. Roda num job próprio no CI.
 - [ ] Testar em iOS Safari, Android Chrome e desktop. Cuidar da safe-area e do teclado virtual.
 - [ ] Revisão de texto: tom acolhedor, pt-BR e nenhum texto de cobrança.
-- [ ] Garantir que não há analytics nem rastreamento (requisito do produto).
+- [x] Garantir que não há analytics nem rastreamento (requisito do produto).
+  - Conferido em 18/10/2026: `src/` não faz nenhuma chamada de rede, e as URLs do build são só textos das bibliotecas. Para garantir isso daqui para a frente, falta decidir sobre um `Content-Security-Policy` no `vercel.json`.
 
 ## Fase 15 — Lançamento
 

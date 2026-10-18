@@ -64,7 +64,7 @@ Converse com o usuário em português. O plano do produto está em [.claude/TARE
 Rode, nesta ordem, e só conclua com tudo verde:
 
 ```sh
-npm run typecheck && npm run check:fix && npm run check && npm run knip && npm test && npm run build
+npm run typecheck && npm run check:fix && npm run check && npm run knip && npm test && npm run build && npm run test:e2e
 ```
 
 ## Git

@@ -1,8 +1,15 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { SOUNDS } from '../../../../../config/sounds';
+import { TAP_GUARD_MS } from '../../../../../features/jars/components/SkipAnimation';
+import { playSound } from '../../../../../lib/audio';
 import { useAppData } from '../../../../../stores/appData';
 import { openDrawnTask, waitMs } from '../../../../../testing/fixtures';
+
+vi.mock('../../../../../lib/audio', () => ({
+  playSound: vi.fn(() => () => {}),
+}));
 
 async function chooseNotDone(option: RegExp, jar?: string) {
   const router = await openDrawnTask();
@@ -51,4 +58,26 @@ describe('Return', () => {
       { id: 'a', jar: 'simple', status: 'pending' },
     ]);
   });
+
+  it('goes home right away when the animation is skipped', async () => {
+    const router = await chooseNotDone(/Devolver ao pote/);
+    await waitMs(TAP_GUARD_MS);
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Pular animação' }),
+    );
+    expect(router.state.location.pathname).toBe('/jars');
+    expect(await screen.findByText('Guardado. Sem pressa.')).toBeVisible();
+    // Lets the click guard expire, so the next test can click.
+    await waitMs(TAP_GUARD_MS);
+  });
+
+  it('plays only a light rustle', async () => {
+    vi.mocked(playSound).mockClear();
+    await chooseNotDone(/Devolver ao pote/);
+    expect(playedUrls()).toEqual([SOUNDS.returnRustle.url]);
+  });
+
+  function playedUrls() {
+    return vi.mocked(playSound).mock.calls.map(([url]) => url);
+  }
 });

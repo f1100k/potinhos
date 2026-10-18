@@ -1,23 +1,35 @@
-import { useEffect, useEffectEvent, useState } from 'react';
+import { useCallback, useEffect, useEffectEvent, useState } from 'react';
 
 type Timeline<Phase extends string> = readonly (readonly [Phase, number])[];
 
-/** Each entry is a phase and the ms after mount when it starts. */
+/**
+ * Each entry is a phase and the ms after mount when it starts. The second
+ * value jumps straight to the last phase.
+ */
 export function usePhase<Phase extends string>(
   timeline: Timeline<Phase>,
-): Phase {
-  const [first] = timeline;
-  if (!first) throw new Error('usePhase needs at least one phase');
+): readonly [Phase, () => void] {
+  const first = timeline[0];
+  const last = timeline.at(-1);
+  if (!first || !last) throw new Error('usePhase needs at least one phase');
   const [phase, setPhase] = useState<Phase>(first[0]);
+  const [skipped, setSkipped] = useState(false);
 
   useEffect(() => {
+    if (skipped) return;
     const timers = timeline.map(([next, startMs]) =>
       setTimeout(() => setPhase(next), startMs),
     );
     return () => timers.forEach(clearTimeout);
-  }, [timeline]);
+  }, [timeline, skipped]);
 
-  return phase;
+  const lastPhase = last[0];
+  const skipToEnd = useCallback(() => {
+    setSkipped(true);
+    setPhase(lastPhase);
+  }, [lastPhase]);
+
+  return [phase, skipToEnd];
 }
 
 export function useAfter(ms: number, callback: () => void): void {

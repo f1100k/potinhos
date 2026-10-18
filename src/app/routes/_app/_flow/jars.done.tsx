@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 import { JarIllustration } from '../../../../components/jars/JarIllustration';
 import { Slip } from '../../../../components/jars/Slip';
 import { Button } from '../../../../components/ui/Button';
+import { SkipAnimation } from '../../../../features/jars/components/SkipAnimation';
+import {
+  type SoundCue,
+  useSounds,
+} from '../../../../features/jars/hooks/useSounds';
 import { usePhase } from '../../../../features/jars/hooks/useTimeline';
 import { dispatch, newId, useAppData } from '../../../../stores/appData';
 import { drawnToday } from '../../../../stores/appReducer';
@@ -18,11 +23,19 @@ const DONE_TIMELINE = [
   ['message', 3900],
 ] as const;
 
+const DONE_SOUNDS: Partial<
+  Record<(typeof DONE_TIMELINE)[number][0], SoundCue[]>
+> = {
+  fold: [{ sound: 'doneFold' }],
+  land: [{ sound: 'doneTap' }],
+};
+
 function Done() {
   const [task] = useState(() => drawnToday(useAppData.getState(), new Date()));
   const achievementCount = useAppData((data) => data.achievements.length);
   const [countBefore] = useState(achievementCount);
-  const phase = usePhase(DONE_TIMELINE);
+  const [phase, skipToEnd] = usePhase(DONE_TIMELINE);
+  useSounds(DONE_SOUNDS[phase]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,6 +51,7 @@ function Done() {
   return (
     <div className="pt-10 text-center">
       <h1 className="sr-only">Concluí</h1>
+      {phase !== 'message' && <SkipAnimation onSkip={skipToEnd} />}
       <div className="relative h-117.5">
         {phase === 'fold' && (
           <div
@@ -71,31 +85,33 @@ function Done() {
           />
         </div>
       </div>
-      {phase === 'message' && (
-        <div className="animate-fade-up">
-          <h2 className="mb-2 text-[26px]">Olha só você!</h2>
-          <p className="text-[15px] text-pretty text-text-secondary">
-            Guardei esse no seu pote de conquistas.
-          </p>
-          <div className="mt-9 flex flex-col items-center gap-3">
-            <Button onClick={() => navigate({ to: '/jars', replace: true })}>
-              Voltar aos potes
-            </Button>
-            <Button
-              variant="achievements"
-              onClick={() =>
-                navigate({
-                  to: '/achievements',
-                  search: { tab: 'week' },
-                  replace: true,
-                })
-              }
-            >
-              Ver conquistas
-            </Button>
+      <div aria-live="polite">
+        {phase === 'message' && (
+          <div className="animate-fade-up">
+            <h2 className="mb-2 text-[26px]">Olha só você!</h2>
+            <p className="text-[15px] text-pretty text-text-secondary">
+              Guardei esse no seu pote de conquistas.
+            </p>
+            <div className="mt-9 flex flex-col items-center gap-3">
+              <Button onClick={() => navigate({ to: '/jars', replace: true })}>
+                Voltar aos potes
+              </Button>
+              <Button
+                variant="achievements"
+                onClick={() =>
+                  navigate({
+                    to: '/achievements',
+                    search: { tab: 'week' },
+                    replace: true,
+                  })
+                }
+              >
+                Ver conquistas
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

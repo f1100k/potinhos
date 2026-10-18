@@ -3,7 +3,12 @@ import { useState } from 'react';
 import { z } from 'zod';
 import { JarIllustration } from '../../../../components/jars/JarIllustration';
 import { Slip } from '../../../../components/jars/Slip';
+import { SkipAnimation } from '../../../../features/jars/components/SkipAnimation';
 import { useFlowNavigate } from '../../../../features/jars/hooks/useFlow';
+import {
+  type SoundCue,
+  useSounds,
+} from '../../../../features/jars/hooks/useSounds';
 import {
   useAfter,
   usePhase,
@@ -25,6 +30,11 @@ const DRAW_TIMELINE = [
 ] as const;
 const DRAW_MS = 4000;
 
+const DRAW_SOUNDS: Partial<Record<keyof typeof CAPTIONS, SoundCue[]>> = {
+  wobble: [{ sound: 'drawRustle' }],
+  unfold: [{ sound: 'drawUnfold' }],
+};
+
 const CAPTIONS = {
   wobble: 'Deixa eu ver o que tem aqui…',
   rise: 'Saiu um papelzinho.',
@@ -35,16 +45,19 @@ function Draw() {
   const { jar } = Route.useSearch();
   const [task] = useState(() => drawnToday(useAppData.getState(), new Date()));
   const slipsInJar = useAppData((data) => slipCount(data.tasks, jar));
-  const phase = usePhase(DRAW_TIMELINE);
+  const [phase] = usePhase(DRAW_TIMELINE);
+  useSounds(DRAW_SOUNDS[phase]);
   const flowNavigate = useFlowNavigate();
+  const openTask = () => flowNavigate({ to: '/jars/task' });
 
-  useAfter(DRAW_MS, () => flowNavigate({ to: '/jars/task' }));
+  useAfter(DRAW_MS, openTask);
 
   if (!task) return <Navigate to="/jars" replace />;
 
   return (
     <div className="pt-5 text-center">
       <h1 className="sr-only">Sorteio</h1>
+      <SkipAnimation onSkip={openTask} />
       <p
         aria-live="polite"
         className="min-h-5.5 animate-fade-in text-[15px] text-text-secondary"
