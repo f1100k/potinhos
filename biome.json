@@ -34,12 +34,13 @@
   },
   "css": {
     "parser": {
-      "cssModules": false
+      "cssModules": false,
+      "tailwindDirectives": true
     }
   },
   "overrides": [
     {
-      "includes": ["src/styles/animations.css"],
+      "includes": ["src/styles/app.css"],
       "linter": {
         "rules": {
           "complexity": { "noImportantStyles": "off" }

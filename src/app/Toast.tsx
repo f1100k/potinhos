@@ -9,9 +9,11 @@ import {
 } from 'react';
 import { useNav } from './Nav';
 import { FLOW_SCREENS } from './navigation';
-import './Toast.css';
 
 export const TOAST_MS = 2600;
+
+const TOAST_CLASS =
+  'pointer-events-none fixed left-1/2 z-9 max-w-[calc(100vw-32px)] -translate-x-1/2 animate-toast rounded-pill border-[1.5px] border-border bg-surface px-4.5 py-3 text-center text-[14px] text-text shadow-toast wide:bottom-8 wide:whitespace-nowrap';
 
 type ToastValue = (text: string) => void;
 
@@ -37,11 +39,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={show}>
       {children}
-      <div className="toast-region" role="status" aria-live="polite">
+      <div role="status" aria-live="polite">
         {toast && (
           <div
             key={toast.id}
-            className={`toast${semBarra ? ' toast--low' : ''}`}
+            className={`${TOAST_CLASS} ${semBarra ? 'bottom-[calc(32px+env(safe-area-inset-bottom))]' : 'bottom-[calc(92px+env(safe-area-inset-bottom))]'}`}
           >
             {toast.text}
           </div>

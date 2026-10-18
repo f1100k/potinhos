@@ -16,12 +16,13 @@ describe('Shell', () => {
   });
 
   it('o menu lateral tem os 6 itens e o link do café', () => {
-    const { container } = render(<App initialRoute={{ screen: 'home' }} />);
+    render(<App initialRoute={{ screen: 'home' }} />);
     // No celular o menu lateral fica oculto; aqui só conferimos o conteúdo.
-    const menu = container.querySelector<HTMLElement>('nav.sidebar');
-    if (!menu) throw new Error('sem menu lateral');
+    const menu = screen.getByRole('navigation', { name: 'Menu', hidden: true });
     expect(
-      [...menu.querySelectorAll('button')].map((b) => b.textContent),
+      within(menu)
+        .getAllByRole('button', { hidden: true })
+        .map((b) => b.textContent),
     ).toEqual([
       'Meus potes',
       'Nova tarefa',

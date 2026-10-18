@@ -1,0 +1,300 @@
+@import "tailwindcss";
+
+/* Design tokens do Potinhos, tirados do protótipo no Claude Design.
+   Nomes pelo papel, não pela cor. Cada token vira classe do Tailwind:
+   --color-link → text-link / bg-link, --radius-card → rounded-card etc. */
+@theme {
+  /* Só as cores do protótipo; a paleta padrão do Tailwind fica de fora. */
+  --color-*: initial;
+
+  /* Fundo e superfícies */
+  --color-bg: #f2f6ee;
+  --color-bg-blur: rgb(242 246 238 / 94%);
+  --color-surface: #ffffff;
+  --color-surface-soft: #fcfdfa;
+  --color-surface-muted: #e9f0e3;
+  --color-surface-muted-2: #f4f8f0;
+  --color-segment: #e3ebdc;
+
+  /* Bordas e divisórias */
+  --color-border: #cfdbc7;
+  --color-border-soft: #d6e0ce;
+  --color-divider: #dce5d5;
+
+  /* Texto */
+  --color-text: #2f3d2b;
+  --color-text-secondary: #6e7e68;
+  --color-text-tertiary: #9daa95;
+  --color-text-muted: #55654f;
+  --color-on-accent: #ffffff;
+
+  /* Acento */
+  --color-accent: #d4876a;
+  --color-link: #b86d52;
+  --color-link-hover: #9a5a41;
+
+  /* Tampas dos potes */
+  --color-lid-simples: #e8bfa4;
+  --color-lid-complexas: #c98d72;
+  --color-lid-semanal: #9db596;
+  --color-lid-conquistas: #e6bb63;
+
+  /* Chips por pote (fundo / texto) */
+  --color-chip-simples-bg: #f7dfd0;
+  --color-chip-simples-fg: #9a5a41;
+  --color-chip-complexas-bg: #ebd3c6;
+  --color-chip-complexas-fg: #7e4a36;
+  --color-chip-semanal-bg: #e6eee1;
+  --color-chip-semanal-fg: #587553;
+
+  /* Pote Semanal */
+  --color-semanal-bg: #eaf0e6;
+  --color-semanal-fg: #587553;
+  --color-semanal-border: #d3ddcd;
+  --color-semanal-jar-end: #f3f6f0;
+
+  /* Pote de conquistas */
+  --color-conquistas-bg: #fbf3e4;
+  --color-conquistas-border: #f0e2c6;
+  --color-conquistas-jar-border: #e9d7b2;
+  --color-conquistas-jar: #fff8ea;
+  --color-conquistas-jar-top: #fffbf2;
+  --color-conquistas-jar-end: #fbf0d8;
+  --color-conquistas-card-border: #eee2cf;
+  --color-conquistas-fg: #9a7430;
+  --color-conquistas-accent: #c9a95c;
+
+  /* Pote comum */
+  --color-jar-end: #eef3e9;
+  --color-jar-shine: rgb(255 255 255 / 90%);
+
+  /* Sombras */
+  --shadow-paper: 0 4px 14px rgb(75 63 55 / 8%);
+  --shadow-card: 0 10px 30px rgb(75 63 55 / 7%);
+  --shadow-toast: 0 8px 24px rgb(75 63 55 / 10%);
+
+  /* Tipografia */
+  --font-sans: "Varela Round", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, monospace;
+  --default-line-height: 1.45;
+
+  /* Raios */
+  --radius-pill: 999px;
+  --radius-sm: 12px;
+  --radius-card: 14px;
+  --radius-card-md: 16px;
+  --radius-card-lg: 18px;
+  --radius-card-xl: 20px;
+
+  /* Alvos de toque e layout */
+  --spacing-touch: 44px;
+  --spacing-sidebar: 224px;
+  --container-mobile: 520px;
+  --container-web: 760px;
+  --breakpoint-wide: 900px;
+
+  /* Animações prontas (as demais usam os keyframes abaixo via animate-[…]) */
+  --animate-fade-in: fadeIn 0.8s ease both;
+  --animate-fade-up: fadeUp 1s ease both;
+  --animate-toast: fadeUp 0.6s ease both;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a {
+    color: var(--color-link);
+  }
+
+  a:hover {
+    color: var(--color-link-hover);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 3px;
+  }
+
+  /* Movimento reduzido: toda animação vira um fade de 0,6s. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-name: fadeIn !important;
+      animation-duration: 0.6s !important;
+      animation-delay: 0s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01s !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Keyframes copiados do protótipo (Potinhos.dc.html). Ficam fora do @theme
+   para sempre irem pro CSS final, mesmo os que ainda não têm classe. */
+
+@keyframes wobble {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-2.5deg);
+  }
+  60% {
+    transform: rotate(2.2deg);
+  }
+  85% {
+    transform: rotate(-1deg);
+  }
+}
+
+@keyframes riseUp {
+  0% {
+    transform: translate(-50%, 10px) rotate(-6deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -190px) rotate(5deg);
+    opacity: 1;
+  }
+}
+
+@keyframes unfold {
+  0% {
+    transform: scale(0.4, 0.18);
+    opacity: 0.9;
+  }
+  55% {
+    transform: scale(1, 0.55);
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes foldPaper {
+  0% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(0.4, 0.14);
+  }
+}
+
+@keyframes floatToJar {
+  0% {
+    transform: translateY(0) rotate(0);
+  }
+  100% {
+    transform: translateY(268px) rotate(6deg);
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 0 0 rgb(230 187 99 / 0%);
+  }
+  35% {
+    box-shadow: 0 0 44px 16px rgb(230 187 99 / 45%);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(230 187 99 / 0%);
+  }
+}
+
+@keyframes fallIn {
+  0% {
+    transform: translateY(-150px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes unfoldIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92, 0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes markIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
