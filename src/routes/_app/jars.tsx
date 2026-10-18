@@ -1,17 +1,38 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import { longDateLabel } from '../../app/dateLabels';
-import { useFlowNavigate } from '../../app/flow';
+import { unlockFlow, useFlowNavigate } from '../../app/flow';
 import { pickJar } from '../../app/jarPick';
 import { savedSlipsLabel, slipCountLabel } from '../../app/slipLabels';
 import { dispatch, useAppData } from '../../app/store';
+import { weekTurn } from '../../app/weekTurn';
 import { buttonClass } from '../../components/Button';
 import { JarIllustration } from '../../components/JarIllustration';
 import { JAR_NAMES } from '../../components/jarNames';
 import { slipCount } from '../../domain/drawing';
 import { JARS, type Jar } from '../../domain/types';
-import { isWeekComplete, isWeekEnding, leftovers } from '../../domain/week';
+import {
+  isWeekComplete,
+  isWeekEnding,
+  isWeekOverdue,
+  leftovers,
+} from '../../domain/week';
 
-export const Route = createFileRoute('/_app/jars')({ component: Home });
+export const Route = createFileRoute('/_app/jars')({
+  beforeLoad: () => {
+    const now = new Date();
+    switch (weekTurn(useAppData.getState(), now)) {
+      case 'autoClose':
+        dispatch({ type: 'closeWeek', decisions: {}, now, ids: [] });
+        return;
+      case 'askWeekend':
+        unlockFlow();
+        throw redirect({ to: '/jars/weekend', replace: true });
+      case 'none':
+        return;
+    }
+  },
+  component: Home,
+});
 
 const ACHIEVEMENTS_SHORTCUT_SLIPS = 3;
 
@@ -20,8 +41,10 @@ function Home() {
   const flowNavigate = useFlowNavigate();
   const now = new Date();
   const weekComplete = isWeekComplete(data.tasks);
+  const weekOverdue = isWeekOverdue(data.meta, now);
   const showWeekendCard =
-    isWeekEnding(data.meta, now) && leftovers(data.tasks).length > 0;
+    (weekOverdue || isWeekEnding(data.meta, now)) &&
+    leftovers(data.tasks).length > 0;
 
   function openJar(jar: Jar) {
     const pickTime = new Date();
@@ -57,8 +80,9 @@ function Home() {
       {showWeekendCard && (
         <div className="mx-auto mt-7 flex max-w-105 flex-wrap items-center gap-3.5 rounded-card-xl bg-weekly-bg px-4.5 py-4">
           <p className="min-w-45 flex-1 text-[14.5px] text-pretty text-weekly-fg">
-            A semana está acabando. Quer dar uma olhada no que ficou no pote
-            Semanal?
+            {weekOverdue
+              ? 'A semana passada ficou aberta. Quer dar uma olhada no que ficou no pote Semanal?'
+              : 'A semana está acabando. Quer dar uma olhada no que ficou no pote Semanal?'}
           </p>
           <button
             type="button"

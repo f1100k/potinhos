@@ -132,12 +132,12 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 8 — Pote Semanal: fechamento da semana
 
-- [ ] Tela **Fim de semana**: chip "Pote Semanal", "Essa semana foi do jeito que deu." e "O que fazemos com esses?".
+- [x] Tela **Fim de semana**: chip "Pote Semanal", "Essa semana foi do jeito que deu." e "O que fazemos com esses?".
   - Para cada sobra: o texto (sem contador de quantas vezes faltaram) e as opções Levar para a próxima semana (padrão) / Deixar pendente / Deixar ir.
   - Botões [Fechar a semana] [Depois].
-- [ ] Tela **Nova semana**: "Semana fechada." e "O pote Semanal se enche de novo para a próxima.", com os papeizinhos caindo um a um (`fallIn`, 0,22s entre cada).
-- [ ] Convite: "Quer ver o que você fez essa semana?" → [Abrir pote de conquistas] (aba semana) [Agora não].
-- [ ] Virada sem fechamento: a semana fica pendente. Na primeira abertura depois de domingo 23:59, mostrar a tela "Fim de semana" antes da home. O pote só se reabastece depois que a pessoa fecha a semana. Se forem várias semanas sem abrir, fechar uma vez só.
+- [x] Tela **Nova semana**: "Semana fechada." e "O pote Semanal se enche de novo para a próxima.", com os papeizinhos caindo um a um (`fallIn`, 0,22s entre cada).
+- [x] Convite: "Quer ver o que você fez essa semana?" → [Abrir pote de conquistas] (aba semana) [Agora não].
+- [x] Virada sem fechamento: a semana fica pendente. Na primeira abertura depois de domingo 23:59, mostrar a tela "Fim de semana" antes da home. O pote só se reabastece depois que a pessoa fecha a semana. Se forem várias semanas sem abrir, fechar uma vez só.
 
 ## Fase 9 — Pote de conquistas
 

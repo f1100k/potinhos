@@ -12,6 +12,7 @@ describe('Button', () => {
   });
 
   it.each([
+    ['weekly', 'bg-weekly-fg'],
     ['secondary', 'border-border-soft'],
     ['link', 'text-link'],
     ['quiet', 'text-text-secondary'],

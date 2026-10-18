@@ -3,8 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { App } from '../app/App';
 import { createAppRouter } from '../app/router';
 import { loadAppData, useAppData } from '../app/store';
+import { resetWeekendAsked } from '../app/weekTurn';
 
 export async function renderApp(path = '/') {
+  resetWeekendAsked();
   useAppData.setState(loadAppData(localStorage), true);
   const router = createAppRouter(
     createMemoryHistory({ initialEntries: [path] }),

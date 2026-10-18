@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react';
 
 type ButtonVariant =
   | 'primary'
+  | 'weekly'
   | 'secondary'
   | 'link'
   | 'quiet'
@@ -13,6 +14,8 @@ const BASE_CLASS =
 const VARIANT_CLASS: Readonly<Record<ButtonVariant, string>> = {
   primary:
     'min-h-13 w-full max-w-75 rounded-pill bg-accent px-5.5 py-3.75 text-[16px] text-on-accent',
+  weekly:
+    'min-h-13 w-full max-w-75 rounded-pill bg-weekly-fg px-5.5 py-3.75 text-[16px] text-on-accent',
   secondary:
     'min-h-12.5 w-full max-w-75 rounded-pill border-[1.5px] border-border-soft px-5.5 py-3.5 text-[15.5px] text-text-secondary',
   link: 'px-3 text-[14px] text-link hover:text-link-hover',
