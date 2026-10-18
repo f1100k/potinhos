@@ -99,14 +99,14 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 5 — Landing page ("Como funciona")
 
-- [ ] Tela inicial do app, fora do shell (sem nav).
-- [ ] Cabeçalho com "Potinhos" e CTA "Começar". Para quem já visitou, o CTA vira "Abrir meus potes".
-- [ ] Hero "Um jeito gentil de fazer as coisas, um papelzinho de cada vez." com subtítulo, a nota "Gratuito. Sem anúncios." e a ilustração dos 3 potes.
-- [ ] "Como funciona": 3 cards **com estilo igual** (1 escrever papeizinhos, 2 escolher pelo nível de energia, 3 pote de conquistas).
-- [ ] Três pontos: "Não consegui hoje? Tudo bem.", "Nada sai do seu aparelho.", "Baseado em psicologia."
-- [ ] CTA final "Um passinho de cada vez." e rodapé "Potinhos. Gratuito, sem anúncios, para sempre." com link "Me paga um café?".
-- [ ] No primeiro "Começar", toast "Seus papeizinhos ficam só neste aparelho." e marcar `visited`.
-- [ ] Quem já visitou abre direto em "Meus potes"? (Confirmar. No protótipo o app sempre abre na landing.)
+- [x] Tela inicial do app, fora do shell (sem nav).
+- [x] Cabeçalho com "Potinhos" e CTA "Começar". Para quem já visitou, o CTA vira "Abrir meus potes".
+- [x] Hero "Um jeito gentil de fazer as coisas, um papelzinho de cada vez." com subtítulo, a nota "Gratuito. Sem anúncios." e a ilustração dos 3 potes.
+- [x] "Como funciona": 3 cards **com estilo igual** (1 escrever papeizinhos, 2 escolher pelo nível de energia, 3 pote de conquistas).
+- [x] Três pontos: "Não consegui hoje? Tudo bem.", "Nada sai do seu aparelho.", "Baseado em psicologia."
+- [x] CTA final "Um passinho de cada vez." e rodapé "Potinhos. Gratuito, sem anúncios, para sempre." com link "Me paga um café?".
+- [x] No primeiro "Começar", toast "Seus papeizinhos ficam só neste aparelho." e marcar `visited`.
+- [x] Quem já visitou abre direto em "Meus potes" (decidido em 18/10/2026). Só na abertura do app: "Sobre o Potinhos" continua mostrando a landing.
 
 ## Fase 6 — Tela inicial (Meus potes)
 
