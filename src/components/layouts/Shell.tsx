@@ -1,10 +1,11 @@
 import { Link, linkOptions } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
+import { NavIcon } from './NavIcon';
 
 const ACTIVE_CLASS =
   'aria-[current=page]:bg-segment aria-[current=page]:text-link';
 
-const BOTTOM_ITEM_CLASS = `min-h-12 max-w-30 flex-1 rounded-card px-1.5 py-2.5 text-center text-[13px] text-text-secondary ${ACTIVE_CLASS}`;
+const BOTTOM_ITEM_CLASS = `flex min-h-12 max-w-30 flex-1 flex-col items-center gap-0.5 rounded-card px-1 py-1.5 text-[12.5px] whitespace-nowrap text-text-secondary ${ACTIVE_CLASS}`;
 
 const SIDEBAR_ITEM_CLASS = `min-h-touch rounded-card px-3.5 py-3 text-left text-[15px] text-text-secondary not-aria-[current=page]:hover:text-text ${ACTIVE_CLASS}`;
 
@@ -33,11 +34,11 @@ const SIDEBAR_ITEMS = [
 ];
 
 const BOTTOM_ITEMS = [
-  { label: 'Meus potes', link: NAV.jars },
-  { label: 'Nova tarefa', link: NAV.newTask },
-  { label: 'Pendentes', link: NAV.pending },
-  { label: 'Configurações', link: NAV.settings },
-];
+  { label: 'Potes', icon: 'jars', link: NAV.jars },
+  { label: 'Nova', icon: 'newTask', link: NAV.newTask },
+  { label: 'Pendentes', icon: 'pending', link: NAV.pending },
+  { label: 'Ajustes', icon: 'settings', link: NAV.settings },
+] as const;
 
 type Props = {
   children: ReactNode;
@@ -66,23 +67,28 @@ export function Shell({ children, bottomNav }: Props) {
       </nav>
       <div className="flex min-w-0 flex-1 flex-col items-center">
         <main
-          className={`relative w-full max-w-mobile flex-1 px-5 pt-5 wide:max-w-web wide:pb-15 ${bottomNav ? 'pb-[calc(110px+env(safe-area-inset-bottom))]' : 'pb-[calc(40px+env(safe-area-inset-bottom))]'}`}
+          className={`relative w-full max-w-mobile flex-1 px-5 pt-5 wide:max-w-web wide:pb-15 ${bottomNav ? 'pb-5' : 'pb-[calc(40px+env(safe-area-inset-bottom))]'}`}
         >
           {children}
         </main>
+        {bottomNav && (
+          <nav
+            className="sticky bottom-0 z-5 flex w-full justify-around border-t border-divider bg-bg-blur px-2 pt-2 pb-[calc(10px+env(safe-area-inset-bottom))] backdrop-blur-[10px] wide:hidden"
+            aria-label="Navegação"
+          >
+            {BOTTOM_ITEMS.map((item) => (
+              <Link
+                key={item.label}
+                {...item.link}
+                className={BOTTOM_ITEM_CLASS}
+              >
+                <NavIcon name={item.icon} />
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        )}
       </div>
-      {bottomNav && (
-        <nav
-          className="fixed inset-x-0 bottom-0 z-5 flex justify-around border-t border-divider bg-bg-blur px-2 pt-2 pb-[calc(10px+env(safe-area-inset-bottom))] backdrop-blur-[10px] wide:hidden"
-          aria-label="Navegação"
-        >
-          {BOTTOM_ITEMS.map((item) => (
-            <Link key={item.label} {...item.link} className={BOTTOM_ITEM_CLASS}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      )}
     </div>
   );
 }

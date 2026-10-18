@@ -14,14 +14,14 @@ function menu() {
 }
 
 describe('Shell', () => {
-  it('the bottom bar has 4 items', async () => {
+  it('the bottom bar has 4 items with short labels', async () => {
     await renderApp('/jars');
     const bar = screen.getByRole('navigation', { name: 'Navegação' });
     expect(texts(within(bar).getAllByRole('link'))).toEqual([
-      'Meus potes',
-      'Nova tarefa',
+      'Potes',
+      'Nova',
       'Pendentes',
-      'Configurações',
+      'Ajustes',
     ]);
   });
 

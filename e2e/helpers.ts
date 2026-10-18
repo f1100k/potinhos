@@ -18,7 +18,7 @@ export async function addTask(
   text: string,
   jar: 'Simples' | 'Complexas' | 'Semanal',
 ) {
-  await page.getByRole('link', { name: 'Nova tarefa' }).click();
+  await page.getByRole('link', { name: 'Nova', exact: true }).click();
   await page
     .getByRole('textbox', { name: 'O que você quer guardar?' })
     .fill(text);

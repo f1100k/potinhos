@@ -98,7 +98,7 @@ function Home() {
         </div>
       )}
 
-      <div className="mt-11 flex flex-wrap items-end justify-center gap-4">
+      <div className="mt-9 flex flex-wrap items-end justify-center gap-4">
         {JARS.map((jar) => {
           const count = slipCount(data.tasks, jar);
           const countLabel =
@@ -137,7 +137,7 @@ function Home() {
       <Link
         to="/achievements"
         search={{ tab: 'week' }}
-        className="mx-auto mt-9 flex w-full max-w-90 items-center gap-3.5 rounded-card-lg border border-achievements-border bg-achievements-bg py-3 pr-4.5 pl-3.5 text-left text-text hover:text-text"
+        className="mx-auto mt-8 flex w-full max-w-90 items-center gap-3.5 rounded-card-lg border border-achievements-border bg-achievements-bg py-3 pr-4.5 pl-3.5 text-left text-text hover:text-text"
       >
         <JarIllustration
           kind="achievements"

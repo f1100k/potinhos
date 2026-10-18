@@ -6,7 +6,7 @@ test('export, erase everything, then import the file back', async ({
 }) => {
   await openApp(page, WEDNESDAY);
   await addTask(page, 'Lavar a louça', 'Simples');
-  await page.getByRole('link', { name: 'Configurações' }).click();
+  await page.getByRole('link', { name: 'Ajustes' }).click();
 
   const downloading = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Baixar meus dados' }).click();
