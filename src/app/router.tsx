@@ -3,7 +3,7 @@ import {
   Navigate,
   type RouterHistory,
 } from '@tanstack/react-router';
-import { routeTree } from '../routeTree.gen';
+import { routeTree } from './routeTree.gen';
 
 export function createAppRouter(history?: RouterHistory) {
   return createRouter({

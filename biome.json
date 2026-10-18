@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/dist", "!.claude", "!src/routeTree.gen.ts"]
+    "includes": ["**", "!**/dist", "!.claude", "!src/app/routeTree.gen.ts"]
   },
   "formatter": {
     "enabled": true,
@@ -50,7 +50,41 @@
       }
     },
     {
-      "includes": ["src/domain/**"],
+      "includes": [
+        "src/components/**",
+        "src/config/**",
+        "src/hooks/**",
+        "src/lib/**",
+        "src/stores/**",
+        "src/types/**",
+        "src/utils/**"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["**/app/**", "**/features/**"],
+                    "message": "Shared code does not depend on features or the app."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "src/config/**",
+        "src/lib/**",
+        "src/stores/**",
+        "src/types/**",
+        "src/utils/**"
+      ],
       "linter": {
         "rules": {
           "style": {
@@ -61,13 +95,13 @@
                   {
                     "group": [
                       "**/app/**",
+                      "**/features/**",
                       "**/components/**",
-                      "**/routes/**",
                       "react",
                       "react-dom",
                       "@tanstack/*"
                     ],
-                    "message": "The domain stays independent from React and the app."
+                    "message": "Logic and state stay independent from React and the app."
                   }
                 ]
               }
@@ -77,7 +111,7 @@
       }
     },
     {
-      "includes": ["src/components/**"],
+      "includes": ["src/features/coffee/**"],
       "linter": {
         "rules": {
           "style": {
@@ -86,8 +120,60 @@
               "options": {
                 "patterns": [
                   {
-                    "group": ["**/app/**", "**/routes/**"],
-                    "message": "Components do not depend on the app layer."
+                    "group": [
+                      "**/app/**",
+                      "**/features/jars/**",
+                      "**/features/settings/**"
+                    ],
+                    "message": "A feature does not import the app or another feature."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/features/jars/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**/app/**",
+                      "**/features/coffee/**",
+                      "**/features/settings/**"
+                    ],
+                    "message": "A feature does not import the app or another feature."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/features/settings/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "**/app/**",
+                      "**/features/coffee/**",
+                      "**/features/jars/**"
+                    ],
+                    "message": "A feature does not import the app or another feature."
                   }
                 ]
               }

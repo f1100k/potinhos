@@ -25,16 +25,21 @@ npm run dev
 
 ## Estrutura
 
+Segue o [bulletproof-react](https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md):
+
 ```
 src/
-  domain/       regras e tipos, sem React
-    persistence/  validação, migração e localStorage
-  app/          router, layout, estado (Zustand) e regras de navegação
-  components/   componentes visuais reutilizáveis
-  routes/       uma rota por URL, com a tela junto
-  test/         setup e helpers dos testes
+  app/          App, router e routes/ (uma rota por URL, com a tela junto)
+  features/     código de uma tela só: jars/, settings/, coffee/
+  components/   ui/ (genéricos), layouts/ (Shell, Toaster), jars/ (visual dos potes)
+  stores/       estado (Zustand), reducer, flags de sessão e persistence/
+  utils/        regras puras: datas, semana, sorteio, tarefas, conquistas
+  types/        tipos do modelo
+  config/       constantes do produto
+  lib/          wrappers de API do navegador
+  testing/      setup e helpers dos testes
 ```
 
-O Biome garante as camadas: `domain/` não importa de `app/`, `components/` nem `routes/`, e `components/` não importa de `app/` nem `routes/`.
+Os imports fluem numa direção só: compartilhado → `features/` → `app/`. O Biome garante: uma feature não importa outra feature nem `app/`; `components/`, `stores/`, `utils/`, `types/`, `config/` e `lib/` não importam `features/` nem `app/`; e tudo que não é componente fica sem React.
 
 O código é em inglês; os textos da interface são em português.

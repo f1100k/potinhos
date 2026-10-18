@@ -22,7 +22,7 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 - [x] **Stack:** React + Vite + TypeScript, como PWA instalável. CSS puro ou CSS Modules para portar os keyframes do protótipo.
 - [x] **Virada da semana:** a semana fecha **domingo às 23:59, no fuso local** do aparelho. A semana vai de segunda 00:00 a domingo 23:59.
-  - [x] Quando o card "Fechar a semana" aparece na home: **a partir de sexta às 18h** (ajustável em `src/domain/week.ts`). Sem sobras no Semanal, a semana fecha sozinha na virada, já que não há nada para decidir.
+  - [x] Quando o card "Fechar a semana" aparece na home: **a partir de sexta às 18h** (ajustável em `src/utils/week.ts`). Sem sobras no Semanal, a semana fecha sozinha na virada, já que não há nada para decidir.
 - [x] **Se a pessoa não fechar a semana:** nada é fechado automaticamente. A semana **fica pendente até a pessoa abrir o app**. Na próxima abertura depois da virada, ela vê a tela "Fim de semana" daquela semana, com "levar" como padrão em cada sobra. Se o app ficar várias semanas fechado, aparece um fechamento só, referente à última semana não fechada.
 - [x] **Página de apoio:** **Pix** (chave copiável + QR code) e **Buy Me a Coffee** (link externo).
   - [ ] Falta: a URL do Buy Me a Coffee. Chave Pix e QR prontos.
@@ -175,7 +175,7 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 - [x] Tela com a ilustração da xícara (fumaça com `sway`), o texto sobre gratuidade, o QR code do Pix, a chave Pix copiável (Clipboard API + toast "Chave Pix copiada. Obrigada!"), o botão "Apoiar no Buy Me a Coffee" (link externo) e a nota "Sem valor sugerido, sem meta."
 - [x] "‹ Voltar" quando a tela é aberta pela landing.
-- [ ] Trocar os placeholders pelos dados reais. Chave Pix e QR (BR Code gerado no app, nome POTINHOS, cidade BRASIL) prontos. Falta a URL do Buy Me a Coffee em `src/app/support.ts`; sem ela o botão fica escondido.
+- [ ] Trocar os placeholders pelos dados reais. Chave Pix e QR (BR Code gerado no app, nome POTINHOS, cidade BRASIL) prontos. Falta a URL do Buy Me a Coffee em `src/config/support.ts`; sem ela o botão fica escondido.
 
 ## Fase 13 — Sons
 

@@ -10,6 +10,8 @@ export default defineConfig({
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
+      routesDirectory: './src/app/routes',
+      generatedRouteTree: './src/app/routeTree.gen.ts',
       routeFileIgnorePattern: '\\.test\\.',
     }),
     react(),
@@ -47,7 +49,7 @@ export default defineConfig({
   ],
   test: {
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ['./src/testing/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
     css: true,
   },
