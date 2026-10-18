@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { loadData, saveData } from '../domain/persistence';
+import { loadData, saveData } from '../domain/persistence/storage';
 import { type AppAction, appReducer } from '../domain/store';
 import type { AppData } from '../domain/types';
 

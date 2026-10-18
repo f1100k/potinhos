@@ -1,4 +1,5 @@
 import {
+  clampFreq,
   closeWeek,
   complete,
   moveToJar,
@@ -7,14 +8,7 @@ import {
   returnToJar,
   type WeekDecision,
 } from './rules';
-import {
-  type AppData,
-  type ISODate,
-  type Jar,
-  MAX_FREQ,
-  MIN_FREQ,
-  type Task,
-} from './types';
+import type { AppData, ISODate, Jar, Task } from './types';
 import { closeWeekMeta, mondayOf } from './week';
 
 export const SCHEMA_VERSION = 2;
@@ -57,9 +51,6 @@ export type AppAction =
   | { type: 'setSounds'; on: boolean }
   | { type: 'replace'; data: AppData }
   | { type: 'reset'; now: Date };
-
-const clampFreq = (n: number) =>
-  Math.min(MAX_FREQ, Math.max(MIN_FREQ, Math.round(n)));
 
 const updateTask = (
   data: AppData,

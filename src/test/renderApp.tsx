@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { App } from '../app/App';
 import { useAppData } from '../app/AppStore';
 import { createAppRouter } from '../app/router';
-import { loadData } from '../domain/persistence';
+import { loadData } from '../domain/persistence/storage';
 
 export async function renderApp(path = '/') {
   useAppData.setState(loadData(localStorage, new Date()), true);

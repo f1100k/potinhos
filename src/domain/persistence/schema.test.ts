@@ -1,46 +1,7 @@
-import { beforeEach, describe, expect, it } from 'vitest';
-import {
-  CORRUPT_KEY,
-  InvalidDataError,
-  loadData,
-  parseData,
-  STORAGE_KEY,
-  saveData,
-} from './persistence';
-import { appReducer, createInitialData } from './store';
+import { describe, expect, it } from 'vitest';
+import { InvalidDataError, parseData } from './schema';
 
 const now = new Date(2026, 9, 14, 10);
-
-describe('persistence', () => {
-  beforeEach(() => localStorage.clear());
-
-  it('starts from scratch when nothing is saved', () => {
-    expect(loadData(localStorage, now)).toEqual(createInitialData(now));
-  });
-
-  it('saves and loads the same state', () => {
-    const data = appReducer(createInitialData(now), {
-      type: 'addTask',
-      id: 'a',
-      text: 'Regar as plantas',
-      jar: 'weekly',
-      freq: 2,
-    });
-    saveData(localStorage, data);
-    expect(loadData(localStorage, now)).toEqual(data);
-  });
-
-  it('corrupted JSON does not break and keeps a copy', () => {
-    localStorage.setItem(STORAGE_KEY, '{"tasks": [');
-    expect(loadData(localStorage, now)).toEqual(createInitialData(now));
-    expect(localStorage.getItem(CORRUPT_KEY)).toBe('{"tasks": [');
-  });
-
-  it('an unexpected shape also starts from scratch', () => {
-    localStorage.setItem(STORAGE_KEY, '"oi"');
-    expect(loadData(localStorage, now).tasks).toEqual([]);
-  });
-});
 
 describe('parseData', () => {
   it('migrates the prototype format (version 0)', () => {
@@ -52,6 +13,7 @@ describe('parseData', () => {
           { id: 12, text: 'Ligar', pote: 'complexas', status: 'pendente' },
         ],
         done: [{ text: 'Pagar a luz', pote: 'simples', date: '2026-10-02' }],
+        current: { taskId: 9, date: '2026-10-14' },
       },
       now,
     );
@@ -72,6 +34,7 @@ describe('parseData', () => {
       jar: 'simple',
       date: '2026-10-02',
     });
+    expect(d.current).toEqual({ taskId: '9', date: '2026-10-14' });
     expect(d.meta).toMatchObject({
       schemaVersion: 2,
       visited: true,
@@ -106,7 +69,19 @@ describe('parseData', () => {
     expect(d.done).toEqual([
       { id: 'k', text: 'Pagar', jar: 'complex', date: '2026-10-02' },
     ]);
-    expect(d.meta.schemaVersion).toBe(2);
+    expect(d.meta).toMatchObject({ schemaVersion: 2, visited: true });
+  });
+
+  it('does not accept the Portuguese format in version 2', () => {
+    const d = parseData(
+      { version: 2, tasks: [{ id: 'a', text: 'Ler', pote: 'simples' }] },
+      now,
+    );
+    expect(d.tasks).toEqual([]);
+  });
+
+  it('a file without meta has not visited the landing page', () => {
+    expect(parseData({ version: 2, tasks: [] }, now).meta.visited).toBe(false);
   });
 
   it('drops invalid items and repeated ids', () => {
@@ -142,6 +117,7 @@ describe('parseData', () => {
   });
 
   it('rejects a file without tasks or from a newer version', () => {
+    expect(() => parseData('oi', now)).toThrow(InvalidDataError);
     expect(() => parseData({ foo: 1 }, now)).toThrow(InvalidDataError);
     expect(() => parseData({ version: 99, tasks: [] }, now)).toThrow(
       InvalidDataError,

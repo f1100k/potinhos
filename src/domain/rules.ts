@@ -1,4 +1,15 @@
-import type { Achievement, ISODate, Jar, Task } from './types';
+import {
+  type Achievement,
+  type ISODate,
+  type Jar,
+  MAX_FREQ,
+  MIN_FREQ,
+  type Task,
+} from './types';
+
+export function clampFreq(n: number): number {
+  return Math.min(MAX_FREQ, Math.max(MIN_FREQ, Math.round(n)));
+}
 
 export function remaining(t: Task): number {
   if (t.paused) return 0;
