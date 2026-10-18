@@ -90,12 +90,12 @@ O app não tem pontos, ranking, sequência de dias nem culpa. Também não tem c
 
 ## Fase 4 — Componentes visuais
 
-- [ ] **`<Pote>`** reutilizável, com tamanho, cor da tampa, número de papeizinhos (até 9 visíveis, em posições determinísticas como em `slips()`), brilho e etiqueta opcional "esta semana" (Semanal, animação `sway`).
-- [ ] **`<PoteConquistas>`** na variante dourada e calorosa.
-- [ ] **`<Papelzinho>`** nos estados dobrado, desdobrado e card de tarefa.
-- [ ] Chip de pote (cores por pote).
-- [ ] Botões primário (pílula terracota), secundário (contorno) e link.
-- [ ] Segmented control (abas de Conquistas e de Editar).
+- [x] **`<Pote>`** reutilizável, com tamanho, cor da tampa, número de papeizinhos (até 9 visíveis, em posições determinísticas como em `slips()`), brilho e etiqueta opcional "esta semana" (Semanal, animação `sway`).
+- [x] **`<PoteConquistas>`** na variante dourada e calorosa.
+- [x] **`<Papelzinho>`** nos estados dobrado, desdobrado e card de tarefa.
+- [x] Chip de pote (cores por pote).
+- [x] Botões primário (pílula terracota), secundário (contorno) e link.
+- [x] Segmented control (abas de Conquistas e de Editar).
 
 ## Fase 5 — Landing page ("Como funciona")
 
